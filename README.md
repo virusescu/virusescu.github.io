@@ -1,6 +1,6 @@
 # virusescu.github.io
 
-> Personal presentation website for **virusescu** &bull; Senior Software Engineer in the **EA SPORTS FC™** franchise.
+> Personal presentation website for **virusescu** &bull; Senior Software Engineer in **EA Sports FC Dev**.
 
 Live site: [https://virusescu.github.io](https://virusescu.github.io)
 
@@ -10,7 +10,7 @@ Live site: [https://virusescu.github.io](https://virusescu.github.io)
 
 Welcome to the digital corner of **virusescu**! 
 
-By day: engineering complex systems, optimizing gameplay pipelines, and bringing the virtual pitch to life for millions of football fans worldwide at EA SPORTS FC. 
+By day: engineering complex systems, optimizing gameplay pipelines, and bringing the virtual pitch to life for millions of football fans worldwide on the EA Sports FC Dev team. 
 
 By night: crafting lightweight, minimalist web experiments and pushing pixels with precision.
 
@@ -33,4 +33,4 @@ Built with pure, artisanal web fundamentals:
 
 ---
 
-&copy; 2026 virusescu &bull; EA SPORTS FC Franchise
+&copy; 2026 virusescu &bull; EA Sports FC Dev
