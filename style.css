@@ -148,7 +148,7 @@ main {
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-size: clamp(1.75rem, 6.5vw, 3.25rem);
   font-weight: 900;
   line-height: 1.25;
   letter-spacing: -0.02em;
@@ -227,7 +227,8 @@ h1 {
   margin-top: 1.25rem;
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
   font-size: 0.8rem;
   font-family: var(--font-mono);
   color: #64748b;
@@ -257,9 +258,28 @@ footer a:hover {
 }
 
 @media (max-width: 600px) {
+  body {
+    padding: 1.5rem 1rem;
+  }
+
   header, footer {
     flex-direction: column;
     gap: 1rem;
+    align-items: center;
     text-align: center;
+  }
+
+  .clock-card {
+    padding: 2rem 1rem;
+    border-radius: 20px;
+  }
+
+  .clock-time {
+    font-size: clamp(2.5rem, 13vw, 4rem);
+  }
+
+  .clock-footer {
+    flex-direction: column;
+    gap: 0.4rem;
   }
 }
