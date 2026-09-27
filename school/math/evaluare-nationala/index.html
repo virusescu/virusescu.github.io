@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exersăm pentru Evaluarea Națională – Matematică (clasa a VI-a și a VIII-a)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraph.css" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraphcore.js" crossorigin="anonymous"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<header class="top">
+  <nav class="wrap crumbs" aria-label="Navigare"><a href="/school/">← Școală</a><span class="sep">/</span><a href="/school/math/">Matematică</a><span class="sep">/</span><span aria-current="page">Evaluarea Națională</span></nav>
+  <div class="wrap top-inner">
+    <div>
+      <p class="kicker">&gt; exersăm_împreună</p>
+      <h1>Evaluarea Națională la matematică</h1>
+    </div>
+    <div class="score" aria-live="polite">
+      <span class="score-label">Scor</span>
+      <span id="score">0</span><span class="score-sep">/</span><span id="total">0</span>
+      <button id="reset" class="btn small ghost" type="button">Reia de la zero</button>
+    </div>
+  </div>
+  <nav class="wrap nav">
+    <a href="#clasa6">Clasa a VI-a</a>
+    <a href="#clasa8">Clasa a VIII-a</a>
+    <a href="#surse">Surse</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p>Probleme <strong>reale</strong>, luate din subiectele oficiale ale Evaluării Naționale.</p>
+    <p>Citiți enunțul, rezolvați pe o foaie, apoi scrieți răspunsul și apăsați <b>Verifică</b>.</p>
+    <p>Blocați? Încercați întâi <b>Indiciu</b>. Abia apoi <b>Arată rezolvarea</b>.</p>
+    <p class="muted">Răspunsurile numerice se pot scrie cu virgulă (ex. 7,2), ca fracție (36/5) sau cu radical (4√2 sau 4*sqrt(2)).</p>
+  </section>
+
+  <section id="clasa6" class="grade">
+    <h2><span class="tag">VI</span> Clasa a VI-a – Evaluarea Națională</h2>
+    <p class="muted">Proba „Matematică și Științe ale naturii”. Aici sunt doar itemii de matematică (și câțiva de fizică simplă: viteză).</p>
+    <div id="list6" class="cards"></div>
+  </section>
+
+  <section id="clasa8" class="grade">
+    <h2><span class="tag">VIII</span> Clasa a VIII-a – Evaluarea Națională</h2>
+    <p class="muted">Proba scrisă la matematică: Subiectul I (calcule, grilă), Subiectul al II-lea (geometrie, grilă), Subiectul al III-lea (rezolvări complete). Ca să vedeți ce urmează!</p>
+    <div id="list8" class="cards"></div>
+  </section>
+
+  <section id="surse" class="sources">
+    <h2>Surse</h2>
+    <ul>
+      <li><b>EN VI 2025</b> – Matematică și științe, test oficial: <a href="https://subiecte.edu.ro/2025/evaluarenationala6/teste/EN_VI_2025_Matematica_si_stiinte_.zip">subiecte.edu.ro/2025/evaluarenationala6/teste/EN_VI_2025_Matematica_si_stiinte_.zip</a> (fișierul ENVI_2025_matematica_si_stiinte_Test_limba_romana.pdf).</li>
+      <li><b>EN VI 2024</b> – Matematică și Științe ale naturii, Test 1: <a href="https://subiecte.edu.ro/2024/evaluarenationala6/teste/EN_VI_2024_Matematica_si_stiinte.zip">subiecte.edu.ro/2024/evaluarenationala6/teste/EN_VI_2024_Matematica_si_stiinte.zip</a> (ENVI_2024_matematica_si_stiinte_Test_1_limba_romana.pdf).</li>
+      <li><b>EN VIII 2025</b> – Matematică, 25 iunie 2025, Varianta 7 + barem: <a href="https://subiecte.edu.ro/2025/evaluarenationala/Subiecte_si_bareme/EN_VIII_2025_Matematica.zip">subiecte.edu.ro/2025/evaluarenationala/Subiecte_si_bareme/EN_VIII_2025_Matematica.zip</a>.</li>
+      <li><b>EN VIII 2026</b> – Matematică, 24 iunie 2026, Varianta 1 + barem (document CNCE, preluat de pe <a href="https://mateinfo.ro/evaluare-nationala-matematica/examene-matematica-gimnaziu/variante-evaluare-nationala-matematica/subiecte-evaluare-nationala-la-matematica-2026/2144-subiect-oficial-evaluare-nationala-24-06-2026">mateinfo.ro</a>; pagina oficială: <a href="https://subiecte.edu.ro/2026/evaluarenationala/Subiecte_si_bareme/">subiecte.edu.ro/2026/…/Subiecte_si_bareme</a>).</li>
+    </ul>
+    <p class="muted">Pentru clasa a VI-a, Ministerul nu publică un barem, așa că rezolvările de la clasa a VI-a sunt propuse de noi și verificate prin calcul. Pentru clasa a VIII-a, răspunsurile și pașii sunt din baremul oficial.</p>
+  </section>
+</main>
+<footer class="wrap foot">Pagină statică de exersat · fără cont, fără server · <span class="accent">succes!</span></footer>
+</body>
+</html>
