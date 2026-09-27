@@ -42,7 +42,7 @@
       id: 'vi25-6', grade: 6, source: 'EN VI 2025, Matematică și științe, item 6', url: URL_VI_2025,
       adapt: 'Adaptat: cerința originală este „Arată că măsura unghiului EBC este egală cu 60°”; aici întrebăm cât este.',
       statement: DELTA_CONTEXT + R`<p><b>Cât este măsura unghiului \(EBC\)?</b></p>`,
-      fig: { id: 'figDelta', h: 270, cap: 'Figură interactivă: trage punctul C pe dreaptă. Ce observi la unghiul EBC?' },
+      fig: { id: 'figDelta', h: 270, cap: 'Figură interactivă: trage punctul C pe dreaptă. Unghiul EBC se schimbă? Calculează-l.' },
       parts: [{ type: 'num', correct: 60, tol: 0.01, unit: '°' }],
       hint: R`Unghiurile \(ABD\) și \(DBC\) sunt suplementare (A, B, C sunt coliniare). Apoi folosește paralelele \(BD \parallel CE\) tăiate de secanta \(BC\).`,
       solNote: SOL_VI,
@@ -348,9 +348,9 @@
       const E = b.create('orthogonalprojection', [B, par], { name: 'E', size: 3, strokeColor: ACC, fillColor: ACC, label: { strokeColor: TXT, fontSize: 18 } });
       seg(b, A, D); seg(b, B, D); seg(b, A, C); seg(b, B, E); seg(b, E, C); seg(b, A, F, { dash: 2, strokeColor: '#5d6f82' });
       b.create('nonreflexangle', [D, B, A], { radius: 0.45, name: '30°', fillColor: LINE, fillOpacity: 0.2, strokeColor: LINE, label: { strokeColor: TXT, fontSize: 14 }, fixed: true });
-      b.create('nonreflexangle', [C, B, E], { radius: 0.35, name: () => Math.round(ndeg(C, B, E)) + '°', fillColor: ACC, fillOpacity: 0.3, strokeColor: ACC, label: { strokeColor: ACC, fontSize: 16 } });
+      b.create('nonreflexangle', [C, B, E], { radius: 0.35, name: '?', fillColor: ACC, fillOpacity: 0.3, strokeColor: ACC, label: { strokeColor: ACC, fontSize: 16 } });
       b.create('nonreflexangle', [B, E, C], { radius: 0.18, name: '', fillColor: HI, fillOpacity: 0.3, strokeColor: HI });
-      const upd = () => setLive(id, '∠EBC = ' + Math.round(ndeg(C, B, E)) + '°  ·  ∠BCE = ' + Math.round(ndeg(B, C, E)) + '°  ·  BC = ' + Math.round(C.X() * 100) + ' m, BE = ' + Math.round(B.Dist(E) * 100) + ' m');
+      const upd = () => setLive(id, '∠EBC = ?  ·  BC = ' + Math.round(C.X() * 100) + ' m, BE = ' + Math.round(B.Dist(E) * 100) + ' m');
       b.on('update', upd); upd();
     },
     figCircle(id) {
@@ -365,11 +365,11 @@
       const A = b.create('glider', [2 * Math.cos(a0), 2 * Math.sin(a0), circ], { name: 'A', size: 6, strokeColor: HI, fillColor: HI, label: { strokeColor: HI, fontSize: 18, offset: [-8, 14] } });
       seg(b, C, A, { strokeColor: ACC, strokeWidth: 3 }); seg(b, A, O, { strokeColor: ACC, strokeWidth: 3 }); seg(b, O, B, { strokeColor: ACC, strokeWidth: 3 });
       seg(b, B, C, { dash: 2, strokeColor: '#5d6f82', strokeWidth: 1 });
-      b.create('nonreflexangle', [C, O, A], { radius: 0.4, name: () => Math.round(deg(A, O, C) > 180 ? 360 - deg(A, O, C) : deg(A, O, C)) + '°', fillColor: ACC, fillOpacity: 0.25, strokeColor: ACC, label: { strokeColor: ACC, fontSize: 15 } });
+      b.create('nonreflexangle', [C, O, A], { radius: 0.4, name: '?', fillColor: ACC, fillOpacity: 0.25, strokeColor: ACC, label: { strokeColor: ACC, fontSize: 15 } });
       const upd = () => {
         let ac = deg(A, O, C); if (ac > 180) ac = 360 - ac;
         const ab = 180 - ac, ca = C.Dist(A) * 10;
-        setLive(id, 'arc mic AC = ' + Math.round(ac) + '° · arc mic AB = ' + Math.round(ab) + '° · CA = ' + ca.toFixed(1).replace('.', ',') + ' m · traseu = ' + (ca + 40).toFixed(1).replace('.', ',') + ' m');
+        setLive(id, 'arc mic AC = ? · traseu = ?');
       };
       b.on('update', upd); upd();
     },
