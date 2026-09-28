@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olimpiada de matematică – clasa a VI-a | Școală | virusescu</title>
+<meta name="description" content="Probleme reale de la Olimpiada Națională de Matematică, clasa a VI-a: etapa locală, județeană și națională, cu indicii și rezolvări.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraph.css" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraphcore.js" crossorigin="anonymous"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<header class="top">
+  <nav class="wrap crumbs" aria-label="Navigare"><a href="/school/">← Școală</a><span class="sep">/</span><a href="/school/math/">Matematică</a><span class="sep">/</span><span aria-current="page">Olimpiada – clasa a VI-a</span></nav>
+  <div class="wrap top-inner">
+    <div>
+      <p class="kicker">&gt; olimpiada_de_mate</p>
+      <h1>Olimpiada de matematică – clasa a VI-a</h1>
+    </div>
+    <div class="score" aria-live="polite">
+      <span class="score-label">Scor</span>
+      <span id="score">0</span><span class="score-sep">/</span><span id="total">0</span>
+      <button id="reset" class="btn small ghost" type="button">Reia de la zero</button>
+    </div>
+  </div>
+  <nav class="wrap nav">
+    <a href="#locala">Etapa locală</a>
+    <a href="#judeteana">Etapa județeană</a>
+    <a href="#nationala">Etapa națională</a>
+    <a href="#surse">Surse</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p>Probleme <strong>reale</strong> de la Olimpiada Națională de Matematică (ONM), clasa a VI-a, de la toate cele trei etape.</p>
+    <p>Sunt mai grele decât la Evaluare: nu te grăbi, fă desene și încearcă exemple mici. Un indiciu nu e o rușine!</p>
+    <p>Unde răspunsul e un număr, scrie-l și apasă <b>Verifică</b>. La cerințele de tip „Arătați că…”, scrie demonstrația pe hârtie și compar-o cu <b>Arată rezolvarea</b>.</p>
+    <p class="muted">Răspunsurile se pot scrie cu virgulă (ex. 7,5), ca fracție (15/2), iar unghiurile și cu minute (ex. 40°30').</p>
+  </section>
+
+  <section id="locala" class="grade">
+    <h2><span class="tag">1</span> Etapa locală</h2>
+    <p class="muted">Prima etapă (februarie). Subiectele sunt făcute de fiecare județ, deci diferă de la un județ la altul.</p>
+    <div id="listLoc" class="cards"></div>
+  </section>
+
+  <section id="judeteana" class="grade">
+    <h2><span class="tag">2</span> Etapa județeană / a sectoarelor</h2>
+    <p class="muted">A doua etapă (martie). Aceleași subiecte în toată țara, alese de Societatea de Științe Matematice din România (SSMR).</p>
+    <div id="listJud" class="cards"></div>
+  </section>
+
+  <section id="nationala" class="grade">
+    <h2><span class="tag">3</span> Etapa națională (ONM)</h2>
+    <p class="muted">Finala (aprilie), pentru cei mai buni elevi din fiecare județ. Aici sunt problemele cele mai grele: ia-le pe rând.</p>
+    <div id="listNat" class="cards"></div>
+  </section>
+
+  <section id="surse" class="sources">
+    <h2>Surse</h2>
+    <ul>
+      <li><b>Etapa locală 2025, jud. Bacău</b> (8 februarie 2025), subiect ISJ Bacău: <a href="https://cdn.edupedu.ro/wp-content/uploads/2025/02/SUBIECT-etapa-locala-ONM_08feb2025-clasa-6.pdf">subiect</a>, <a href="https://cdn.edupedu.ro/wp-content/uploads/2025/02/BAREM-etapa-locala-ONM_08feb2025-clasa-6.pdf">barem</a> (documente republicate de Edupedu.ro).</li>
+      <li><b>Etapa locală 2025, jud. Tulcea</b> (8 februarie 2025), subiect și barem ISJ Tulcea: <a href="https://cdn.edupedu.ro/wp-content/uploads/2025/02/Subiecte-ONGM-ETAPA-LOCALA-clasa-a-VI-aTulcea-8-februarie-2025.pdf">PDF</a> (republicat de Edupedu.ro).</li>
+      <li><b>Etapa locală 2025, jud. Vâlcea</b> (8 februarie 2025): <a href="https://cdn.edupedu.ro/wp-content/uploads/2025/02/Subiect_6_OLM_2025.pdf">subiect</a>, <a href="https://cdn.edupedu.ro/wp-content/uploads/2025/02/Barem_6_OLM_2025.pdf">barem</a> (republicate de Edupedu.ro, în <a href="https://www.edupedu.ro/descarca-subiecte-si-bareme-olimpiada-nationala-de-matematica-2025-etapa-locala-din-judetele-bacau-dolj-tulcea-si-valcea-elevii-cu-cel-putin-50-raspunsuri-corecte-merg-la-faza-pe-judet/">articolul despre etapa locală 2025</a>).</li>
+      <li><b>Etapa județeană / a sectoarelor 2026</b>, SSMR: <a href="https://ssmr.ro/files/onm2026/faza_municipiu/barem_clasa6.pdf">ssmr.ro/files/onm2026/faza_municipiu/barem_clasa6.pdf</a>.</li>
+      <li><b>Etapa județeană / a sectoarelor 2025</b>, SSMR: <a href="https://ssmr.ro/files/onm2025/faza_municipiu/barem_clasa6.pdf">ssmr.ro/files/onm2025/faza_municipiu/barem_clasa6.pdf</a>.</li>
+      <li><b>ONM 2022</b>, etapa națională, Constanța: <a href="https://ssmr.ro/files/onm2022/finala/cl6_nationala.pdf">ssmr.ro/files/onm2022/finala/cl6_nationala.pdf</a>.</li>
+      <li><b>ONM 2024</b>, etapa națională: <a href="https://ssmr.ro/files/onm2024/faza_nationala/06_solutii_bareme_ONM_2024.pdf">ssmr.ro/files/onm2024/faza_nationala/06_solutii_bareme_ONM_2024.pdf</a>.</li>
+      <li><b>ONM 2025</b>, etapa națională, Buzău: <a href="https://ssmr.ro/files/onm2025/faza_nationala/06_solutii_bareme_ONM_2025.pdf">ssmr.ro/files/onm2025/faza_nationala/06_solutii_bareme_ONM_2025.pdf</a>.</li>
+      <li><b>ONM 2026</b>, etapa națională, Drobeta-Turnu Severin: <a href="https://ssmr.ro/files/onm2026/faza_nationala/06_solutii_bareme_ONM_2026.pdf">ssmr.ro/files/onm2026/faza_nationala/06_solutii_bareme_ONM_2026.pdf</a>.</li>
+    </ul>
+    <p class="muted">Enunțurile sunt preluate din documentele oficiale. Rezolvările urmează baremele oficiale, reformulate pentru clasa a VI-a, iar fiecare răspuns a fost verificat și de noi prin calcul. Figurile sunt desenate de noi după enunț.</p>
+  </section>
+</main>
+<footer class="wrap foot">Pagină statică de exersat · fără cont, fără server · <span class="accent">succes la olimpiadă!</span></footer>
+</body>
+</html>
