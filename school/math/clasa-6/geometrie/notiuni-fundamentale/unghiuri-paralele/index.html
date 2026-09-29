@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <link rel="stylesheet" href="/school/math/lesson.css">
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false})"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraph.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraphcore.js" crossorigin="anonymous"></script>
+
+  <title>Unghiuri, bisectoare, paralele | Noțiuni geometrice fundamentale | Clasa a VI-a</title>
+  <meta name="description" content="Opuse la vârf, adiacente, complem./suplem.; paralele + secantă.">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a href="/" class="brand" title="Înapoi la site-ul principal">
+        <span class="logo-icon"><svg viewBox="0 0 40 40" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="20,34 6,9 34,9" fill="rgba(0, 255, 133, 0.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><span class="brand-title">virusescu</span><span class="brand-sub">Matematică</span></span>
+      </a>
+      <a href="/" class="home-link">⌂ Site principal</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Navigare"><a href="/school/">Școală</a><span>/</span><a href="/school/math/">Matematică</a><span>/</span><a href="/school/math/clasa-6/">Clasa a VI-a</a><span>/</span><a href="/school/math/clasa-6/geometrie/notiuni-fundamentale/">Noțiuni geometrice fundamentale</a><span>/</span><span aria-current="page">Unghiuri, bisectoare, paralele</span></nav>
+    <section class="hero">
+      <p class="kicker">&gt; recapitulare · clasa a 6-a</p>
+      <h1>Unghiuri, bisectoare, paralele</h1>
+      <p>Opuse la vârf, adiacente, complem./suplem.; paralele + secantă.</p>
+    </section>
+    <article class="lesson">
+<div class="formulas"><p>Opuse la vârf: congruente.</p><p>În jurul unui punct: suma = \(360^\circ\).</p><p>Complementare: suma \(90^\circ\); suplementare: \(180^\circ\).</p><p>Paralele tăiate de secantă: alterne interne egale; corespondente egale; interne de aceeași parte suplementare.</p></div><div class="box ex"><h3>Exemple</h3><ol class="steps"><li>Dacă \(\angle 1=110^\circ\) opus la vârf cu \(\angle 3\) → \(\angle 3=110^\circ\).</li><li>Complementul lui \(35^\circ\) e \(55^\circ\); suplementul e \(145^\circ\).</li><li>Bisectoarea taie unghiul în două unghiuri congruente.</li></ol></div><div class="fig"><div id="par1" class="jxgbox"></div><p class="cap">Două paralele și o secantă.</p></div>
+    <div class="lesson-nav">
+      <a class="back" href="/school/math/clasa-6/geometrie/notiuni-fundamentale/">← Cuprins capitol</a>
+      <a href="/school/math/clasa-6/geometrie/notiuni-fundamentale/perpendiculare-cerc/">Perpendiculare, mediatoare, cerc →</a>
+    </div>
+    </article>
+  </main>
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>&copy; 2026 virusescu &bull; Școală</span>
+      <span><a href="/school/">Școală</a> &bull; <a href="/school/math/">Matematică</a> &bull; <a href="/">Site principal</a></span>
+    </div>
+  </footer>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!window.JXG) return;
+  const b=JXG.JSXGraph.initBoard('par1',{boundingbox:[-1,5,9,-1],axis:false,showNavigation:false,showCopyright:false});
+  b.create('line',[[0,1.5],[8,1.5]],{strokeColor:'#00ff85',straightFirst:true,straightLast:true});
+  b.create('line',[[0,3.5],[8,3.5]],{strokeColor:'#00ff85',straightFirst:true,straightLast:true});
+  b.create('line',[[2,0],[6,5]],{strokeColor:'#38bdf8'});
+  b.create('text',[7.2,1.7],'d₁',{color:'#00ff85'});
+  b.create('text',[7.2,3.7],'d₂',{color:'#00ff85'});
+});
+</script>
+</body>
+</html>
