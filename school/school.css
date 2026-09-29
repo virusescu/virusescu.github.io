@@ -2,8 +2,8 @@
   --bg:#0b0f14; --panel:rgba(18,24,38,.72); --panel-solid:#111821; --line:rgba(255,255,255,.09);
   --text:#f3f4f6; --muted:#94a3b8; --dim:#64748b; --accent:#00ff85; --accent-dim:#00c567;
   --glow:rgba(0,255,133,.25);
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-  --mono:"SF Mono","Fira Code","Cascadia Code","Roboto Mono",Consolas,monospace;
+  --font:"Segoe UI","Noto Sans",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:"Segoe UI","Noto Sans",ui-monospace,"Roboto Mono","Cascadia Code",Consolas,monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -37,10 +37,14 @@ a{color:var(--accent)}
 /* Hero */
 main{flex:1}
 .hero{padding:34px 0 10px}
-.kicker{font-family:var(--mono);color:var(--accent);font-size:16px;letter-spacing:.06em}
+.kicker{font-family:var(--mono);font-size:16px;letter-spacing:.06em}
 .hero h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:900;line-height:1.15;letter-spacing:-.02em;margin:6px 0 10px;
-  background:linear-gradient(180deg,#fff 30%,#94a3b8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-bottom:.1em}
+  color:#fff;padding-bottom:.1em}
+h1,h2,h3,h4{color:inherit}
+.hero h1,.section-title,.card h3{color:#fff}
+.katex,.katex *{color:inherit!important}
 .hero p{color:var(--muted);font-size:21px;max-width:640px}
+.hero p.kicker,.hero .kicker{color:var(--accent)}
 
 /* Sections & cards */
 .section-title{font-size:26px;margin:44px 0 16px;display:flex;align-items:center;gap:12px}
