@@ -31,7 +31,52 @@
       <p>Putere, pătrat, reguli de calcul, scriere în baza 10 și baza 2.</p>
     </section>
     <article class="lesson">
-<div class="box def"><h3>Definiție</h3><p>\(a^n = a\cdot a\cdots a\) (\(n\) factori), \(a\neq 0\) când e nevoie. Pătrat: \(a^2\).</p></div><div class="formulas"><p>\(a^m \cdot a^n = a^{m+n}\)</p><p>\(a^m : a^n = a^{m-n}\) (\(m\ge n\), \(a\neq 0\))</p><p>\((a^m)^n = a^{m\cdot n}\), \((a\cdot b)^n = a^n b^n\)</p><p>Baza 10: \(347 = 3\cdot 10^2 + 4\cdot 10^1 + 7\cdot 10^0\)</p><p>Baza 2 (fără operații): \(1101_{(2)} = 1\cdot 2^3 + 1\cdot 2^2 + 0\cdot 2^1 + 1\cdot 2^0 = 13_{(10)}\)</p></div><div class="box ex"><h3>Exemple</h3><ol class="steps"><li>\(2^5=32\), \(5^2=25\).</li><li>\(3^4 \cdot 3^2 = 3^6 = 729\).</li><li>Compară: \(2^7=128 < 5^3=125\)? Nu — \(128>125\).</li><li>\(1010_{(2)}=10_{(10)}\).</li></ol></div>
+<h2 class="section-title">Introducere</h2>
+<div class="box">
+  <p>Puterile scurtează scrierea unor produse lungi (\(2\cdot 2\cdot 2\cdot 2=2^4\)). Regulile de calcul și scrierea pe baze (10 și 2) apar peste tot: de la „câte zerouri” până la informatică.</p>
+</div>
+
+<h2 class="section-title">Lecția</h2>
+<div class="box def">
+  <h3>Definiție</h3>
+  <p>\(a^n = a\cdot a\cdots a\) (\(n\) factori egali cu \(a\)), cu \(n\in\mathbb{N}\), \(n\ge 1\). Prin convenție \(a^0=1\) pentru \(a\neq 0\). <strong>Pătratul</strong>: \(a^2\).</p>
+</div>
+<div class="formulas">
+  <p>\(a^m \cdot a^n = a^{m+n}\)</p>
+  <p>\(a^m : a^n = a^{m-n}\) (\(m\ge n\), \(a\neq 0\))</p>
+  <p>\((a^m)^n = a^{m\cdot n}\), \((a\cdot b)^n = a^n b^n\)</p>
+  <p>Baza 10: \(347 = 3\cdot 10^2 + 4\cdot 10^1 + 7\cdot 10^0\)</p>
+  <p>Baza 2 (fără operații): \(1101_{(2)} = 1\cdot 2^3 + 1\cdot 2^2 + 0\cdot 2^1 + 1\cdot 2^0 = 13_{(10)}\)</p>
+</div>
+<div class="box ex">
+  <h3>Exemplu 1 — reguli</h3>
+  <ol class="steps">
+    <li>\(2^3\cdot 2^4 = 2^{7}=128\).</li>
+    <li>\(5^5:5^2=5^3=125\); \((3^2)^3=3^6=729\).</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 2 — comparare</h3>
+  <ol class="steps">
+    <li>\(2^5=32\) și \(3^3=27\) → \(2^5&gt;3^3\).</li>
+    <li>\(10^3=1000&gt;8^3=512\).</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 3 — baze</h3>
+  <ol class="steps">
+    <li>\(508 = 5\cdot 10^2 + 0\cdot 10^1 + 8\cdot 10^0\).</li>
+    <li>\(1010_{(2)}=1\cdot 8 + 0\cdot 4 + 1\cdot 2 + 0\cdot 1 = 10_{(10)}\).</li>
+  </ol>
+</div>
+<div class="box def">
+  <h3>Recapitulare</h3>
+  <ul>
+    <li>\(a^n\): \(n\) factori egali; reguli: \(+\) la produs, \(-\) la cât, \(\cdot\) la putere de putere.</li>
+    <li>Baza 10 = descompunere zecimală; baza 2 = sume de puteri ale lui 2.</li>
+    <li>La cl. V: baza 2 doar citire/scriere, fără operații.</li>
+  </ul>
+</div>
     <div class="lesson-nav">
       <a class="back" href="/school/math/clasa-5/numere-naturale/impartire/">← Împărțire cu și fără rest</a>
       <a href="/school/math/clasa-5/numere-naturale/ordinea-operatiilor/">Ordinea operațiilor →</a>

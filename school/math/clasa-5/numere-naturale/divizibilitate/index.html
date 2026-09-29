@@ -31,7 +31,53 @@
       <p>Divizor, multiplu, criterii 2/3/5/9/10ⁿ, numere prime și compuse.</p>
     </section>
     <article class="lesson">
-<div class="box def"><h3>Vocabular</h3><p>\(a\mid b\) („\(a\) divide \(b\)”) dacă există \(k\) cu \(b=a\cdot k\). Multiplu = opusul. Prim: exact 2 divizori (1 și el). Compus: mai mulți.</p></div><div class="formulas"><p>Criteriu 2: ultima cifră pară.</p><p>Criteriu 5: ultima cifră 0 sau 5.</p><p>Criteriu \(10^n\): se termină cu \(n\) zerouri.</p><p>Criteriu 3 (și 9): suma cifrelor divizibilă cu 3 (respectiv 9).</p></div><div class="box ex"><h3>Exemple</h3><ol class="steps"><li>Divizorii lui 12: 1, 2, 3, 4, 6, 12.</li><li>234: 2+3+4=9 → divizibil cu 3 și cu 9.</li><li>Prime &lt; 20: 2, 3, 5, 7, 11, 13, 17, 19. Compus: 15=3·5.</li></ol></div>
+<h2 class="section-title">Introducere</h2>
+<div class="box">
+  <p>Divizibilitatea spune când o împărțire „cade exact”. Criteriile te scutesc de împărțiri lungi, iar noțiunile de număr prim / compus pregătesc descompunerea din clasa a VI-a.</p>
+</div>
+
+<h2 class="section-title">Lecția</h2>
+<div class="box def">
+  <h3>Vocabular</h3>
+  <p>\(a\mid b\) („\(a\) divide \(b\)”) dacă există \(k\in\mathbb{N}\) cu \(b=a\cdot k\). Atunci \(b\) e <strong>multiplu</strong> al lui \(a\), iar \(a\) e <strong>divizor</strong> al lui \(b\).</p>
+  <p><strong>Prim</strong>: exact 2 divizori (1 și el). <strong>Compus</strong>: mai mulți de 2. 1 nu e nici prim, nici compus.</p>
+</div>
+<div class="formulas">
+  <p>Criteriu 2: ultima cifră pară (0, 2, 4, 6, 8).</p>
+  <p>Criteriu 5: ultima cifră 0 sau 5.</p>
+  <p>Criteriu \(10^n\): se termină cu \(n\) zerouri.</p>
+  <p>Criteriu 3 (și 9): suma cifrelor e divizibilă cu 3 (respectiv 9).</p>
+</div>
+<div class="box ex">
+  <h3>Exemplu 1 — divizori</h3>
+  <ol class="steps">
+    <li>Divizorii lui 12: \(1,2,3,4,6,12\).</li>
+    <li>Multipli ai lui 5: \(0,5,10,15,\ldots\)</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 2 — criterii</h3>
+  <ol class="steps">
+    <li>\(246\): ultima cifră 6 → divizibil cu 2; suma \(2+4+6=12\) → divizibil cu 3.</li>
+    <li>\(450\): se termină cu 0 → divizibil cu 2, 5 și 10.</li>
+    <li>\(81\): \(8+1=9\) → divizibil cu 9.</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 3 — prime</h3>
+  <ol class="steps">
+    <li>Prime &lt; 20: \(2,3,5,7,11,13,17,19\).</li>
+    <li>\(15=3\cdot 5\) e compus; \(1\) nu e prim.</li>
+  </ol>
+</div>
+<div class="box def">
+  <h3>Recapitulare</h3>
+  <ul>
+    <li>\(a\mid b\) ⇔ \(b=a\cdot k\); multiplu ↔ divizor.</li>
+    <li>Criterii: 2, 5, \(10^n\), 3, 9.</li>
+    <li>Prim = exact 2 divizori; 1 nu e prim.</li>
+  </ul>
+</div>
     <div class="lesson-nav">
       <a class="back" href="/school/math/clasa-5/numere-naturale/metode-aritmetice/">← Metode aritmetice</a>
       <a href="/school/math/clasa-5/">Înapoi la clasă →</a>

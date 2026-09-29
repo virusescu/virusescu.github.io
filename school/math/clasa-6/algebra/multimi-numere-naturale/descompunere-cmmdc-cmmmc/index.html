@@ -31,7 +31,50 @@
       <p>Factori primi; GCD/LCM; numere prime între ele.</p>
     </section>
     <article class="lesson">
-<div class="box def"><h3>Metodă</h3><p>Descompui în factori primi, apoi: c.m.m.d.c. = puteri minime comune; c.m.m.m.c. = puteri maxime.</p></div><div class="formulas"><p>\((a,b)=1\) ↔ prime între ele (c.m.m.d.c.=1).</p><p>\((a,b)\cdot [a,b] = a\cdot b\) (util la verificare).</p></div><div class="box ex"><h3>Exemple</h3><ol class="steps"><li>\(84=2^2\cdot 3\cdot 7\), \(90=2\cdot 3^2\cdot 5\).</li><li>c.m.m.d.c.=\(2\cdot 3=6\); c.m.m.m.c.=\(2^2\cdot 3^2\cdot 5\cdot 7=1260\).</li><li>\(8\) și \(15\) sunt prime între ele.</li></ol></div>
+<h2 class="section-title">Introducere</h2>
+<div class="box">
+  <p>Descompunerea în factori primi e „cartea de identitate” a unui număr. Din ea citești rapid c.m.m.d.c. și c.m.m.m.c. — esențiale la fracții și la multe probleme de olimpiadă.</p>
+</div>
+
+<h2 class="section-title">Lecția</h2>
+<div class="box def">
+  <h3>Descompunere</h3>
+  <p>Orice \(n&gt;1\) se scrie unic (până la ordinea factorilor) ca produs de puteri de numere prime: \(n=p_1^{a_1}\cdots p_k^{a_k}\).</p>
+</div>
+<div class="formulas">
+  <p>c.m.m.d.c.: pentru fiecare prim, iei exponentul <strong>minim</strong>.</p>
+  <p>c.m.m.m.c.: pentru fiecare prim, iei exponentul <strong>maxim</strong>.</p>
+  <p>\((a,b)=1\) ↔ prime între ele (c.m.m.d.c. = 1).</p>
+  <p>\((a,b)\cdot [a,b] = a\cdot b\) (verificare utilă).</p>
+</div>
+<div class="box ex">
+  <h3>Exemplu 1</h3>
+  <ol class="steps">
+    <li>\(84=2^2\cdot 3\cdot 7\), \(90=2\cdot 3^2\cdot 5\).</li>
+    <li>c.m.m.d.c. = \(2^{\min(2,1)}\cdot 3^{\min(1,2)}=2\cdot 3=6\).</li>
+    <li>c.m.m.m.c. = \(2^2\cdot 3^2\cdot 5\cdot 7=1260\).</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 2 — prime între ele</h3>
+  <ol class="steps">
+    <li>\(8=2^3\) și \(15=3\cdot 5\): niciun prim comun → \((8,15)=1\).</li>
+    <li>Verificare: \(6\cdot 1260=7560\) și \(84\cdot 90=7560\).</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 3</h3>
+  <ol class="steps">
+    <li>\((12,18)=6\), \([12,18]=36\); \(6\cdot 36=216=12\cdot 18\).</li>
+  </ol>
+</div>
+<div class="box def">
+  <h3>Recapitulare</h3>
+  <ul>
+    <li>Descompunere unică în prime; c.m.m.d.c. = mini, c.m.m.m.c. = maxi.</li>
+    <li>\((a,b)\cdot[a,b]=a\cdot b\); \((a,b)=1\) ↔ prime între ele.</li>
+  </ul>
+</div>
     <div class="lesson-nav">
       <a class="back" href="/school/math/clasa-6/algebra/multimi-numere-naturale/multimi/">← Mulțimi: notații, relații, operații</a>
       <a href="/school/math/clasa-6/algebra/multimi-numere-naturale/proprietati-divizibilitate/">Proprietăți ale divizibilității în ℕ →</a>
