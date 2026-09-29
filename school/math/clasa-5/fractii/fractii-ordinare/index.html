@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <link rel="stylesheet" href="/school/math/lesson.css">
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false})"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraph.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraphcore.js" crossorigin="anonymous"></script>
+
+  <title>Fracții ordinare și procente | Fracții | Clasa a V-a</title>
+  <meta name="description" content="Subunitare, echiunitare, supraunitare; echivalență; procente.">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a href="/" class="brand" title="Înapoi la site-ul principal">
+        <span class="logo-icon"><svg viewBox="0 0 40 40" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="20,34 6,9 34,9" fill="rgba(0, 255, 133, 0.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><span class="brand-title">virusescu</span><span class="brand-sub">Matematică</span></span>
+      </a>
+      <a href="/" class="home-link">⌂ Site principal</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Navigare"><a href="/school/">Școală</a><span>/</span><a href="/school/math/">Matematică</a><span>/</span><a href="/school/math/clasa-5/">Clasa a V-a</a><span>/</span><a href="/school/math/clasa-5/fractii/">Fracții</a><span>/</span><span aria-current="page">Fracții ordinare și procente</span></nav>
+    <section class="hero">
+      <p class="kicker">&gt; recapitulare · clasa a 5-a</p>
+      <h1>Fracții ordinare și procente</h1>
+      <p>Subunitare, echiunitare, supraunitare; echivalență; procente.</p>
+    </section>
+    <article class="lesson">
+<div class="box def"><h3>Notație</h3><p>\(\dfrac{a}{b}\) cu \(b\neq 0\): numărător / numitor. Subunitară \(a&lt;b\), echiunitară \(a=b\), supraunitară \(a&gt;b\). Procent: \(p\% = \dfrac{p}{100}\).</p></div><div class="formulas"><p>Echivalente: \(\dfrac{a}{b}=\dfrac{ka}{kb}\) (\(k\neq 0\)).</p><p>Comparare cu același numitor: mai mare numărătorul. Cu același numărător: mai mic numitorul.</p></div><div class="box ex"><h3>Exemple</h3><ol class="steps"><li>\(\dfrac{3}{4}\) subunitară; \(\dfrac{4}{4}=1\); \(\dfrac{5}{4}\) supraunitară.</li><li>\(\dfrac{2}{3}=\dfrac{4}{6}=\dfrac{6}{9}\).</li><li>\(25\% = \dfrac{25}{100}=\dfrac{1}{4}\).</li></ol></div><div class="fig"><div id="frac1" class="jxgbox"></div><p class="cap">Disc: 3/4 hașurat (fix).</p></div>
+    <div class="lesson-nav">
+      <a class="back" href="/school/math/clasa-5/fractii/">← Cuprins capitol</a>
+      <a href="/school/math/clasa-5/fractii/simplificare-numitor-comun/">c.m.m.d.c., c.m.m.m.c., simplificare →</a>
+    </div>
+    </article>
+  </main>
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>&copy; 2026 virusescu &bull; Școală</span>
+      <span><a href="/school/">Școală</a> &bull; <a href="/school/math/">Matematică</a> &bull; <a href="/">Site principal</a></span>
+    </div>
+  </footer>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!window.JXG) return;
+  const b=JXG.JSXGraph.initBoard('frac1',{boundingbox:[-1.5,1.5,1.5,-1.5],axis:false,showNavigation:false,showCopyright:false});
+  b.create('circle',[[0,0],1],{strokeColor:'#9fb3c8',fillColor:'#111821'});
+  for(let i=0;i<4;i++){
+    const a0=i*Math.PI/2, a1=(i+1)*Math.PI/2;
+    b.create('sector',[[0,0],[Math.cos(a0),Math.sin(a0)],[Math.cos(a1),Math.sin(a1)]],{
+      fillColor:i<3?'#00ff85':'#111821', fillOpacity:i<3?0.35:0, strokeColor:'#9fb3c8'});
+  }
+});
+</script>
+</body>
+</html>
