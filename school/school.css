@@ -75,10 +75,18 @@ a.card:hover,a.card:focus-visible{transform:translateY(-3px);border-color:var(--
 
 @media (max-width:600px){
   body{font-size:18px}
-  .hero p{font-size:19px}
+  .wrap{padding:0 14px}
+  .hero{padding:18px 0 6px}
+  .hero h1{font-size:clamp(2rem,10vw,2.6rem)}
+  .hero p{font-size:17px}
   .brand-sub{display:none}
-  .site-head .wrap{flex-wrap:nowrap}
+  .brand-title{font-size:.95rem;letter-spacing:.08em}
+  .logo-icon{width:36px;height:36px}
+  .site-head .wrap{flex-wrap:wrap;gap:10px;padding-top:10px;padding-bottom:10px}
   .home-link{font-size:13px;padding:5px 10px;white-space:nowrap}
-  .cards{grid-template-columns:1fr}
-  .card.big h3{font-size:26px}
+  .crumbs{font-size:14px;margin:14px 0 0;gap:6px;line-height:1.35}
+  .cards{grid-template-columns:1fr;gap:14px}
+  .card{padding:18px}
+  .card.big h3{font-size:24px}
+  .section-title{font-size:22px}
 }

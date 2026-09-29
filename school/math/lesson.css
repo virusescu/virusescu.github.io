@@ -101,8 +101,23 @@ a.card:hover,a.card:focus-visible{transform:translateY(-3px);border-color:var(--
 
 @media (max-width:600px){
   body{font-size:18px}
-  .hero p{font-size:18px}
+  .wrap{padding:0 14px}
+  .hero{padding:16px 0 4px}
+  .hero h1{font-size:clamp(1.55rem,7vw,2.1rem)}
+  .hero p{font-size:16px}
   .brand-sub{display:none}
-  .jxgbox{height:260px}
-  .box p,.box li{font-size:17px}
+  .brand-title{font-size:.95rem}
+  .logo-icon{width:36px;height:36px}
+  .site-head .wrap{gap:10px;padding-top:10px;padding-bottom:10px}
+  .home-link{font-size:13px;padding:5px 10px;white-space:nowrap}
+  /* Compact breadcrumbs on deep pages: keep first + last only */
+  .crumbs{font-size:13px;margin:12px 0 0;gap:4px 6px;line-height:1.35;max-width:100%}
+  .crumbs:has(> :nth-child(5)) > :not(:first-child):not(:nth-last-child(-n+2)){display:none}
+  .crumbs:has(> :nth-child(5)) > :first-child::after{content:" / …";color:var(--dim);font-weight:400}
+  .jxgbox{height:240px;max-width:100%}
+  .box{padding:12px 14px;margin:10px 0}
+  .box p,.box li{font-size:16px}
+  .formulas{overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:15px}
+  .katex{font-size:1em}
+  .lesson-nav a{font-size:15px}
 }

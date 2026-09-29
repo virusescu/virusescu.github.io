@@ -6,7 +6,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);
+body{margin:0;background:var(--bg);color:var(--text);overflow-x:hidden;
   font:20px/1.6 "Segoe UI","Noto Sans",system-ui,-apple-system,Roboto,Ubuntu,sans-serif;}
 a{color:var(--accent)} a:hover{color:#7dffc0}
 h1,h2,h3{color:var(--text)}
@@ -72,7 +72,22 @@ details.sol ol{margin:8px 0;padding-left:26px} details.sol li{margin:6px 0}
 .sources ul{padding-left:22px} .sources li{margin:8px 0;font-size:17px;word-break:break-word}
 .foot{padding:40px 20px 60px;color:var(--muted);font-size:16px;font-family:var(--mono)}
 .katex{font-size:1.08em}
-@media (max-width:600px){body{font-size:18px}h1{font-size:24px}.score{font-size:22px}.jxgbox{height:280px}}
+@media (max-width:600px){
+  body{font-size:17px}
+  .wrap{padding:0 14px}
+  h1{font-size:22px;line-height:1.25;margin:4px 0 8px}
+  .kicker{font-size:13px}
+  .crumbs{font-size:13px;gap:4px 6px;padding-top:8px;line-height:1.35}
+  .top-inner{flex-direction:column;align-items:stretch;gap:10px;padding-top:6px;padding-bottom:8px}
+  .score{font-size:20px;flex-wrap:wrap;justify-content:flex-start;padding:8px 12px}
+  .score .btn,.score button{margin-left:0;width:100%;text-align:center}
+  .nav{flex-wrap:wrap;gap:10px 16px;padding-bottom:8px;font-size:14px}
+  .jxgbox{height:240px;max-width:100%}
+  .card{padding:14px}
+  .fig .live{font-size:14px;overflow-wrap:anywhere}
+  .katex{font-size:1em}
+  input.num{max-width:100%;box-sizing:border-box}
+}
 /* Breadcrumb back to /school/ */
 .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:10px;font-family:var(--mono);font-size:15px;color:var(--muted)}
 .crumbs a{text-decoration:none;font-weight:600}
