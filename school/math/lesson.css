@@ -121,3 +121,37 @@ a.card:hover,a.card:focus-visible{transform:translateY(-3px);border-color:var(--
   .katex{font-size:1em}
   .lesson-nav a{font-size:15px}
 }
+
+/* Grade flat pages: TOC + wide lesson rows */
+.grade-page .hero{padding:22px 0 4px}
+.grade-page .hero h1{margin-bottom:6px}
+.jump{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:14px 0 8px;padding:10px 12px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;
+  font-size:15px;line-height:1.45;color:var(--dim)}
+.jump a{color:var(--accent);text-decoration:none;font-weight:600}
+.jump a:hover{text-decoration:underline}
+.subject-label{margin:36px 0 4px;font-family:var(--mono);font-size:13px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);scroll-margin-top:72px}
+.chapter{margin:28px 0 8px;scroll-margin-top:72px}
+.chapter-title{font-size:1.45rem;font-weight:800;color:#fff;margin:0 0 4px;line-height:1.25}
+.chapter-desc{color:var(--muted);font-size:16px;margin:0 0 12px;max-width:720px}
+.lesson-list{display:flex;flex-direction:column;gap:8px}
+.lesson-row{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  text-decoration:none;color:inherit;transition:border-color .2s,box-shadow .2s,transform .15s}
+.lesson-row:hover,.lesson-row:focus-visible{border-color:var(--accent-dim);box-shadow:0 10px 28px -16px rgba(0,255,133,.35);
+  transform:translateY(-1px);outline:none}
+.lesson-row-text{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.lesson-row-title{font-size:18px;font-weight:700;color:#fff;line-height:1.3}
+.lesson-row-gloss{font-size:15px;color:var(--muted);line-height:1.4}
+.lesson-row-arrow{flex-shrink:0;font-family:var(--mono);font-size:18px;color:var(--accent);font-weight:700}
+@media (max-width:600px){
+  .jump{font-size:13px;padding:8px 10px;gap:4px 8px;margin:10px 0 4px}
+  .chapter{margin:22px 0 6px}
+  .chapter-title{font-size:1.2rem}
+  .chapter-desc{font-size:14px;margin-bottom:10px}
+  .lesson-row{padding:12px 12px;gap:10px}
+  .lesson-row-title{font-size:16px}
+  .lesson-row-gloss{font-size:13px}
+  .subject-label{margin-top:28px;font-size:12px}
+}
