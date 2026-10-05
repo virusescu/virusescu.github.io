@@ -105,7 +105,7 @@ main{flex:1}
 .step h3{color:#fff;font-size:1.08rem;margin-bottom:4px}
 .step p{color:var(--muted);font-size:.95rem}
 .golden{margin:18px 0;padding:16px 18px;border-left:3px solid var(--accent);background:rgba(0,255,133,.06);
-  border-radius:0 14px 14px 0;color:var(--text)}
+  border-radius:0 14px 14px 0;color:var(--muted)}
 .golden strong{color:var(--accent)}
 
 /* ADHD breaks timeline */
@@ -194,15 +194,16 @@ main{flex:1}
   .pillar,.brand .logo-icon{transition:none}
 }
 
-/* Article prose */
-.prose{max-width:720px;margin:0 0 20px}
+/* Article prose — body copy muted; only headings stay #fff */
+.prose{max-width:720px;margin:0 0 20px;color:var(--muted)}
 .prose p{color:var(--muted);font-size:1.05rem;line-height:1.75;margin:0 0 1.05em}
 .prose p:last-child{margin-bottom:0}
-.prose strong{color:#fff;font-weight:700}
+.prose strong{color:#cbd5e1;font-weight:700}
 .prose-center{margin-left:auto;margin-right:auto;text-align:left;max-width:560px}
+.prose-inline{color:var(--muted)}
 .prose-inline p{color:var(--muted);font-size:.98rem;line-height:1.7;margin:0 0 .85em}
 .prose-inline p:last-child{margin-bottom:0}
-.prose-inline strong{color:#fff;font-weight:700}
+.prose-inline strong{color:#cbd5e1;font-weight:700}
 .subhead{color:#fff;font-size:1.25rem;font-weight:800;letter-spacing:-.01em;margin:28px 0 12px}
 .break .prose-inline,.strat .prose-inline{margin-top:4px}
 .strat{padding-bottom:20px}
