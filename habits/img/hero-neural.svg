@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" fill="none" role="img" aria-label="Abstract neural network">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#00ff85" stop-opacity=".22"/>
+      <stop offset="55%" stop-color="#0ea5e9" stop-opacity=".08"/>
+      <stop offset="100%" stop-color="#0a0d14" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="800" height="420" fill="#0a0d14"/>
+  <rect width="800" height="420" fill="url(#g)"/>
+  <!-- connections -->
+  <g stroke="#00ff85" stroke-opacity=".28" stroke-width="1.2">
+    <path d="M120 280 C220 120, 320 120, 400 210"/>
+    <path d="M220 90 C300 160, 380 100, 480 160"/>
+    <path d="M160 160 C260 220, 340 280, 460 300"/>
+    <path d="M400 210 C500 90, 580 140, 680 120"/>
+    <path d="M400 210 C480 280, 560 250, 660 310"/>
+    <path d="M280 320 C360 250, 440 340, 540 280"/>
+    <path d="M100 120 C180 200, 240 80, 320 140"/>
+    <path d="M520 80 C580 160, 640 100, 720 180"/>
+  </g>
+  <!-- nodes -->
+  <g filter="url(#glow)">
+    <circle cx="120" cy="280" r="7" fill="#00ff85"/>
+    <circle cx="220" cy="90" r="5" fill="#00ff85" fill-opacity=".85"/>
+    <circle cx="160" cy="160" r="4" fill="#94a3b8"/>
+    <circle cx="280" cy="320" r="6" fill="#00ff85" fill-opacity=".7"/>
+    <circle cx="320" cy="140" r="5" fill="#0ea5e9"/>
+    <circle cx="400" cy="210" r="11" fill="#00ff85"/>
+    <circle cx="400" cy="210" r="18" stroke="#00ff85" stroke-opacity=".35" fill="none"/>
+    <circle cx="480" cy="160" r="5" fill="#94a3b8"/>
+    <circle cx="460" cy="300" r="4" fill="#0ea5e9"/>
+    <circle cx="540" cy="280" r="6" fill="#00ff85" fill-opacity=".8"/>
+    <circle cx="580" cy="140" r="5" fill="#94a3b8"/>
+    <circle cx="660" cy="310" r="7" fill="#00ff85"/>
+    <circle cx="680" cy="120" r="5" fill="#0ea5e9"/>
+    <circle cx="720" cy="180" r="4" fill="#94a3b8"/>
+    <circle cx="100" cy="120" r="4" fill="#64748b"/>
+  </g>
+</svg>
