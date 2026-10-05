@@ -193,3 +193,19 @@ main{flex:1}
   html{scroll-behavior:auto}
   .pillar,.brand .logo-icon{transition:none}
 }
+
+/* Article prose */
+.prose{max-width:720px;margin:0 0 20px}
+.prose p{color:var(--muted);font-size:1.05rem;line-height:1.75;margin:0 0 1.05em}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:#fff;font-weight:700}
+.prose-center{margin-left:auto;margin-right:auto;text-align:left;max-width:560px}
+.prose-inline p{color:var(--muted);font-size:.98rem;line-height:1.7;margin:0 0 .85em}
+.prose-inline p:last-child{margin-bottom:0}
+.prose-inline strong{color:#fff;font-weight:700}
+.subhead{color:#fff;font-size:1.25rem;font-weight:800;letter-spacing:-.01em;margin:28px 0 12px}
+.break .prose-inline,.strat .prose-inline{margin-top:4px}
+.strat{padding-bottom:20px}
+.ro-banner{display:none;margin:18px 0 0;padding:12px 16px;border-radius:12px;border:1px solid rgba(251,191,36,.35);
+  background:rgba(251,191,36,.08);color:var(--warn);font-size:.92rem;line-height:1.5}
+.ro-banner[data-show="true"],.ro-banner:not([hidden]){display:block}

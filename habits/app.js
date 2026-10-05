@@ -1,7 +1,6 @@
 (function () {
   const I18N = window.HABITS_I18N || { en: {}, ro: {} };
 
-  /* ---------- language ---------- */
   function detectLang() {
     const params = new URLSearchParams(window.location.search);
     const q = (params.get('lang') || '').toLowerCase();
@@ -54,6 +53,17 @@
     document.querySelectorAll('.lang-btn').forEach((btn) => {
       btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === lang ? 'true' : 'false');
     });
+
+    const banner = document.getElementById('ro-banner');
+    if (banner) {
+      if (lang === 'ro') {
+        banner.hidden = false;
+        banner.setAttribute('data-show', 'true');
+      } else {
+        banner.hidden = true;
+        banner.removeAttribute('data-show');
+      }
+    }
 
     try { localStorage.setItem('habits-lang', lang); } catch (_) {}
   }
