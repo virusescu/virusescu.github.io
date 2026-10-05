@@ -54,17 +54,6 @@
       btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === lang ? 'true' : 'false');
     });
 
-    const banner = document.getElementById('ro-banner');
-    if (banner) {
-      if (lang === 'ro') {
-        banner.hidden = false;
-        banner.setAttribute('data-show', 'true');
-      } else {
-        banner.hidden = true;
-        banner.removeAttribute('data-show');
-      }
-    }
-
     try { localStorage.setItem('habits-lang', lang); } catch (_) {}
   }
 
