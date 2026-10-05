@@ -15,7 +15,7 @@ body{min-height:100vh;display:flex;flex-direction:column;background-color:var(--
 a{color:var(--accent)}
 .wrap{width:100%;max-width:980px;margin:0 auto;padding:0 22px}
 
-/* Header — not sticky */
+/* Header - not sticky */
 .site-head{border-bottom:1px solid var(--line);background:rgba(11,15,20,.85);backdrop-filter:blur(8px)}
 .site-head .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:inherit}
@@ -194,7 +194,7 @@ main{flex:1}
   .pillar,.brand .logo-icon{transition:none}
 }
 
-/* Article prose — body copy muted; only headings stay #fff */
+/* Article prose - body copy muted; only headings stay #fff */
 .prose{max-width:720px;margin:0 0 20px;color:var(--muted)}
 .prose p{color:var(--muted);font-size:1.05rem;line-height:1.75;margin:0 0 1.05em}
 .prose p:last-child{margin-bottom:0}
