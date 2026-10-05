@@ -39,7 +39,10 @@
         <p class="hero-lede" data-i18n="hero.lede">From how a typical brain automates behavior, to why ADHD breaks the habit loop — and four externalization strategies that actually work.</p>
       </div>
       <figure class="hero-visual">
-        <img src="/habits/img/hero-neural.svg" width="800" height="420" data-i18n-alt="hero.imgAlt" alt="Abstract neural network in dark neon style">
+        <picture>
+          <source type="image/webp" srcset="/habits/img/hero-neural.webp">
+          <img src="/habits/img/hero-neural.jpg" width="1600" height="840" data-i18n-alt="hero.imgAlt" alt="Side-view head of glowing neural lines; one bright green path worn in by repetition, other paths dim">
+        </picture>
       </figure>
     </section>
 
@@ -97,7 +100,10 @@
       </div>
 
       <figure class="brain-fig">
-        <img src="/habits/img/brain-regions.svg" width="640" height="360" data-i18n-alt="brain.imgAlt" alt="Stylized brain: prefrontal cortex highlighted in green, basal ganglia in blue, with a handoff arrow">
+        <picture>
+          <source type="image/webp" srcset="/habits/img/brain-handoff.webp">
+          <img src="/habits/img/brain-handoff.jpg" width="1280" height="720" data-i18n-alt="brain.imgAlt" alt="Side-view brain: prefrontal cortex glowing green, basal ganglia glowing cyan, dashed arrow showing the handoff">
+        </picture>
         <figcaption class="brain-caption">
           <span data-i18n-html="brain.cap1"><strong>Green</strong> — Prefrontal cortex (deliberate effort)</span>
           <span data-i18n-html="brain.cap2"><strong>Blue</strong> — Basal ganglia (automation)</span>
@@ -107,49 +113,26 @@
       <div class="loop-wrap" id="habit-loop">
         <h3 data-i18n="loop.title">The Habit Loop</h3>
         <p class="sub" data-i18n="loop.sub">A cyclical feedback circuit: Cue → Routine → Reward</p>
-        <div class="habit-loop" aria-hidden="true">
-          <svg viewBox="0 0 340 340" id="loop-svg">
-            <defs>
-              <linearGradient id="loopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#00ff85"/>
-                <stop offset="50%" stop-color="#0ea5e9"/>
-                <stop offset="100%" stop-color="#00ff85"/>
-              </linearGradient>
-            </defs>
-            <circle cx="170" cy="170" r="118" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
-            <circle class="flow" cx="170" cy="170" r="118" fill="none" stroke="url(#loopGrad)" stroke-width="10"
-              stroke-linecap="round" stroke-dasharray="80 660" transform="rotate(-90 170 170)"/>
-          </svg>
-          <div class="loop-node cue">
-            <div class="dot">CUE</div>
-            <span data-i18n="loop.cue">Cue</span>
-            <small data-i18n="loop.cueSmall">Trigger</small>
-          </div>
-          <div class="loop-node routine">
-            <div class="dot">RTN</div>
-            <span data-i18n="loop.routine">Routine</span>
-            <small data-i18n="loop.routineSmall">Execution</small>
-          </div>
-          <div class="loop-node reward">
-            <div class="dot">RWD</div>
-            <span data-i18n="loop.reward">Reward</span>
-            <small data-i18n="loop.rewardSmall">Feedback</small>
-          </div>
-        </div>
-        <p class="loop-hint" data-i18n="loop.hint">Click a node below to focus that part of the circuit.</p>
+        <figure class="loop-fig">
+          <picture>
+            <source type="image/webp" srcset="/habits/img/habit-loop.webp">
+            <img src="/habits/img/habit-loop.jpg" width="1024" height="1024" data-i18n-alt="loop.imgAlt" alt="Circular habit loop: bell (cue), phone hand (routine), and star burst (reward) connected by green arrows">
+          </picture>
+          <figcaption class="loop-caption" data-i18n-html="loop.caption"><strong>Cue</strong> (trigger) → <strong>Routine</strong> (execution) → <strong>Reward</strong> (feedback)</figcaption>
+        </figure>
       </div>
 
       <h3 style="color:#fff;font-size:1.2rem;margin:8px 0 12px" data-i18n="circuit.title">The Three-Part Feedback Circuit</h3>
       <div class="circuit" id="circuit">
-        <article class="item" data-node="cue" tabindex="0" role="button" aria-pressed="false">
+        <article class="item">
           <strong data-i18n="circuit.cueTitle">The Cue (Trigger)</strong>
           <p data-i18n="circuit.cueBody">A specific signal that instructs the brain to enter automatic mode — location, time, emotion, people, or a preceding action.</p>
         </article>
-        <article class="item" data-node="routine" tabindex="0" role="button" aria-pressed="false">
+        <article class="item">
           <strong data-i18n="circuit.rtnTitle">The Routine (Execution)</strong>
           <p data-i18n="circuit.rtnBody">The physical, mental, or emotional sequence executed by the basal ganglia.</p>
         </article>
-        <article class="item" data-node="reward" tabindex="0" role="button" aria-pressed="false">
+        <article class="item">
           <strong data-i18n="circuit.rwdTitle">The Reward (Feedback)</strong>
           <p data-i18n="circuit.rwdBody">The neurochemical payoff that tells the brain whether this loop is useful enough to store.</p>
         </article>
@@ -217,28 +200,16 @@
         </article>
       </div>
 
-      <div class="rpe" data-i18n-aria="rpe.aria" aria-label="Reward prediction error comparison">
-        <div class="rpe-card">
-          <h4 data-i18n="rpe.ntTitle">Neurotypical — dopamine shifts to the cue</h4>
-          <div class="bars">
-            <div class="bar-col"><div class="bar" style="height:28%"></div><label data-i18n-html="rpe.ntL1">Early<br>cue</label></div>
-            <div class="bar-col"><div class="bar" style="height:55%"></div><label data-i18n-html="rpe.ntL2">Early<br>reward</label></div>
-            <div class="bar-col"><div class="bar sky" style="height:78%"></div><label data-i18n-html="rpe.ntL3">Later<br>cue</label></div>
-            <div class="bar-col"><div class="bar low" style="height:22%"></div><label data-i18n-html="rpe.ntL4">Later<br>reward</label></div>
-          </div>
-          <p class="rpe-note" data-i18n="rpe.ntNote">Motivation shows up at the trigger — the habit starts itself.</p>
-        </div>
-        <div class="rpe-card">
-          <h4 data-i18n="rpe.adTitle">ADHD — anticipation never locks in</h4>
-          <div class="bars">
-            <div class="bar-col"><div class="bar low" style="height:18%"></div><label data-i18n-html="rpe.adL1">Cue</label></div>
-            <div class="bar-col"><div class="bar" style="height:42%"></div><label data-i18n-html="rpe.adL2">Weak<br>reward</label></div>
-            <div class="bar-col"><div class="bar low" style="height:16%"></div><label data-i18n-html="rpe.adL3">Next<br>cue</label></div>
-            <div class="bar-col"><div class="bar low" style="height:38%"></div><label data-i18n-html="rpe.adL4">Still<br>weak</label></div>
-          </div>
-          <p class="rpe-note" data-i18n="rpe.adNote">No anticipatory spike at the cue → no intrinsic start signal.</p>
-        </div>
-      </div>
+      <figure class="rpe-fig" data-i18n-aria="rpe.aria" aria-label="Reward prediction error comparison">
+        <picture>
+          <source type="image/webp" srcset="/habits/img/dopamine-compare.webp">
+          <img src="/habits/img/dopamine-compare.jpg" width="1400" height="787" data-i18n-alt="rpe.imgAlt" alt="Split view: neurotypical desk silhouette with a tall steady green dopamine wave versus ADHD with a short flickering wave and a side distraction">
+        </picture>
+        <figcaption class="rpe-caption">
+          <span data-i18n="rpe.ntNote">Motivation shows up at the trigger — the habit starts itself.</span>
+          <span data-i18n="rpe.adNote">No anticipatory spike at the cue → no intrinsic start signal.</span>
+        </figcaption>
+      </figure>
 
       <aside class="exception">
         <h3 data-i18n="ex.title">Exception: The Hyperfocus Loop</h3>
