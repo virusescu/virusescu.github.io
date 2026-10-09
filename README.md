@@ -12,7 +12,7 @@ Welcome to the digital corner of **virusescu**!
 
 By day: engineering complex systems, optimizing gameplay pipelines, and bringing the virtual pitch to life for millions of football fans worldwide on the EA Sports FC Dev team. 
 
-By night: crafting lightweight, minimalist web experiments and pushing pixels with precision.
+By night: letting AI craft random stuff
 
 ---
 
@@ -28,9 +28,7 @@ Built with pure, artisanal web fundamentals:
 
 ## ☕ Programmer Joke of the Day
 
-> **Q:** Why do game developers and software engineers prefer dark mode?  
-> **A:** Because light attracts bugs — and we already have enough physics glitches to deal with before the next title update! ⚽🐛
-
----
-
-&copy; 2026 virusescu &bull; EA Sports FC Dev
+> There are 10 types of people in the world.
+> The ones that undersand binary, the ones that don't understand binary.
+> ....
+> AND the ones that didn't expect a base 3 joke.
