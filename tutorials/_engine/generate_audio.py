@@ -68,17 +68,19 @@ def extract_presentation_data(slides_js_path):
 def get_audio_items(presentation_data):
     """
     Collects main slide narrations and primary interactive card soundbites.
+    Supports optional 'narrationTts' for custom phonetic respellings without affecting UI text.
     """
     items = []
     slides = presentation_data.get("slides", [])
 
     for slide in slides:
         s_id = slide["id"]
-        # 1. Main slide track
+        # 1. Main slide track (prefers narrationTts over narration if provided)
+        slide_text = slide.get("narrationTts") or slide.get("narration", "")
         items.append({
             "id": s_id,
             "audio": slide["audio"],
-            "text": slide.get("narration", "").strip()
+            "text": slide_text.strip()
         })
 
         # 2. Main interactive cards ONLY (hero cards, concept cards, mockup callouts, mission steps)
@@ -87,35 +89,38 @@ def get_audio_items(presentation_data):
 
         if stype == "hero" and "highlights" in content:
             for idx, h in enumerate(content["highlights"]):
+                card_text = h.get("tts") or f"{h.get('title', '')}. {h.get('text', '')}"
                 items.append({
                     "id": f"{s_id}-card-{idx+1}",
                     "audio": f"audio/{s_id}-card-{idx+1}.mp3",
-                    "text": f"{h.get('title', '')}. {h.get('text', '')}".strip()
+                    "text": card_text.strip()
                 })
 
         elif stype == "cards" and "cards" in content:
             for idx, c in enumerate(content["cards"]):
+                card_text = c.get("tts") or f"{c.get('title', '')}. {c.get('text', '')}"
                 items.append({
                     "id": f"{s_id}-card-{idx+1}",
                     "audio": f"audio/{s_id}-card-{idx+1}.mp3",
-                    "text": f"{c.get('title', '')}. {c.get('text', '')}".strip()
+                    "text": card_text.strip()
                 })
 
         elif stype == "mockup" and "callouts" in content:
             for idx, cl in enumerate(content["callouts"]):
+                card_text = cl.get("tts") or f"{cl.get('title', '')}. {cl.get('text', '')}"
                 items.append({
                     "id": f"{s_id}-card-{idx+1}",
                     "audio": f"audio/{s_id}-card-{idx+1}.mp3",
-                    "text": f"{cl.get('title', '')}. {cl.get('text', '')}".strip()
+                    "text": card_text.strip()
                 })
 
         elif stype == "mission" and "steps" in content:
             for idx, st in enumerate(content["steps"]):
-                # Omit leading numbers like '01'
+                card_text = st.get("tts") or f"{st.get('title', '')}. {st.get('text', '')}"
                 items.append({
                     "id": f"{s_id}-step-{idx+1}",
                     "audio": f"audio/{s_id}-step-{idx+1}.mp3",
-                    "text": f"{st.get('title', '')}. {st.get('text', '')}".strip()
+                    "text": card_text.strip()
                 })
 
     return items

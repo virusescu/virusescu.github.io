@@ -274,9 +274,24 @@ Used as the final slide of a course. Never put quizzes inside the presentation; 
    - Downloaded models (`*.onnx`, `*.bin`) are strictly excluded from git tracking via `.gitignore`.
 3. **Voice & Tone:** Enthusiastic, clear, warm mentor addressing family/learners (including a 12-year-old). Use relatable analogies (*The Chef vs The Recipe*, *Clothes of Letters*, *Smart Labels*).
 4. **Length per Slide:** Keep `narration` between **30 and 55 words** (~15–25 seconds of spoken audio).
-5. **TTS Prosody Formatting:**
+5. **TTS Prosody & Phonetic Respelling:**
    - Use commas, exclamation marks, and ellipses (`...`) to create natural breathing pauses.
    - When writing Romanian, always use proper diacritics (`ă, â, î, ș, ț`).
+   - **Phonetic overrides for brand names and acronyms:**
+     TTS engines often butcher brand names, English loanwords, or Romanian acronyms (e.g. pronouncing *Agricover* as "agri-co-ver" instead of "Agri Covăr", *APIA* as individual letters, or *Crop360* as English words).
+     Use optional `narrationTts` on slides and `tts` on card items:
+     - `narration`: Displayed visually to the user on the slide.
+     - `narrationTts`: Read exclusively by the TTS engine (e.g. `"Bine ați venit la Agri Covăr!"`).
+     - `tts`: Read by the TTS engine for cards/callouts/steps (e.g. `tts: "Distribuție Agri Biznis..."`).
+     Common phonetic fakes:
+     - `Agricover` → `Agri Covăr`
+     - `AgriFinance` → `Agri Fainans`
+     - `AgriBusiness` → `Agri Biznis`
+     - `Technology` → `Tehnologii`
+     - `APIA` → `apia` (reads as a single word instead of spelling A-P-I-A)
+     - `IFN` → `I F N` (spaces ensure each letter is pronounced distinctly)
+     - `NDVI` → `N D V I`
+     - `Crop360` → `Crop trei sute șaizeci`
 
 ---
 

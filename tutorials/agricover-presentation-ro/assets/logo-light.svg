@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 40">
+  <!-- Stylized Agricover wordmark, light variant for dark-green backgrounds -->
+  <text x="0" y="28" font-family="'IBM Plex Sans', 'Segoe UI', Arial, Helvetica, sans-serif" font-weight="700" font-size="22" letter-spacing="1.2" fill="#FFFFFF">AGRICOVER</text>
+  <g fill="#97D700">
+    <polygon points="148,9 174,5 184,10 158,14"/>
+    <polygon points="160,16 186,12 196,17 170,21"/>
+    <polygon points="172,23 198,19 206,24 180,28"/>
+  </g>
+</svg>
