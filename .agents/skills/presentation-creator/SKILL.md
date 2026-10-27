@@ -17,7 +17,7 @@ This skill defines the exact architecture, data schema, visual rules, and local 
 | :--- | :--- |
 | [`references/engine-dom.md`](references/engine-dom.md) | Before writing **any** CSS: the real DOM/class map, tokens, and the engine's hardcoded dark-mode values |
 | [`templates/theme-light.css`](templates/theme-light.css) | Starting point for light, corporate or brand-guideline themes (copy it to `tutorials/<slug>/theme.css`) |
-| [`scripts/screenshot-slides.ps1`](scripts/screenshot-slides.ps1) | Rendering every slide to PNG for mandatory visual QA |
+| [`scripts/screenshot-slides.ps1`](scripts/screenshot-slides.ps1) | Optional: renders every slide to PNG for visual inspection when requested or when diagnosing layout issues |
 
 ---
 
@@ -97,24 +97,27 @@ Token-only override for dark decks:
 Populate `window.PRESENTATION_DATA` using the schema and slide type taxonomy in **Section 3**.
 
 ### Step 5: Generate Voice-Over Audio
-Run the local TTS generator from the repository root:
-```bash
-python tutorials/_engine/generate_audio.py --course <slug>
-```
-- Uses local **Kokoro-82M** with voice `am_michael` by default (100% offline, natural studio cadence).
-- To setup models on a new machine: run `tutorials/_engine/setup_voices.bat`.
-- Fallback: Edge-TTS via `--engine edge --voice ro-RO-EmilNeural` for Romanian or alternative neural voices.
+Run the audio generator from the repository root:
+
+* **For Romanian (`ro`):** ALWAYS use Edge-TTS with `ro-RO-EmilNeural` (Kokoro does NOT support Romanian phonetics and outputs unintelligible phonemes):
+  ```bash
+  python tutorials/_engine/generate_audio.py --course <slug> --engine edge --voice ro-RO-EmilNeural
+  ```
+* **For English (`en`):** Use local **Kokoro-82M** with voice `am_michael` (100% offline, studio cadence):
+  ```bash
+  python tutorials/_engine/generate_audio.py --course <slug> --engine kokoro --voice am_michael
+  ```
 - Verify that every slide's `audio/slide-XX.mp3` exists and is non-empty.
 
 ### Step 6: Register Course in `tutorials/index.html`
 Add a glassmorphic course card inside the `.courses-grid` container in `tutorials/index.html` with title, subtitle, slide count badge, estimated duration, and link to `./<slug>/index.html`.
 
-### Step 7: Visual QA (mandatory)
-Render every slide and **look at each PNG** before reporting completion:
+### Step 7: Visual QA (Optional / On-Demand)
+*Only execute this step if the user requests visual evaluation or complains about the layout/styling*:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .agents/skills/presentation-creator/scripts/screenshot-slides.ps1 -Course <slug>
 ```
-PNGs go to `tutorials/<slug>/.screenshots/` (pass `-OutDir` to write them somewhere else, e.g. the scratch folder). Check contrast, empty stretched cards, overlap with the HUD and logo, and missing icons. Fix the problems and render again.
+PNGs are saved to `tutorials/<slug>/.screenshots/`. Inspect each slide for contrast, alignment, and spacing against the design tokens, and fix any styling issues.
 
 ---
 
@@ -263,9 +266,9 @@ Used as the final slide of a course. Never put quizzes inside the presentation; 
 
 ## 4. Voice-Over Strategy & Pedagogy Guidelines
 
-1. **Target Language Vision:**
-   - **Romanian (`ro`):** The primary pedagogical target for courses aimed at Romanian learners/family. Synthesized via `edge-tts` (`ro-RO-EmilNeural` / `ro-RO-AlinaNeural`) or future high-grade Romanian neural engines.
-   - **English (`en`):** Used when 100% offline local GPU/CPU execution with studio-grade natural human cadence is desired, utilizing **Kokoro-82M** (default voice: `am_michael`).
+1. **Target Language Engine Selection (Strict Rule):**
+   - **Romanian (`ro`):** **MANDATORY**: Always synthesize via Edge-TTS using `ro-RO-EmilNeural` (`--engine edge --voice ro-RO-EmilNeural`). **NEVER use Kokoro for Romanian text**, as Kokoro lacks Romanian G2P (grapheme-to-phoneme) models and outputs garbled gibberish ("Sims language").
+   - **English (`en`):** Default to local **Kokoro-82M** with voice `am_michael` (`--engine kokoro --voice am_michael`) for 100% offline studio-grade narration.
 2. **Setup Script & Local Weights:**
    - New environments run `tutorials/_engine/setup_voices.bat` to install `kokoro-onnx`, `soundfile`, `edge-tts`, and download weights into `tutorials/_engine/models/`.
    - Downloaded models (`*.onnx`, `*.bin`) are strictly excluded from git tracking via `.gitignore`.
@@ -352,7 +355,7 @@ When the user supplies a brand guide or template screenshots:
 - [ ] Every slide in `slides.js` has a corresponding `tutorials/<slug>/audio/slide-XX.mp3` file (> 5 KB).
 - [ ] Every `theme.css` selector exists in `references/engine-dom.md` (or is a course-prefixed mockup class).
 - [ ] `slides.js` `theme` values match the `theme.css` accent and badge tokens.
-- [ ] `scripts/screenshot-slides.ps1` was run, and each PNG was inspected for contrast, empty space and overlap with the HUD or logo.
+- [ ] If user reported styling or visual complaints, `scripts/screenshot-slides.ps1` was executed and screenshots reviewed.
 - [ ] Opening `tutorials/<slug>/index.html` renders all slides at 16:9 without scrollbars.
 - [ ] `tutorials/index.html` includes a card linking to `./<slug>/index.html`.
 - [ ] Root `index.html` remains untouched (zero public links to `tutorials/`).

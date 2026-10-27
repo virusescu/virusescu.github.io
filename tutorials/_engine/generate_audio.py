@@ -19,6 +19,13 @@ import re
 import subprocess
 import sys
 
+# Ensure UTF-8 output even on Windows command prompt
+if sys.stdout.encoding.lower() != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 ENGINE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(ENGINE_DIR, "models")
 TUTORIALS_DIR = os.path.dirname(ENGINE_DIR)
