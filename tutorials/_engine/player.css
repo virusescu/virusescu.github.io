@@ -1,0 +1,1024 @@
+/* ==========================================================================
+   virusescu.github.io — Shared Presentation & Tutorial Engine Styles
+   Matches site's dark EA FC aesthetic (#0a0d14, #00ff85) with custom themes
+   ========================================================================== */
+
+:root {
+  /* Base Site Design Tokens */
+  --bg-primary: #0a0d14;
+  --bg-card: rgba(18, 24, 38, 0.75);
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --accent-green: #00ff85;
+  --accent-glow: rgba(0, 255, 133, 0.25);
+  --accent-cyan: #0ea5e9;
+  --accent-red: #f43f5e;
+  --accent-red-glow: rgba(244, 63, 94, 0.25);
+  --text-main: #f3f4f6;
+  --text-muted: #94a3b8;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+
+  /* Course-Level Theme Overrides (Defaults) */
+  --theme-accent: var(--accent-green);
+  --theme-accent-glow: var(--accent-glow);
+  --theme-badge: var(--accent-green);
+
+  /* Runtime Scaler Token */
+  --stage-scale: 1;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  caret-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/* ==========================================================================
+   16:9 Viewport & Centered Stage
+   ========================================================================== */
+
+.deck-viewport {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 50% 15%, rgba(0, 255, 133, 0.07) 0%, transparent 55%),
+    radial-gradient(circle at 85% 85%, rgba(14, 165, 233, 0.06) 0%, transparent 45%);
+}
+
+.deck-stage {
+  position: relative;
+  width: 1600px;
+  height: 900px;
+  flex-shrink: 0;
+  transform-origin: center center;
+  transform: scale(var(--stage-scale, 1));
+  overflow: hidden;
+  border-radius: 20px;
+  background: radial-gradient(circle at 50% 0%, rgba(25, 34, 52, 0.5) 0%, rgba(10, 13, 20, 0.95) 75%);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px var(--bg-card-border);
+}
+
+/* ==========================================================================
+   Click-to-Read Interactive Elements
+   ========================================================================== */
+
+.interactive-card {
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.interactive-card::after {
+  content: "🔊";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.interactive-card:hover::after {
+  opacity: 0.75;
+  transform: scale(1);
+}
+
+/* Active speaking state */
+.interactive-card.is-speaking {
+  border-color: var(--theme-accent) !important;
+  box-shadow: 0 0 22px var(--theme-accent-glow), 0 0 0 1px var(--theme-accent) !important;
+  transform: translateY(-3px) scale(1.015);
+  animation: speakingPulse 1.6s infinite alternate ease-in-out;
+}
+
+.interactive-card.is-speaking::after {
+  opacity: 1 !important;
+  transform: scale(1.15) !important;
+  animation: speakingIcon 0.8s infinite alternate ease-in-out;
+}
+
+@keyframes speakingPulse {
+  0% { box-shadow: 0 0 12px var(--theme-accent-glow), 0 0 0 1px var(--theme-accent); }
+  100% { box-shadow: 0 0 28px var(--theme-accent), 0 0 0 2px var(--theme-accent); }
+}
+
+@keyframes speakingIcon {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.25); }
+}
+
+.deck-stage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--theme-accent), transparent);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ==========================================================================
+   Slide Base & Transition States
+   ========================================================================== */
+
+/* Keyframe Animation Library */
+@keyframes animFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes animSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(70px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-70px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes animSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(70px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes animZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes animBadgePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(-8px);
+  }
+  70% {
+    transform: scale(1.08) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 52px 72px 110px 72px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(14px) scale(0.99);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  z-index: 2;
+}
+
+/* Staggered Slide Header Entrance */
+.slide.active .slide-badge {
+  animation: animBadgePop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.25) 0.04s both;
+}
+
+.slide.active .slide-title {
+  animation: animSlideLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.slide.active .slide-subtitle {
+  animation: animSlideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+}
+
+/* ==========================================================================
+   Staggered Layout Animations
+   ========================================================================== */
+
+/* 1. Hero Highlights (Cards slide up 1 by 1) */
+.slide.active.layout-hero .hero-card:nth-child(1) {
+  animation: animSlideUp 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.24s both;
+}
+.slide.active.layout-hero .hero-card:nth-child(2) {
+  animation: animSlideUp 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.38s both;
+}
+.slide.active.layout-hero .hero-card:nth-child(3) {
+  animation: animSlideUp 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.52s both;
+}
+
+/* 2. Compare Columns (2 centered big tiles zoom in delayed from center) */
+.slide.active.layout-compare .compare-col.wrong {
+  animation: animZoomIn 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.22s both;
+}
+.slide.active.layout-compare .compare-col.right {
+  animation: animZoomIn 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.40s both;
+}
+
+/* Compare list points sliding up 1 by 1 */
+.slide.active.layout-compare .compare-point:nth-child(1) {
+  animation: animSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
+}
+.slide.active.layout-compare .compare-point:nth-child(2) {
+  animation: animSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.62s both;
+}
+.slide.active.layout-compare .compare-point:nth-child(3) {
+  animation: animSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.76s both;
+}
+.slide.active.layout-compare .compare-point:nth-child(4) {
+  animation: animSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.90s both;
+}
+
+/* 3. Concept Cards (Cards pop in with spring 1 by 1) */
+.slide.active.layout-cards .concept-card:nth-child(1) {
+  animation: animZoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) 0.22s both;
+}
+.slide.active.layout-cards .concept-card:nth-child(2) {
+  animation: animZoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) 0.38s both;
+}
+.slide.active.layout-cards .concept-card:nth-child(3) {
+  animation: animZoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) 0.54s both;
+}
+.slide.active.layout-cards .concept-card:nth-child(4) {
+  animation: animZoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) 0.70s both;
+}
+
+/* 4. Mockup Layout (Left callouts slide in from left, right window zooms from right) */
+.slide.active.layout-mockup .callout-card:nth-child(1) {
+  animation: animSlideLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+}
+.slide.active.layout-mockup .callout-card:nth-child(2) {
+  animation: animSlideLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
+}
+.slide.active.layout-mockup .callout-card:nth-child(3) {
+  animation: animSlideLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.54s both;
+}
+.slide.active.layout-mockup .mockup-display {
+  animation: animSlideRight 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0.32s both;
+}
+
+/* 5. Mission Layout (Goal bar slides down, steps slide up from 80px lower, reward fades in) */
+.slide.active.layout-mission .mission-goal-bar {
+  animation: animSlideDown 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+.slide.active.layout-mission .mission-step-card:nth-child(1) {
+  animation: animSlideUp 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.30s both;
+}
+.slide.active.layout-mission .mission-step-card:nth-child(2) {
+  animation: animSlideUp 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.46s both;
+}
+.slide.active.layout-mission .mission-step-card:nth-child(3) {
+  animation: animSlideUp 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.15) 0.62s both;
+}
+.slide.active.layout-mission .mission-reward {
+  animation: animFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.80s both;
+}
+
+/* Author Utility Animation Classes */
+.slide.active .anim-slide-up { animation: animSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.slide.active .anim-slide-down { animation: animSlideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.slide.active .anim-slide-left { animation: animSlideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.slide.active .anim-slide-right { animation: animSlideRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.slide.active .anim-zoom { animation: animZoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.15) both; }
+.slide.active .anim-fade { animation: animFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+.slide.active .delay-1 { animation-delay: 0.1s !important; }
+.slide.active .delay-2 { animation-delay: 0.2s !important; }
+.slide.active .delay-3 { animation-delay: 0.3s !important; }
+.slide.active .delay-4 { animation-delay: 0.4s !important; }
+.slide.active .delay-5 { animation-delay: 0.5s !important; }
+.slide.active .delay-6 { animation-delay: 0.6s !important; }
+.slide.active .delay-7 { animation-delay: 0.7s !important; }
+.slide.active .delay-8 { animation-delay: 0.8s !important; }
+
+
+/* Slide Header */
+.slide-header {
+  margin-bottom: 28px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slide-badge {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--theme-badge);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slide-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--theme-badge);
+  box-shadow: 0 0 8px var(--theme-badge);
+}
+
+.slide-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.15;
+}
+
+.slide-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Slide Body */
+.slide-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* ==========================================================================
+   Layout 1: HERO
+   ========================================================================== */
+
+.layout-hero .slide-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+}
+
+.hero-highlights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 10px;
+}
+
+.hero-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--theme-accent), transparent);
+  opacity: 0.7;
+}
+
+.hero-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.hero-card-icon {
+  font-size: 2.2rem;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.hero-card-text {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Layout 2: COMPARE (Așa NU vs Așa DA)
+   ========================================================================== */
+
+.layout-compare .slide-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.compare-col {
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 36px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  border: 1px solid var(--bg-card-border);
+}
+
+.compare-col.wrong {
+  border-color: rgba(244, 63, 94, 0.35);
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.05) 0%, rgba(18, 24, 38, 0.75) 60%);
+}
+
+.compare-col.wrong::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-red);
+  box-shadow: 0 0 12px var(--accent-red-glow);
+}
+
+.compare-col.right {
+  border-color: rgba(0, 255, 133, 0.35);
+  background: linear-gradient(180deg, rgba(0, 255, 133, 0.05) 0%, rgba(18, 24, 38, 0.75) 60%);
+}
+
+.compare-col.right::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--theme-accent);
+  box-shadow: 0 0 12px var(--theme-accent-glow);
+}
+
+.compare-tag {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 999px;
+}
+
+.compare-col.wrong .compare-tag {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.compare-col.right .compare-tag {
+  background: rgba(0, 255, 133, 0.15);
+  color: var(--theme-accent);
+  border: 1px solid rgba(0, 255, 133, 0.3);
+}
+
+.compare-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.compare-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.compare-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: #e2e8f0;
+}
+
+.point-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   Layout 3: CARDS (Mental Models & Concepts)
+   ========================================================================== */
+
+.layout-cards .slide-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  align-items: stretch;
+}
+
+.concept-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 18px;
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.concept-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.concept-icon {
+  font-size: 2.2rem;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.concept-tag {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--theme-accent);
+}
+
+.concept-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.concept-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Layout 4: MOCKUP (Simulated UI + Action Callouts)
+   ========================================================================== */
+
+.layout-mockup .slide-body {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.mockup-callouts {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.callout-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.callout-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(4px);
+}
+
+.callout-step {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--theme-accent);
+  color: var(--theme-accent);
+  font-weight: 800;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px var(--theme-accent-glow);
+}
+
+.callout-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.callout-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.callout-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.mockup-display {
+  width: 100%;
+  height: 100%;
+  max-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Layout 5: MISSION (Final Hands-On Challenge)
+   ========================================================================== */
+
+.layout-mission .slide-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.mission-goal-bar {
+  background: linear-gradient(90deg, rgba(0, 255, 133, 0.1), rgba(18, 24, 38, 0.8));
+  border: 1px solid rgba(0, 255, 133, 0.3);
+  border-radius: 12px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.mission-goal-icon {
+  font-size: 1.5rem;
+}
+
+.mission-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  flex: 1;
+}
+
+.mission-step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.mission-step-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 133, 0.3);
+}
+
+.mission-step-number {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--theme-accent);
+  opacity: 0.9;
+}
+
+.mission-step-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.mission-step-text {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.mission-reward {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 1.05rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   Bottom Control HUD Bar
+   ========================================================================== */
+
+.deck-hud {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 144px);
+  max-width: 1456px;
+  height: 64px;
+  background: rgba(12, 17, 28, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 20;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.hud-left, .hud-center, .hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-left {
+  min-width: 260px;
+}
+
+.hud-right {
+  min-width: 260px;
+  justify-content: flex-end;
+}
+
+/* Exit / Hub Pill */
+.btn-hud-exit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+}
+
+.btn-hud-exit:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.hud-slide-count {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  margin-left: 4px;
+}
+
+/* HUD Buttons */
+.btn-hud {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.btn-hud:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.btn-hud:active {
+  transform: scale(0.96);
+}
+
+/* Audio Timeline & Status */
+.audio-timeline-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 320px;
+}
+
+.audio-progress-bar {
+  flex: 1;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.audio-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--theme-accent);
+  box-shadow: 0 0 8px var(--theme-accent-glow);
+  transition: width 0.1s linear;
+}
+
+.audio-time-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-width: 72px;
+  text-align: right;
+}
+
+/* Nav Arrows & Pulsing Next Button */
+.btn-nav {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.btn-nav:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Pulsing Next Button when audio finishes */
+.btn-nav.btn-next.pulse-ready {
+  background: var(--theme-accent);
+  color: #05160d;
+  border-color: var(--theme-accent);
+  animation: nextPulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes nextPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--theme-accent-glow), 0 0 15px var(--theme-accent-glow);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 10px transparent, 0 0 26px var(--theme-accent);
+    transform: scale(1.04);
+  }
+}
+
+/* Floating Autoplay / Voice Pill */
+.voice-prompt-pill {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(18, 24, 38, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--theme-accent);
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 30;
+  cursor: pointer;
+  animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}

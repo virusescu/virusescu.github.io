@@ -1,0 +1,284 @@
+/* ==========================================================================
+   Microsoft Word Crash Course — Theme Overrides & UI Mockups
+   ========================================================================== */
+
+:root {
+  /* Microsoft Word Brand Identity */
+  --theme-accent: #185abd;
+  --theme-accent-glow: rgba(24, 90, 189, 0.4);
+  --theme-badge: #38bdf8;
+}
+
+/* ==========================================================================
+   Word Simulated Window Chrome & Ribbon
+   ========================================================================== */
+
+.word-window {
+  width: 100%;
+  max-width: 680px;
+  background: #111827;
+  border: 1px solid rgba(24, 90, 189, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(24, 90, 189, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.word-titlebar {
+  background: #185abd;
+  color: #ffffff;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.word-titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.word-icon-badge {
+  background: #ffffff;
+  color: #185abd;
+  font-weight: 900;
+  font-size: 0.75rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.word-window-controls {
+  display: flex;
+  gap: 8px;
+  opacity: 0.8;
+  font-size: 0.75rem;
+}
+
+/* Ribbon Tabs */
+.word-ribbon-tabs {
+  background: #1f2937;
+  padding: 4px 12px 0 12px;
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ribbon-tab {
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  border-radius: 6px 6px 0 0;
+  cursor: default;
+}
+
+.ribbon-tab.active {
+  background: #111827;
+  color: #ffffff;
+  border-top: 2px solid #38bdf8;
+}
+
+/* Ribbon Command Bar */
+.word-ribbon-bar {
+  background: #111827;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ribbon-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.ribbon-group:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -9px;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Style Gallery Pills inside Ribbon */
+.style-gallery {
+  display: flex;
+  gap: 8px;
+}
+
+.style-pill {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 68px;
+  cursor: default;
+  transition: all 0.2s ease;
+}
+
+.style-pill .preview {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.style-pill .label {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.style-pill.highlight {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+.style-pill.highlight .preview {
+  color: #38bdf8;
+  font-weight: 800;
+}
+
+/* Word Document Sheet Preview */
+.word-canvas-area {
+  background: #0f172a;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.word-page {
+  width: 100%;
+  max-width: 440px;
+  min-height: 250px;
+  background: #ffffff;
+  color: #1e293b;
+  border-radius: 6px;
+  padding: 24px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: Calibri, Aptos, "Segoe UI", sans-serif;
+}
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #185abd;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 4px;
+}
+
+.page-section {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-top: 4px;
+}
+
+.page-p {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: #475569;
+}
+
+/* Table of Contents Dotted Leader Preview */
+.toc-preview {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toc-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #1e293b;
+}
+
+.toc-item-title {
+  font-weight: 700;
+  color: #185abd;
+}
+
+.toc-leader {
+  flex: 1;
+  border-bottom: 1px dotted #94a3b8;
+  margin: 0 8px;
+}
+
+.toc-page-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #64748b;
+}
+
+/* Font Comparison Specimens */
+.font-specimen-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.font-card {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.font-card.good {
+  border-left: 4px solid #10b981;
+}
+
+.font-card.bad {
+  border-left: 4px solid #f43f5e;
+}
+
+.font-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.font-card.good .font-tag { color: #059669; }
+.font-card.bad .font-tag { color: #e11d48; }
+
+.font-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.font-sample {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: #334155;
+}

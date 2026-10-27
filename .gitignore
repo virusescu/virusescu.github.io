@@ -1,0 +1,23 @@
+# TTS model binaries and downloaded neural weights (Kokoro, Piper, etc.)
+tutorials/_engine/models/
+*.onnx
+*.onnx.json
+*.bin
+*.pt
+*.pth
+
+# Temporary test audio
+tutorials/_test_audio/
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.pytest_cache/
+
+# OS metadata
+Thumbs.db
+.DS_Store

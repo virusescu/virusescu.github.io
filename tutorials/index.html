@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tutorials & Presentations | virusescu</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      justify-content: flex-start;
+      gap: 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .tutorials-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      background: rgba(0, 255, 133, 0.1);
+      border: 1px solid rgba(0, 255, 133, 0.3);
+      border-radius: 999px;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .tutorials-hero {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .tutorials-tag {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent-green);
+    }
+    .tutorials-hero h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .tutorials-hero p {
+      max-width: 650px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+    .courses-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .course-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 18px;
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .course-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--card-accent, var(--accent-green)), transparent);
+      opacity: 0.8;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px var(--card-glow, var(--accent-glow));
+    }
+    .course-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .course-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .course-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .course-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .course-badge.highlight {
+      background: rgba(0, 255, 133, 0.12);
+      border-color: rgba(0, 255, 133, 0.3);
+      color: var(--accent-green);
+    }
+    .course-badge.blue {
+      background: rgba(24, 90, 189, 0.2);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+    }
+    .course-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+    .course-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      flex: 1;
+    }
+    .course-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .course-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #94a3b8;
+    }
+    .course-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--card-accent, var(--accent-green));
+    }
+    .course-action-arrow {
+      font-size: 1.2rem;
+      transition: transform 0.2s ease;
+    }
+    .course-card:hover .course-action-arrow {
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="./index.html" class="brand">
+      <div class="logo-icon">
+        <svg viewBox="0 0 40 40" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="20,34 6,9 34,9" fill="rgba(0, 255, 133, 0.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/>
+          <polyline points="13,15 20,27 27,15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">virusescu</span>
+        <span class="brand-subtitle">Tutorials & Presentations</span>
+      </div>
+    </a>
+
+    <div class="tutorials-badge">
+      <span class="badge-dot"></span>
+      <span>Private Tutorials Hub</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main>
+    <div class="tutorials-hero">
+      <p class="tutorials-tag">Private Knowledge Base</p>
+      <h1>Interactive Slide Decks</h1>
+      <p>Data-driven 16:9 presentation tutorials powered by Vanilla Web tech, full keyboard controls, and local neural voice narration.</p>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="courses-grid">
+
+      <!-- Course 1: Microsoft Word Crash Course -->
+      <a href="./word-crash-course/index.html" class="course-card" style="--card-accent: #185abd; --card-glow: rgba(24, 90, 189, 0.35);">
+        <div class="course-card-top">
+          <div class="course-icon-box" style="color: #38bdf8;">📄</div>
+          <div class="course-badges">
+            <span class="course-badge blue">9 Slides</span>
+            <span class="course-badge highlight">Voice-Over</span>
+          </div>
+        </div>
+        <h2 class="course-title">Crash Course: Microsoft Word</h2>
+        <p class="course-desc">
+          Master document superpowers: Chef vs Recipe model, Designer Templates & Themes, why manual formatting fails, smart Heading styles, and automatic tables of contents.
+        </p>
+        <div class="course-tags">
+          <span class="course-tag">.docx Format</span>
+          <span class="course-tag">Templates & Themes</span>
+          <span class="course-tag">Heading 1 & 2</span>
+          <span class="course-tag">Automatic TOC</span>
+          <span class="course-tag">Tabs vs Spaces</span>
+        </div>
+        <div class="course-action" style="color: #38bdf8;">
+          <span>Start Presentation (~6 min + Mission)</span>
+          <span class="course-action-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- Course 2: Template Blueprint -->
+      <a href="./_template/index.html" class="course-card" style="--card-accent: #00ff85; --card-glow: rgba(0, 255, 133, 0.25);">
+        <div class="course-card-top">
+          <div class="course-icon-box" style="color: #00ff85;">⚡</div>
+          <div class="course-badges">
+            <span class="course-badge">3 Slides</span>
+            <span class="course-badge highlight">Blueprint</span>
+          </div>
+        </div>
+        <h2 class="course-title">Course Template Blueprint</h2>
+        <p class="course-desc">
+          Starter reference deck demonstrating all 5 layout archetypes (Hero, Compare, Cards, Mockup, Mission) and the local Kokoro audio pipeline.
+        </p>
+        <div class="course-tags">
+          <span class="course-tag">16:9 Scaler</span>
+          <span class="course-tag">HUD Controls</span>
+          <span class="course-tag">Audio Sync</span>
+        </div>
+        <div class="course-action">
+          <span>Explore Template</span>
+          <span class="course-action-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="margin-top: 3rem; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+    <span>&copy; 2026 virusescu &bull; Private Tutorials Hub</span>
+  </footer>
+
+</body>
+</html>
