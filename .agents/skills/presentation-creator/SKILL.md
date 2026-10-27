@@ -66,7 +66,14 @@ Maintain the exact stylesheet and script load order:
 ```
 
 ### Step 3: Create `tutorials/<slug>/theme.css`
-Define course-specific accent overrides on `:root` and any custom visual mockup classes needed by `mockup` slides:
+Pick the starting point that matches the requested look, then follow **Section 6 (Theming)**:
+
+| Desired look | Start from |
+| :--- | :--- |
+| Dark stage (site default), just a different accent color | Token-only override (below). Nothing else needed. |
+| Light / white / corporate / brand-guideline deck | Copy [`templates/theme-light.css`](templates/theme-light.css) and edit its `BRAND TOKENS` block. |
+
+Token-only override for dark decks:
 ```css
 :root {
   --theme-accent: #185abd;
@@ -74,6 +81,10 @@ Define course-specific accent overrides on `:root` and any custom visual mockup 
   --theme-badge: #00ff85;
 }
 ```
+
+> [!IMPORTANT]
+> Changing tokens alone **cannot** produce a light theme. The engine hardcodes white text and dark surfaces in about 25 places.
+> Read [`references/engine-dom.md`](references/engine-dom.md) before writing any non-token override.
 
 ### Step 4: Author `tutorials/<slug>/slides.js`
 Populate `window.PRESENTATION_DATA` using the schema and slide type taxonomy in **Section 3**.
@@ -90,6 +101,13 @@ python tutorials/_engine/generate_audio.py --course <slug>
 
 ### Step 6: Register Course in `tutorials/index.html`
 Add a glassmorphic course card inside the `.courses-grid` container in `tutorials/index.html` with title, subtitle, slide count badge, estimated duration, and link to `./<slug>/index.html`.
+
+### Step 7: Visual QA (mandatory)
+Render every slide and **look at each PNG** before reporting completion:
+```powershell
+powershell -ExecutionPolicy Bypass -File .agents/skills/presentation-creator/scripts/screenshot-slides.ps1 -Course <slug>
+```
+PNGs go to `tutorials/<slug>/.screenshots/` (pass `-OutDir` to write them somewhere else, e.g. the scratch folder). Check contrast, empty stretched cards, overlap with the HUD and logo, and missing icons. Fix the problems and render again.
 
 ---
 
