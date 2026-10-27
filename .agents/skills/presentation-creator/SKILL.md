@@ -12,6 +12,13 @@ description: >-
 
 This skill defines the exact architecture, data schema, visual rules, and local TTS audio pipeline for building presentations inside `tutorials/`.
 
+**Skill resources:**
+| File | Use it when |
+| :--- | :--- |
+| [`references/engine-dom.md`](references/engine-dom.md) | Before writing **any** CSS: the real DOM/class map, tokens, and the engine's hardcoded dark-mode values |
+| [`templates/theme-light.css`](templates/theme-light.css) | Starting point for light, corporate or brand-guideline themes (copy it to `tutorials/<slug>/theme.css`) |
+| [`scripts/screenshot-slides.ps1`](scripts/screenshot-slides.ps1) | Rendering every slide to PNG for mandatory visual QA |
+
 ---
 
 ## 1. Core Architectural Rules
@@ -302,10 +309,50 @@ When a user presses `R` or clicks the HUD replay button, `player.js` forces a DO
 
 ---
 
-## 6. Validation Checklist Before Completing a Course
+## 6. Theming: Writing Correct `theme.css` Overrides
+
+`theme.css` loads **after** `player.css`, so a selector with the same specificity wins without `!important`. The work is mostly about targeting the **right selectors** and overriding **every** hardcoded color.
+
+### 6.1 Golden Rules
+1. **Only use selectors the engine actually renders.** The full DOM/class map is in [`references/engine-dom.md`](references/engine-dom.md). Never guess names like `.stage`, `.slide-category`, `.concept-card-title`, `.hud-btn` or `.compare-col-title`: they don't exist and fail silently. The real names are `.deck-stage`, `.slide-badge`, `.concept-title`, `.btn-hud`, `.compare-title`.
+2. **Tokens are only half the theme.** `--bg-card`, `--text-muted`, `--theme-accent` and the rest cover the shared surfaces. About 25 declarations hardcode `#ffffff` text, dark gradients and neon-green borders (listed in `engine-dom.md` §5). A light theme must override all of them, which [`templates/theme-light.css`](templates/theme-light.css) already does.
+3. **`slides.js` `theme` overrides `theme.css`.** `applyThemeTokens()` writes `theme.accent / accentGlow / badgeColor` as inline styles on `<html>`. Keep these equal to the CSS values, or leave them out.
+4. **Avoid `!important`.** Matching the engine's selector is enough. The one place it's needed is `.interactive-card.is-speaking`, because the engine itself uses `!important` there.
+5. **Never touch geometry tokens**: `--stage-scale` and the 1600×900 `.deck-stage` size. Keep the slide's bottom padding at 110px or more so content clears the HUD.
+6. **Contrast check per surface:** every text color must be chosen for the background it actually sits on. Light text on light cards was exactly the "barely readable" failure. Brand accents like neon green and bright orange are for titles, icons and bars, not for body text on white.
+7. **No external fonts or CDNs.** Put the brand font first in `--font-family`, followed by local fallbacks (`"Segoe UI", Arial, sans-serif`).
+
+### 6.2 Brand Template → Theme Workflow
+When the user supplies a brand guide or template screenshots:
+1. **Extract the tokens**: primary dark color, title color, 1–3 accent colors, gray surfaces, font, corner radius, and any signature motif (e.g. a tri-color strip).
+2. **Map the template's slide types to engine layouts**: cover → `hero` (dark brand background, logo top-left), "three pillars" → `cards`, rules/insight panel → the dark side of `compare` or `mission-goal-bar`, app screenshots → `mockup`.
+3. Copy `templates/theme-light.css` and fill in the `BRAND TOKENS`. Change the per-layout rules only where the template differs.
+4. **Logo and art** go in `tutorials/<slug>/assets/` (SVG preferred) and are referenced from CSS as `url("./assets/…")`, which works under `file:///`. Use `.slide::after` for the logo, with a light variant on the dark `hero` slide. Tell the user when a logo is a placeholder.
+5. Run **Step 7: Visual QA**, then iterate.
+
+### 6.3 Icons & Custom Markup
+- `icon` fields (hero/cards) and `mockupHtml` are injected as **raw HTML**, so prefer inline SVG line icons (`stroke="currentColor"`) over emojis for corporate decks. The icon circle's `color` then sets the stroke.
+- `slides.js` may wrap its content in an IIFE to define icon or mockup constants (`(function(){ const ICONS = {...}; window.PRESENTATION_DATA = {...}; })();`). `generate_audio.py` reads the file through Node `eval`, so this works as long as Node is installed. Keep `narration` and card text as plain strings.
+- Style `mockupHtml` with **course-prefixed classes** (e.g. `.c360-*`, `.word-*`) defined in that course's `theme.css`. Never use inline styles for a full mockup, and remember these classes are not part of the starter template.
+
+### 6.4 Layout Pitfalls (seen in practice)
+| Symptom | Cause | Fix |
+| :--- | :--- | :--- |
+| Huge, mostly empty cards or columns | `cards` / `compare` / `mission` stretch to fill the body | `align-items: center` on `.slide-body` + `min-height` on cards; `.mission-steps { flex: 0 0 auto }` |
+| Dark halo behind a light slide | `.deck-viewport` background-image and `.deck-stage` radial gradient | Set `background-image: none` and give the stage a plain background |
+| Thin accent line at the top of every slide | `.deck-stage::before` | `display: none`, or restyle it |
+| 🎯 / ✕ / ✓ glyphs clash with the brand | Hardcoded engine glyphs | Hide `.mission-goal-icon`; restyle `.point-icon` as filled circles |
+| Logo overlaps the title | Long title under a top-right logo | `.slide-header { max-width: ~1150px }` |
+
+---
+
+## 7. Validation Checklist Before Completing a Course
 
 - [ ] `tutorials/<slug>/index.html`, `theme.css`, and `slides.js` exist and follow the schema.
 - [ ] Every slide in `slides.js` has a corresponding `tutorials/<slug>/audio/slide-XX.mp3` file (> 5 KB).
+- [ ] Every `theme.css` selector exists in `references/engine-dom.md` (or is a course-prefixed mockup class).
+- [ ] `slides.js` `theme` values match the `theme.css` accent and badge tokens.
+- [ ] `scripts/screenshot-slides.ps1` was run, and each PNG was inspected for contrast, empty space and overlap with the HUD or logo.
 - [ ] Opening `tutorials/<slug>/index.html` renders all slides at 16:9 without scrollbars.
 - [ ] `tutorials/index.html` includes a card linking to `./<slug>/index.html`.
 - [ ] Root `index.html` remains untouched (zero public links to `tutorials/`).
