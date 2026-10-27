@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" fill="none" stroke="#97D700" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Sprout line illustration from the Agricover cover template -->
+  <path d="M112 190 V128"/>
+  <path d="M112 128 C112 86 84 62 18 58 C18 104 50 128 112 128 Z"/>
+  <path d="M62 92 L112 128"/>
+  <path d="M112 128 C112 64 150 22 226 10 C226 82 186 122 112 128 Z"/>
+  <path d="M190 46 L112 128"/>
+</svg>
