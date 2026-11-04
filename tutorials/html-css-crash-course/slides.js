@@ -4,44 +4,44 @@ window.PRESENTATION_DATA = {
   lang: "en",
   sfx: true,
   title: "Masterclass: HTML & CSS",
-  subtitle: "Full-semester guide: files, tags, forms, Google Fonts, Box Model & Flexbox",
+  subtitle: "Full-semester quest: tags, tables, Friday's test, Pixel Fonts, Glass & Flexbox",
   theme: {
-    accent: "#38bdf8",
-    accentGlow: "rgba(56, 189, 248, 0.32)",
-    badgeColor: "#00ff85"
+    accent: "#4ade80",
+    accentGlow: "rgba(74, 222, 128, 0.35)",
+    badgeColor: "#4aedef"
   },
   slides: [
     // =========================================================================
-    // MODULE 1: FILES, DOCUMENT TREE & CORE SEMESTER HTML (SLIDES 01–07)
+    // MODULE 1: FILES, TAGS, TEXT, LISTS, LINKS & TABLES (SLIDES 01–08)
     // =========================================================================
     {
       id: "slide-01",
       type: "hero",
       badge: "MODULE 1 • ARCHITECTURE",
       title: "How Real Websites Are Built",
-      subtitle: "Structure, styles, and assets working inside one folder",
+      subtitle: "Clean separation: HTML for structure, external CSS for visuals",
       audio: "audio/slide-01.mp3",
-      narration: "Welcome to the full HTML and CSS masterclass! Since you already know programming, web code will click fast. Every site keeps its files inside one project folder: HTML builds the structure, CSS paints the visual design, and Chrome renders them live.",
-      narrationTts: "Welcome to the full H T M L and C S S masterclass! Since you already know programming, web code will click fast. Every site keeps its files inside one project folder: H T M L builds the structure, C S S paints the visual design, and Chrome renders them live.",
+      narration: "Welcome to the full HTML and CSS masterclass! Since you already know programming, web code will click fast. Every site keeps its files inside one project folder: HTML builds the structure, external CSS paints the visuals, and Chrome renders them live.",
+      narrationTts: "Welcome to the full H T M L and C S S masterclass! Since you already know programming, web code will click fast. Every site keeps its files inside one project folder: H T M L builds the structure, external C S S paints the visuals, and Chrome renders them live.",
       content: {
         highlights: [
           {
-            icon: "📄",
+            icon: "🧱",
             title: "index.html (Structure)",
-            text: "Defines every element on screen: headings, cards, images, inputs, and buttons.",
-            tts: "index dot H T M L, the structure. Defines every element on screen: headings, cards, images, inputs, and buttons."
+            text: "Defines every element on screen: headings, boxes, tables, images, and inputs.",
+            tts: "index dot H T M L, the structure. Defines every element on screen: headings, boxes, tables, images, and inputs."
           },
           {
-            icon: "🎨",
+            icon: "💎",
             title: "style.css (Visual Rules)",
-            text: "Controls fonts, colors, background textures, rounded corners, and centering.",
-            tts: "style dot C S S, the visual rules. Controls fonts, colors, background textures, rounded corners, and centering."
+            text: "External stylesheet controlling fonts, colors, glass cards, textures, and layout.",
+            tts: "style dot C S S, the visual rules. An external stylesheet controlling fonts, colors, glass cards, textures, and layout."
           },
           {
-            icon: "📁",
+            icon: "⛏️",
             title: "VS Code + Chrome Workflow",
-            text: "Save both files in one folder with Ctrl+S, double-click index.html, and hit F5!",
-            tts: "V S Code plus Chrome workflow. Save both files in one folder with Control S, double click index dot H T M L, and press F five!"
+            text: "Save files in one folder with Ctrl+S, double-click index.html, and press F5!",
+            tts: "V S Code plus Chrome workflow. Save files in one folder with Control S, double click index dot H T M L, and press F five!"
           }
         ]
       }
@@ -51,10 +51,10 @@ window.PRESENTATION_DATA = {
       type: "cards",
       badge: "HTML ANATOMY",
       title: "Tags, Nodes & Attributes",
-      subtitle: "How HTML creates elements and configures their behavior",
+      subtitle: "Container pairs vs. clean self-closing <tag /> elements",
       audio: "audio/slide-02.mp3",
-      narration: "When Chrome opens your HTML file, it reads tags to build a tree of page nodes. Container tags open and close around inner content, void tags stand alone with no closing tag, and attributes pass key-value settings right inside the opening tag.",
-      narrationTts: "When Chrome opens your H T M L file, it reads tags to build a tree of page nodes. Container tags open and close around inner content, void tags stand alone with no closing tag, and attributes pass key value settings right inside the opening tag.",
+      narration: "When Chrome opens your HTML file, it reads tags to build a tree of page nodes. Container tags open and close around inner content, self-closing tags end cleanly with a slash inside one bracket pair, and attributes pass key-value settings.",
+      narrationTts: "When Chrome opens your H T M L file, it reads tags to build a tree of page nodes. Container tags open and close around inner content, self closing tags end cleanly with a forward slash inside one bracket pair, and attributes pass key value settings.",
       content: {
         cards: [
           {
@@ -66,16 +66,16 @@ window.PRESENTATION_DATA = {
           },
           {
             icon: "⚡",
-            tag: "VOID / STANDALONE TAG",
-            title: "<img>, <input>, <hr>",
-            text: "Self-contained elements that hold no inner text, so they never need </tag>.",
-            tts: "Void or standalone tags, like image, input, and H R. Self-contained elements that hold no inner text, so they never need a closing tag."
+            tag: "SELF-CLOSING TAG",
+            title: "<img /> & <input />",
+            text: "Holds no inner text, so it closes itself cleanly right at the end with />!",
+            tts: "Self closing tags, like image, input, and H R. They hold no inner text, so they close themselves cleanly right at the end with forward slash greater than!"
           },
           {
             icon: "⚙️",
             tag: "HTML ATTRIBUTE",
             title: "name=\"value\"",
-            text: "Written inside the opening tag to configure src, href, type, id, or class.",
+            text: "Written inside the tag to configure src, href, type, id, or class.",
             tts: "H T M L attribute: name equals value in quotes. Written inside the opening tag to configure source, H ref, type, I D, or class."
           }
         ]
@@ -88,12 +88,12 @@ window.PRESENTATION_DATA = {
       title: "Inside Every HTML5 File",
       subtitle: "Tap › to inspect <head> vs. <body> line by line",
       audio: "audio/slide-03.mp3",
-      narration: "Pro tip in VS Code: type an exclamation mark and press Tab to generate this skeleton instantly! Notice how the document splits into two zones: the invisible head for settings and links, and the visible body stage.",
-      narrationTts: "Pro tip in V S Code: type an exclamation mark and press Tab to generate this skeleton instantly! Notice how the document splits into two zones: the invisible head for settings and links, and the visible body stage.",
+      narration: "Pro tip in VS Code: type an exclamation mark and press Tab to generate this skeleton instantly! Notice how the document splits into two zones: the invisible head for settings and CSS links, and the visible body stage.",
+      narrationTts: "Pro tip in V S Code: type an exclamation mark and press Tab to generate this skeleton instantly! Notice how the document splits into two zones: the invisible head for settings and C S S links, and the visible body stage.",
       content: {
         language: "html",
         filename: "index.html",
-        code: "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Alex | Home</title>\n</head>\n<body>\n  <h1>Welcome!</h1>\n  <p>Built in VS Code.</p>\n</body>\n</html>",
+        code: "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Alex | World</title>\n</head>\n<body>\n  <h1>Welcome!</h1>\n  <p>Built in VS Code.</p>\n</body>\n</html>",
         steps: [
           {
             lines: "1-2",
@@ -102,7 +102,7 @@ window.PRESENTATION_DATA = {
           },
           {
             lines: "3-6",
-            note: "<head> is invisible on the page! UTF-8 enables emojis & Romanian letters.",
+            note: "<head> is invisible on the page! <meta charset=\"UTF-8\" /> enables all symbols.",
             tts: "The head section is invisible on the page! U T F eight enables emojis and special letters."
           },
           {
@@ -112,8 +112,8 @@ window.PRESENTATION_DATA = {
           },
           {
             lines: "7-10",
-            note: "<body> is the visible stage: every heading, box, image, and button goes here.",
-            tts: "The body tag is the visible stage: every heading, box, image, and button goes inside here."
+            note: "<body> is the visible stage: every heading, box, table, image, and button goes here.",
+            tts: "The body tag is the visible stage: every heading, box, table, image, and button goes inside here."
           }
         ]
       }
@@ -122,15 +122,15 @@ window.PRESENTATION_DATA = {
       id: "slide-04",
       type: "code",
       badge: "SEMESTER CORE HTML",
-      title: "Text, Lists & Hyperlinks",
-      subtitle: "Tap › to tour the core content tags taught in class",
+      title: "Text, Lists & Page Links",
+      subtitle: "Tap › to tour headings, lists, and multi-page <a> links",
       audio: "audio/slide-04.mp3",
-      narration: "Before building cards and inputs, let's lock down the essential content tags from school: headings from h1 down to h6, bold and italic inline text, divider lines, bullet lists, and clickable links that open in a new tab.",
-      narrationTts: "Before building cards and inputs, let's lock down the essential content tags from school: headings from H one down to H six, bold and italic inline text, divider lines, bullet lists, and clickable links that open in a new tab.",
+      narration: "Let's lock down the core content tags taught in class: headings from h1 to h6, bold and italic words, divider lines, bullet lists, and anchor links that jump to a second HTML file in your folder!",
+      narrationTts: "Let's lock down the core content tags taught in class: headings from H one to H six, bold and italic words, divider lines, bullet lists, and anchor links that jump to a second H T M L file in your folder!",
       content: {
         language: "html",
         filename: "index.html",
-        code: "<h1>About Me</h1>\n<p>I build <strong>games</strong>\n   and <em>websites</em>.</p>\n<hr>\n<h2>My Hobbies</h2>\n<ul>\n  <li>Coding Python & Web</li>\n  <li>Competitive Gaming</li>\n</ul>\n<a href=\"https://github.com\"\n   target=\"_blank\">My GitHub</a>",
+        code: "<h1>About Me</h1>\n<p>I build <strong>mods</strong>\n   and <em>websites</em>.</p>\n<hr />\n<ul>\n  <li>Python & Redstone</li>\n  <li>HTML & CSS</li>\n</ul>\n<a href=\"test.html\">\n  Friday's Test →\n</a>",
         steps: [
           {
             lines: "1-3",
@@ -138,38 +138,70 @@ window.PRESENTATION_DATA = {
             tts: "H one is the main title. Strong or B makes text bold, while E M or I makes text italic."
           },
           {
-            lines: "4-5",
-            note: "<hr> draws a horizontal divider line; <h2> starts a smaller section heading.",
-            tts: "H R draws a horizontal divider line, and H two starts a smaller section heading."
+            lines: "4",
+            note: "<hr /> self-closes to draw a clean horizontal divider line (<br /> breaks a line).",
+            tts: "H R self closes to draw a horizontal divider line, while B R jumps to a new line."
           },
           {
-            lines: "6-9",
+            lines: "5-8",
             note: "<ul> creates a bulleted list (<ol> numbers it), with each item inside <li>.",
             tts: "U L creates a bulleted list, while O L numbers it, with each list item wrapped inside L I."
           },
           {
-            lines: "10-11",
-            note: "<a> makes a link via href. target=\"_blank\" opens it in a fresh browser tab!",
-            tts: "The A tag makes a link using H ref, and target equals underscore blank opens it in a fresh browser tab!"
+            lines: "9-11",
+            note: "<a href=\"test.html\"> opens a second HTML page! Add target=\"_blank\" for a new tab.",
+            tts: "A H ref equals test dot H T M L opens a second page in your folder! Add target equals underscore blank for a new tab."
           }
         ]
       }
     },
     {
       id: "slide-05",
+      type: "code",
+      badge: "HTML TABLES",
+      title: "Building an HTML <table>",
+      subtitle: "Tap › to add a clean stats or worlds grid inside any box",
+      audio: "audio/slide-05.mp3",
+      narration: "School curricula love HTML tables, and they look awesome inside a profile card for showing game stats or skill ranks! Every table is built row by row using tr, with th for bold headers and td for data cells.",
+      narrationTts: "School curricula love H T M L tables, and they look awesome inside a profile card for showing game stats or skill ranks! Every table is built row by row using T R, with T H for bold headers and T D for data cells.",
+      content: {
+        language: "html",
+        filename: "index.html",
+        code: "<table>\n  <tr>\n    <th>Skill</th>\n    <th>Rank</th>\n  </tr>\n  <tr>\n    <td>Python</td>\n    <td>Diamond</td>\n  </tr>\n  <tr>\n    <td>HTML & CSS</td>\n    <td>Emerald</td>\n  </tr>\n</table>",
+        steps: [
+          {
+            lines: "1,14",
+            note: "<table> ... </table> wraps the entire grid container.",
+            tts: "The table tag pair wraps the entire grid container."
+          },
+          {
+            lines: "2-5",
+            note: "<tr> starts a Table Row, and <th> creates bold centered Table Header cells!",
+            tts: "T R starts a table row, and T H creates bold centered table header cells at the top!"
+          },
+          {
+            lines: "6-13",
+            note: "Each new <tr> adds another row, and <td> (Table Data) holds each regular cell.",
+            tts: "Each new T R adds another horizontal row, and T D, short for table data, holds each regular cell."
+          }
+        ]
+      }
+    },
+    {
+      id: "slide-06",
       type: "reveal",
       badge: "FLASHCARDS • HTML",
-      title: "Quick Tag Recall",
-      subtitle: "Guess what each tag does, then tap to flip",
-      audio: "audio/slide-05.mp3",
-      narration: "Warm up your HTML memory! Predict what each tag pair or standalone element produces on screen, then tap all four cards to check yourself.",
-      narrationTts: "Warm up your H T M L memory! Predict what each tag pair or standalone element produces on screen, then tap all four cards to check yourself.",
+      title: "Quick HTML Tag Recall",
+      subtitle: "Predict what each tag creates, then tap to flip",
+      audio: "audio/slide-06.mp3",
+      narration: "Warm up your HTML memory! Predict what each tag pair or self-closing element builds on screen, then flip all four cards.",
+      narrationTts: "Warm up your H T M L memory! Predict what each tag pair or self closing element builds on screen, then flip all four cards.",
       content: {
         cards: [
           {
-            front: "<h1> vs <h6>",
-            back: "Largest vs. smallest heading",
-            tts: "H one creates the largest main heading, while H six creates the smallest sub-heading."
+            front: "<h1> vs <title>",
+            back: "Page heading vs. browser tab",
+            tts: "H one displays a big heading on the page, while title only labels the browser tab."
           },
           {
             front: "<ul> + <li>",
@@ -177,25 +209,25 @@ window.PRESENTATION_DATA = {
             tts: "U L starts an unordered bullet list, and each L I creates one bullet point inside it."
           },
           {
-            front: "<br> vs <hr>",
-            back: "Line break vs. divider line",
-            tts: "B R jumps to a new line without a closing tag, while H R draws a horizontal divider line."
+            front: "<tr> + <td>",
+            back: "Table row + table data cell",
+            tts: "T R starts a horizontal table row, and each T D adds one data cell inside that row."
           },
           {
-            front: "<a href=\"...\">",
-            back: "Clickable link to a URL",
-            tts: "The anchor tag A with an H ref attribute creates a clickable link to another address."
+            front: "<br /> vs <hr />",
+            back: "Line break vs. divider line",
+            tts: "B R self closes to jump to a new line, while H R self closes to draw a divider line."
           }
         ]
       }
     },
     {
-      id: "slide-06",
+      id: "slide-07",
       type: "quiz",
       badge: "TRICKY CHECK • 1",
       title: "The Blank White Page Trap!",
       subtitle: "You wrote <title>Welcome</title> in <head>—why is the page blank?",
-      audio: "audio/slide-06.mp3",
+      audio: "audio/slide-07.mp3",
       narration: "Watch out, this tricks half the class on tests! You typed title Welcome inside head, saved, opened Chrome, and the page canvas is completely empty white. Why?",
       narrationTts: "Watch out, this tricks half the class on tests! You typed title Welcome inside head, saved, opened Chrome, and the page canvas is completely empty white. Why?",
       content: {
@@ -211,124 +243,239 @@ window.PRESENTATION_DATA = {
       }
     },
     {
-      id: "slide-07",
+      id: "slide-08",
       type: "input",
       badge: "CHECKPOINT • 2",
       title: "Link Destination Attribute",
-      subtitle: "Images use src—which attribute sets an <a> link's URL?",
-      audio: "audio/slide-07.mp3",
-      narration: "Tricky pair alert: images load files with S R C, while anchor links use a different four-letter attribute to set their destination URL. Type that attribute name!",
-      narrationTts: "Tricky pair alert: images load files with S R C, while anchor links use a different four letter attribute to set their destination U R L. Type that attribute name!",
+      subtitle: "<img /> uses src—which attribute sets an <a> link's target page?",
+      audio: "audio/slide-08.mp3",
+      narration: "Tricky pair alert: images load files with S R C, while anchor links use a different four-letter attribute to link to test dot html or a URL. Type that attribute name!",
+      narrationTts: "Tricky pair alert: images load files with S R C, while anchor links use a different four letter attribute to link to test dot H T M L or a U R L. Type that attribute name!",
       content: {
         placeholder: "4-letter attribute...",
         answers: ["href"],
         match: { caseSensitive: false, plural: false },
         hint: "Starts with 'h' and stands for Hypertext REFerence.",
-        explanation: "Spot on: href! Remember the pair: <img src=\"...\"> loads an image source, while <a href=\"...\"> points to a link reference.",
-        explanationTts: "Spot on: H ref! Remember the pair: image uses S R C to load an image source, while A uses H ref to point to a link reference."
+        explanation: "Spot on: href! <img src=\"me.jpg\" /> loads an image source, while <a href=\"test.html\"> jumps to another page.",
+        explanationTts: "Spot on: H ref! Image uses S R C to load an image source, while A uses H ref to jump to another page."
       }
     },
 
     // =========================================================================
-    // MODULE 2: HERO CARDS, IMAGES & FORM INPUTS (SLIDES 08–12)
+    // MODULE 2: PACKING ELEMENTS IN BOXES & FRIDAY'S TEST (SLIDES 09–16)
     // =========================================================================
     {
-      id: "slide-08",
-      type: "code",
-      badge: "MODULE 2 • HERO CARD",
-      title: "Building a Hero Profile Box",
-      subtitle: "Tap › to group your photo, name, and bio inside a <div>",
-      audio: "audio/slide-08.mp3",
-      narration: "In web design, that top showcase box with your circular photo and intro is called a Hero Card! In HTML, you build a card by wrapping an image, heading, and bio paragraph inside a div container with an ID and class.",
-      narrationTts: "In web design, that top showcase box with your circular photo and intro is called a Hero Card! In H T M L, you build a card by wrapping an image, heading, and bio paragraph inside a div container with an I D and class.",
-      content: {
-        language: "html",
-        filename: "index.html",
-        code: "<div id=\"hero\" class=\"card\">\n  <img id=\"avatar\"\n       src=\"me.jpg\"\n       alt=\"Alex portrait\">\n  <h1>Alex</h1>\n  <p>Coder • Gamer • Builder</p>\n</div>",
-        steps: [
-          {
-            lines: "1,7",
-            note: "<div> is a generic layout box. class=\"card\" shares card styles; id=\"hero\" is unique.",
-            tts: "Div is a generic layout box. Class equals card shares card styles, while I D equals hero is unique."
-          },
-          {
-            lines: "2-4",
-            note: "<img> loads me.jpg from your folder. alt describes the photo if it fails to load.",
-            tts: "The image tag loads me dot J P G from your folder, and alt describes the photo if the file is missing."
-          },
-          {
-            lines: "5-6",
-            note: "<h1> displays your name big and bold, with a clean tagline paragraph underneath.",
-            tts: "H one displays your name big and bold, with a clean tagline paragraph right underneath."
-          }
-        ]
-      }
-    },
-    {
       id: "slide-09",
-      type: "code",
-      badge: "FORM CONTROLS",
-      title: "Text, Password & Button Box",
-      subtitle: "Tap › to build the interactive VIP Login Card",
+      type: "compare",
+      badge: "MODULE 2 • BOX MECHANICS",
+      title: "Stacking Lines Inside a Box",
+      subtitle: "Why do some tags sit side-by-side while others start a new row?",
       audio: "audio/slide-09.mp3",
-      narration: "Now let's build the exact kind of interactive form box schools love testing—done cleanly! Inside a second card div, we pair labels with a text input, a masked password input, and a clickable submit button.",
-      narrationTts: "Now let's build the exact kind of interactive form box schools love testing, done cleanly! Inside a second card div, we pair labels with a text input, a masked password input, and a clickable submit button.",
+      narration: "When you pack multiple elements inside a box, HTML splits tags into two behaviors! Inline tags like inputs, labels, spans, and images sit side-by-side on the same row. Block tags like divs, paragraphs, and tables claim a full new line!",
+      narrationTts: "When you pack multiple elements inside a box, H T M L splits tags into two behaviors! Inline tags like inputs, labels, spans, and images sit side by side on the same row. Block tags like divs, paragraphs, and tables claim a full new line!",
       content: {
-        language: "html",
-        filename: "index.html",
-        code: "<div id=\"vip\" class=\"card\">\n  <h2>VIP Club Login</h2>\n  <label>Name</label>\n  <input type=\"text\"\n         placeholder=\"Your name\">\n  <label>Password</label>\n  <input type=\"password\"\n         placeholder=\"Secret\">\n  <button>Unlock VIP</button>\n</div>",
-        steps: [
-          {
-            lines: "1-2",
-            note: "Notice class=\"card\" again! Both #hero and #vip automatically share .card styles.",
-            tts: "Notice class equals card again! Both hero and V I P will automatically share all dot card styles."
-          },
-          {
-            lines: "3-5",
-            note: "<label> names the field; <input type=\"text\"> lets visitors type plain text.",
-            tts: "Label names the field above it, and input type equals text lets visitors type plain text."
-          },
-          {
-            lines: "6-8",
-            note: "type=\"password\" hides every typed character behind black security dots!",
-            tts: "Input type equals password hides every typed character behind black security dots!"
-          },
-          {
-            lines: "9",
-            note: "<button> creates a clickable button with its visible label between the tags.",
-            tts: "The button tag creates a clickable button with its visible text placed between opening and closing tags."
-          }
-        ]
+        left: {
+          tag: "⚠️ INLINE TRAP (1 ROW)",
+          title: "<input />, <span>, <img />",
+          points: [
+            "Crammed side-by-side on ONE line!",
+            "Multiple inputs squash together.",
+            "Never starts a new row by itself."
+          ]
+        },
+        right: {
+          tag: "🧱 BLOCK (NEW ROW)",
+          title: "<div>, <p>, <h1>, <table>",
+          points: [
+            "Claims the full horizontal row.",
+            "Pushes next element underneath!",
+            "Wrap each form line in a <div>!"
+          ]
+        }
       }
     },
     {
       id: "slide-10",
-      type: "quiz",
-      badge: "CHECKPOINT • 3",
-      title: "Masking Secret Passwords",
-      subtitle: "Which HTML element hides typed letters as dots?",
+      type: "code",
+      badge: "FRIDAY'S TEST • PART 1",
+      title: "Friday's Test: HTML Box",
+      subtitle: "Tap › to build the exact Name + Password box in test.html",
       audio: "audio/slide-10.mp3",
-      narration: "Quick form check! Which of these four tags is valid HTML for a password box that masks characters as you type?",
-      narrationTts: "Quick form check! Which of these four tags is valid H T M L for a password box that masks characters as you type?",
+      narration: "Let's crush Friday's school test first inside test dot html! Look how clean it is: one outer login-box div wraps everything, and each label-plus-input pair sits inside its own row div so Name and Password stack on separate lines!",
+      narrationTts: "Let's crush Friday's school test first inside test dot H T M L! Look how clean it is: one outer login box div wraps everything, and each label plus input pair sits inside its own row div so Name and Password stack on separate lines!",
       content: {
-        options: [
-          { text: "<input type=\"text\">" },
-          { text: "<input type=\"password\">", correct: true },
-          { text: "<password>" },
-          { text: "<textbox secret=\"true\">" }
-        ],
-        hint: "HTML uses one universal <input> tag and switches behavior with its type attribute.",
-        explanation: "Correct: <input type=\"password\">! Changing type from \"text\" to \"password\" tells Chrome to mask every keystroke.",
-        explanationTts: "Correct: input type equals password! Changing the type attribute from text to password tells Chrome to mask every keystroke."
+        language: "html",
+        filename: "test.html",
+        code: "<div class=\"login-box\">\n  <h2>Player Login</h2>\n  <div class=\"row\">\n    Name: <input type=\"text\" />\n  </div>\n  <div class=\"row\">\n    Pass:\n    <input type=\"password\" />\n  </div>\n  <button>Sign In</button>\n</div>\n<a href=\"index.html\">← Home</a>",
+        steps: [
+          {
+            lines: "1-2,11",
+            note: "<div class=\"login-box\"> groups the heading, both form rows, and button in one box.",
+            tts: "Div class equals login box groups the heading, both form rows, and the button inside one container."
+          },
+          {
+            lines: "3-5",
+            note: "Row 1: <div class=\"row\"> keeps 'Name:' and <input type=\"text\" /> on Line 1!",
+            tts: "Row one: div class equals row keeps Name and input type equals text side by side on line one!"
+          },
+          {
+            lines: "6-9",
+            note: "Row 2: A second <div class=\"row\"> forces 'Pass:' and <input type=\"password\" /> onto Line 2!",
+            tts: "Row two: a second row div forces Pass and input type equals password onto a clean second line!"
+          },
+          {
+            lines: "10,12",
+            note: "<button> finishes the box, and <a href=\"index.html\"> links back to your main site!",
+            tts: "Button finishes the box, and A H ref equals index dot H T M L jumps right back to your main site!"
+          }
+        ]
       }
     },
     {
       id: "slide-11",
-      type: "quiz",
-      badge: "TRICKY CHECK • 4",
-      title: "Why Did My Photo Break?",
-      subtitle: "me.jpg is inside an images/ subfolder, and <img> shows broken!",
+      type: "code",
+      badge: "FRIDAY'S TEST • PART 2",
+      title: "Friday's Test: Blue Box CSS",
+      subtitle: "Tap › to paint test.html blue using external test.css",
       audio: "audio/slide-11.mp3",
+      narration: "Now link test dot css inside head of test dot html and write these nine lines! Background-color paints the box blue, padding keeps inputs away from the edges, and margin-bottom spaces the two rows cleanly.",
+      narrationTts: "Now link test dot C S S inside head of test dot H T M L and write these nine lines! Background color paints the box blue, padding keeps inputs away from the edges, and margin bottom spaces the two rows cleanly.",
+      content: {
+        language: "css",
+        filename: "test.css",
+        code: "/* Linked in test.html <head> */\n.login-box {\n  background-color: #1d4ed8;\n  color: white;\n  width: 300px;\n  padding: 20px;\n}\n.row {\n  margin-bottom: 12px;\n}",
+        steps: [
+          {
+            lines: "2-4",
+            note: "Paints .login-box rich royal blue (#1d4ed8) with crisp white label text.",
+            tts: "Paints dot login box rich royal blue with crisp white label text."
+          },
+          {
+            lines: "5-7",
+            note: "Sets a neat 300px box width and 20px inner cushion so nothing touches the edge.",
+            tts: "Sets a neat three hundred pixel box width and twenty pixels of inner cushion so nothing touches the edge."
+          },
+          {
+            lines: "8-10",
+            note: "Adds 12px breathing room under each row—Friday's entire test aced in 9 lines!",
+            tts: "Adds twelve pixels of breathing room underneath each row. Friday's entire school test aced in nine lines!"
+          }
+        ]
+      }
+    },
+    {
+      id: "slide-12",
+      type: "code",
+      badge: "PACKING RICH CARDS",
+      title: "Hero Card with Photo & Badge",
+      subtitle: "Tap › to pack an avatar, badge, bio, and link in index.html",
+      audio: "audio/slide-12.mp3",
+      narration: "Now let's switch to index dot html and build your showcase site! Inside your Hero Card div, you can stack as many elements as you want: a selfie, an online status span, heading, bio, stats table, and link to test dot html!",
+      narrationTts: "Now let's switch to index dot H T M L and build your showcase site! Inside your Hero Card div, you can stack as many elements as you want: a selfie, an online status span, heading, bio, stats table, and link to test dot H T M L!",
+      content: {
+        language: "html",
+        filename: "index.html",
+        code: "<div id=\"hero\" class=\"card\">\n  <img id=\"avatar\"\n       src=\"me.jpg\"\n       alt=\"My portrait\" />\n  <br />\n  <span class=\"tag\">ONLINE</span>\n  <h1>Alex</h1>\n  <p>Coder • Crafter • Builder</p>\n  <a href=\"test.html\">\n    View School Test →\n  </a>\n</div>",
+        steps: [
+          {
+            lines: "1,12",
+            note: "<div> wraps everything! class=\"card\" shares styles across all cards on your page.",
+            tts: "Div wraps everything! Class equals card shares styles across every card on your page."
+          },
+          {
+            lines: "2-6",
+            note: "<img /> and <span> are inline—<br /> puts the ONLINE badge cleanly under your photo!",
+            tts: "Image and span are both inline, so a self closing B R puts the online badge cleanly underneath your photo!"
+          },
+          {
+            lines: "7-11",
+            note: "<h1> and <p> stack automatically, followed by your link to Friday's test.html!",
+            tts: "H one and P are block tags so they stack automatically, followed by your link to Friday's test dot H T M L!"
+          }
+        ]
+      }
+    },
+    {
+      id: "slide-13",
+      type: "code",
+      badge: "TEST REDEMPTION • PRO",
+      title: "Upgrading the Login Box!",
+      subtitle: "Tap › to turn Friday's blue box into a VIP Server Card",
+      audio: "audio/slide-13.mp3",
+      narration: "Now watch the glow-up! On index dot html, we take the exact same Name, Password, and Button idea from Friday's test, add helpful placeholder hints inside the inputs, and give it class card so CSS turns it into frosted glass!",
+      narrationTts: "Now watch the glow up! On index dot H T M L, we take the exact same Name, Password, and Button idea from Friday's test, add helpful placeholder hints inside the inputs, and give it class card so C S S turns it into frosted glass!",
+      content: {
+        language: "html",
+        filename: "index.html",
+        code: "<div id=\"vip\" class=\"card\">\n  <h2>Server VIP Login</h2>\n  <div class=\"row\">\n    <label>Player Name</label>\n    <input type=\"text\"\n      placeholder=\"Your name\" />\n  </div>\n  <div class=\"row\">\n    <label>Secret Pass</label>\n    <input type=\"password\"\n      placeholder=\"Secret\" />\n  </div>\n  <button>Join Server</button>\n</div>",
+        steps: [
+          {
+            lines: "1-2",
+            note: "Same class=\"card\" as #hero, plus unique id=\"vip\" for any special tweaks!",
+            tts: "Uses the same class equals card as hero, plus a unique I D equals V I P!"
+          },
+          {
+            lines: "3-7",
+            note: "placeholder=\"Your name\" shows faint hint text inside <input /> until you type!",
+            tts: "Placeholder shows faint hint text right inside the input box that disappears the instant you start typing!"
+          },
+          {
+            lines: "8-13",
+            note: "Second .row holds the masked password <input />, followed by your 3D button!",
+            tts: "The second row div holds the masked password input, followed by your clickable Join Server button!"
+          }
+        ]
+      }
+    },
+    {
+      id: "slide-14",
+      type: "quiz",
+      badge: "TRICKY CHECK • 3",
+      title: "Why Did Inputs Squash Together?",
+      subtitle: "Name <input /> Pass <input /> all landed on ONE single row!",
+      audio: "audio/slide-14.mp3",
+      narration: "School test trap! You typed Name, text input, Pass, and password input inside a box, and Chrome crammed all four side-by-side onto one horizontal line. What cleanly puts each pair on its own row?",
+      narrationTts: "School test trap! You typed Name, text input, Pass, and password input inside a box, and Chrome crammed all four side by side onto one horizontal line. What cleanly puts each pair on its own row?",
+      content: {
+        options: [
+          { text: "Wrap each row in a <div>", correct: true },
+          { text: "Put <head> between them" },
+          { text: "Set <input type=\"row\" />" },
+          { text: "Delete the /> slash" }
+        ],
+        hint: "Text and <input /> are inline—what block container claims a full horizontal row?",
+        explanation: "Exactly! <input /> is inline, so wrapping each label + input pair in a block <div> (or adding <br />) gives each line its own row.",
+        explanationTts: "Exactly! Input is inline, so wrapping each label plus input pair inside a block div, or adding B R, gives each line its own clean row."
+      }
+    },
+    {
+      id: "slide-15",
+      type: "quiz",
+      badge: "CHECKPOINT • 4",
+      title: "Masking Secret Passwords",
+      subtitle: "Which self-closing tag hides typed letters behind dots?",
+      audio: "audio/slide-15.mp3",
+      narration: "Quick form check! Which of these four tags is valid HTML for a password box that masks characters as you type?",
+      narrationTts: "Quick form check! Which of these four tags is valid H T M L for a password box that masks characters as you type?",
+      content: {
+        options: [
+          { text: "<input type=\"text\" />" },
+          { text: "<input type=\"password\" />", correct: true },
+          { text: "<password />" },
+          { text: "<textbox secret=\"true\" />" }
+        ],
+        hint: "HTML uses one universal <input /> tag and switches behavior with its type attribute.",
+        explanation: "Correct: <input type=\"password\" />! Changing type from \"text\" to \"password\" tells Chrome to mask every keystroke.",
+        explanationTts: "Correct: input type equals password! Changing the type attribute from text to password tells Chrome to mask every keystroke."
+      }
+    },
+    {
+      id: "slide-16",
+      type: "quiz",
+      badge: "TRICKY CHECK • 5",
+      title: "Why Did My Photo Break?",
+      subtitle: "me.jpg is inside an images/ subfolder, and <img /> shows broken!",
+      audio: "audio/slide-16.mp3",
       narration: "Bug hunt! Your index dot html sits in your main folder, your selfie me dot jpg sits inside an images subfolder, and img src equals me dot jpg shows a broken icon. What fixes it?",
       narrationTts: "Bug hunt! Your index dot H T M L sits in your main folder, your selfie me dot J P G sits inside an images subfolder, and image source equals me dot J P G shows a broken icon. What fixes it?",
       content: {
@@ -336,28 +483,32 @@ window.PRESENTATION_DATA = {
           { text: "src=\"images/me.jpg\"", correct: true },
           { text: "href=\"images/me.jpg\"" },
           { text: "url=\"images/me.jpg\"" },
-          { text: "Move <img> into <head>" }
+          { text: "Move <img /> into <head>" }
         ],
-        hint: "<img> uses src, and relative paths start from the folder where index.html lives.",
+        hint: "<img /> uses src, and relative paths start from the folder where index.html lives.",
         explanation: "Exact fix: src=\"images/me.jpg\"! Always include the subfolder path relative to index.html—or keep me.jpg in the same folder.",
         explanationTts: "Exact fix: source equals images slash me dot J P G! Always include the subfolder path relative to index dot H T M L, or keep the photo right in the same folder."
       }
     },
+
+    // =========================================================================
+    // MODULE 3: EXTERNAL CSS, PIXEL FONTS & SELECTORS (SLIDES 17–23)
+    // =========================================================================
     {
-      id: "slide-12",
+      id: "slide-17",
       type: "compare",
-      badge: "CRITICAL DISTINCTION",
+      badge: "MODULE 3 • SYNTAX",
       title: "Attributes vs. CSS Properties",
-      subtitle: "Don't mix up HTML tag settings with CSS visual rules",
-      audio: "audio/slide-12.mp3",
-      narration: "Beginners often mix up HTML attributes and CSS properties because both assign values. Keep this distinction sharp: HTML attributes use equals and quotes inside angle brackets, while CSS properties use colons and semicolons inside curly braces.",
-      narrationTts: "Beginners often mix up H T M L attributes and C S S properties because both assign values. Keep this distinction sharp: H T M L attributes use equals and quotes inside angle brackets, while C S S properties use colons and semicolons inside curly braces.",
+      subtitle: "Keep HTML tag settings separate from style.css visual rules",
+      audio: "audio/slide-17.mp3",
+      narration: "Beginners often mix up HTML attributes and CSS properties because both assign values. Keep this distinction sharp: HTML attributes use equals and quotes inside tags, while CSS properties use colons and semicolons inside style dot css.",
+      narrationTts: "Beginners often mix up H T M L attributes and C S S properties because both assign values. Keep this distinction sharp: H T M L attributes use equals and quotes inside tags, while C S S properties use colons and semicolons inside style dot C S S.",
       content: {
         left: {
           tag: "⚙️ HTML ATTRIBUTES",
           title: "type=\"password\"",
           points: [
-            "Lives inside HTML tag: <input ...>",
+            "Lives in HTML: <input ... />",
             "Syntax uses = and quotes.",
             "Configures src, href, type, id, class."
           ]
@@ -366,91 +517,52 @@ window.PRESENTATION_DATA = {
           tag: "🎨 CSS PROPERTIES",
           title: "border-radius: 16px;",
           points: [
-            "Lives in style.css inside { } braces.",
+            "Lives in style.css inside { }.",
             "Syntax uses : colon and ; semicolon.",
-            "Controls colors, fonts, size, spacing."
+            "Controls colors, fonts, size, layout."
           ]
         }
       }
     },
-
-    // =========================================================================
-    // MODULE 3: CONNECTING CSS, GOOGLE FONTS & SELECTORS (SLIDES 13–19)
-    // =========================================================================
     {
-      id: "slide-13",
-      type: "cards",
-      badge: "MODULE 3 • CONNECTING CSS",
-      title: "3 Ways to Attach CSS",
-      subtitle: "Schools test all three—pros use External stylesheets",
-      audio: "audio/slide-13.mp3",
-      narration: "Teachers love asking the three ways to add CSS to a page. Inline styles paint a single tag, internal style blocks live inside head for quick single-file tests, and external CSS files keep your project clean and scalable.",
-      narrationTts: "Teachers love asking the three ways to add C S S to a page. Inline styles paint a single tag, internal style blocks live inside head for quick single file tests, and external C S S files keep your project clean and scalable.",
-      content: {
-        cards: [
-          {
-            icon: "1️⃣",
-            tag: "INLINE CSS (MESSY)",
-            title: "<div style=\"color: blue;\">",
-            text: "Written on one tag. Quick test hack, painful if you have 20 elements.",
-            tts: "One: Inline C S S. Written inside a style attribute on one tag. Fine for a quick test, painful if you have twenty elements."
-          },
-          {
-            icon: "2️⃣",
-            tag: "INTERNAL CSS (BACKUP)",
-            title: "<style> ... </style>",
-            text: "Placed inside <head>. Handy backup when a test wants just one .html file!",
-            tts: "Two: Internal C S S. A style block placed inside head. Handy backup when a school test asks for just a single H T M L file!"
-          },
-          {
-            icon: "3️⃣",
-            tag: "EXTERNAL CSS (PRO)",
-            title: "<link href=\"style.css\">",
-            text: "Separate style.css file linked in <head>. Cleanest architecture!",
-            tts: "Three: External C S S. A separate style dot C S S file linked inside head. The cleanest professional architecture!"
-          }
-        ]
-      }
-    },
-    {
-      id: "slide-14",
+      id: "slide-18",
       type: "code",
       badge: "GOOGLE FONTS + CSS",
-      title: "Loading Cool Google Fonts",
-      subtitle: "Tap › to load custom fonts and style.css in <head>",
-      audio: "audio/slide-14.mp3",
-      narration: "Want your page to look like a real gaming or tech site instead of default Arial? Visit fonts dot google dot com, copy a font link like Orbitron or Poppins into head right above your style dot css link, and use its name in CSS!",
-      narrationTts: "Want your page to look like a real gaming or tech site instead of default Arial? Visit fonts dot google dot com, copy a font link like Orbitron or Poppins into head right above your style dot C S S link, and use its name in C S S!",
+      title: "Linking Pixel Fonts & CSS",
+      subtitle: "Tap › to connect Google Fonts and style.css inside <head>",
+      audio: "audio/slide-18.mp3",
+      narration: "Always keep your CSS in an external style dot css file linked inside head! Even cooler: right above it, paste a Google Fonts link for Pixelify Sans to unlock blocky Minecraft-style typography!",
+      narrationTts: "Always keep your C S S in an external style dot C S S file linked inside head! Even cooler: right above it, paste a Google Fonts link for Pixelify Sans to unlock blocky Minecraft style typography!",
       content: {
         language: "html",
         filename: "index.html",
-        code: "<head>\n  <meta charset=\"UTF-8\">\n  <title>Alex | Portfolio</title>\n  <link rel=\"stylesheet\"\nhref=\"https://fonts.googleapis.com/css2?family=Poppins\">\n  <link rel=\"stylesheet\"\n    href=\"style.css\">\n</head>",
+        code: "<head>\n  <meta charset=\"UTF-8\" />\n  <title>Alex | Craft</title>\n  <link rel=\"stylesheet\"\nhref=\"https://fonts.googleapis.com/css2?family=Pixelify+Sans\" />\n  <link rel=\"stylesheet\"\n    href=\"style.css\" />\n</head>",
         steps: [
           {
             lines: "4-5",
-            note: "First <link> fetches the 'Poppins' font family straight from Google Fonts.",
-            tts: "The first link tag fetches the Poppins font family straight from Google Fonts."
+            note: "First <link /> fetches 'Pixelify Sans' live from fonts.google.com!",
+            tts: "The first self closing link tag fetches the Pixelify Sans pixel font straight from Google Fonts!"
           },
           {
             lines: "6-7",
-            note: "Second <link> loads YOUR local style.css—spell the filename identically!",
-            tts: "The second link tag loads your local style dot C S S file. Make sure the filename spelling matches identically!"
+            note: "Second <link /> connects YOUR external style.css—match the filename spelling!",
+            tts: "The second link tag connects your local style dot C S S file. Make sure the filename spelling matches identically!"
           },
           {
-            lines: "1-8",
-            note: "rel=\"stylesheet\" is mandatory! Without rel, Chrome ignores your CSS file.",
-            tts: "R E L equals stylesheet is mandatory! If you forget rel equals stylesheet, Chrome completely ignores your C S S file."
+            lines: "4-7",
+            note: "rel=\"stylesheet\" is mandatory on every CSS <link />—without it Chrome ignores CSS!",
+            tts: "R E L equals stylesheet is mandatory on every C S S link tag. Without it, Chrome completely ignores your stylesheet!"
           }
         ]
       }
     },
     {
-      id: "slide-15",
+      id: "slide-19",
       type: "cards",
       badge: "CSS SELECTORS",
       title: "3 Flat Style Selectors",
-      subtitle: "Targeting by node name, .class, or #id (no nesting needed)",
-      audio: "audio/slide-15.mp3",
+      subtitle: "Target by node name, .class, or #id (no nesting needed)",
+      audio: "audio/slide-19.mp3",
       narration: "In style dot css, every rule starts with a selector telling Chrome which elements to paint. Without nesting selectors inside each other yet, three flat selector types handle everything: bare node names, dot-classes, and hash-IDs.",
       narrationTts: "In style dot C S S, every rule starts with a selector telling Chrome which elements to paint. Without nesting selectors inside each other yet, three flat selector types handle everything: bare node names, dot classes, and hash I Ds.",
       content: {
@@ -458,15 +570,15 @@ window.PRESENTATION_DATA = {
           {
             icon: "🏷️",
             tag: "NODE / TAG NAME",
-            title: "input { ... }",
-            text: "No symbol prefix. Styles EVERY <input> node across the whole page.",
-            tts: "Node or tag name selector: write input with no prefix symbol. It styles every input element across the whole page."
+            title: "td { ... }",
+            text: "No symbol prefix. Styles EVERY matching tag (like every <td> or <input />) on page.",
+            tts: "Node or tag name selector: write T D or input with no prefix symbol. It styles every matching tag across the page."
           },
           {
             icon: "✨",
             tag: "CLASS SELECTOR (.)",
             title: ".card { ... }",
-            text: "Dot prefix. Reusable style shared by every box with class=\"card\".",
+            text: "Dot prefix. Reusable style shared by every box wearing class=\"card\".",
             tts: "Class selector: starts with a dot, like dot card. A reusable style shared by every box wearing class equals card."
           },
           {
@@ -480,57 +592,57 @@ window.PRESENTATION_DATA = {
       }
     },
     {
-      id: "slide-16",
+      id: "slide-20",
       type: "code",
       badge: "CSS RULE ANATOMY",
       title: "Writing Clean style.css Rules",
-      subtitle: "Tap › to see Google Fonts and all 3 selectors in action",
-      audio: "audio/slide-16.mp3",
-      narration: "Let's put our Google Font and all three selector types into style dot css. Watch the punctuation carefully: curly braces wrap the block, a colon separates property from value, and every single line ends with a semicolon.",
-      narrationTts: "Let's put our Google Font and all three selector types into style dot C S S. Watch the punctuation carefully: curly braces wrap the block, a colon separates property from value, and every single line ends with a semicolon.",
+      subtitle: "Tap › to style Pixelify Sans, table cells, .card, and #vip",
+      audio: "audio/slide-20.mp3",
+      narration: "Let's put Pixelify Sans and all three selector types to work in style dot css! Notice how clean flat rules style the page font, put crisp borders around table cells, center card text, and customize the VIP border.",
+      narrationTts: "Let's put Pixelify Sans and all three selector types to work in style dot C S S! Notice how clean flat rules style the page font, put crisp borders around table cells, center card text, and customize the V I P border.",
       content: {
         language: "css",
         filename: "style.css",
-        code: "body {\n  font-family: \"Poppins\", Arial;\n  color: #f8fafc;\n}\n.card {\n  background-color: #1e293b;\n  text-align: center;\n}\n#vip {\n  background-color: #0f172a;\n}",
+        code: "body {\n  font-family: \"Pixelify Sans\",\n               \"Segoe UI\", Arial;\n  color: #f8fafc;\n}\ntd {\n  padding: 6px 12px;\n  border: 1px solid #334155;\n}\n.card { text-align: center; }\n#vip { border-color: #38bdf8; }",
         steps: [
           {
-            lines: "1-4",
-            note: "Applies Google's 'Poppins' font (with Arial fallback) and crisp white text to body.",
-            tts: "Applies Google's Poppins font, with Arial as an offline fallback, plus crisp light text on body."
+            lines: "1-5",
+            note: "Applies 'Pixelify Sans' (with Segoe UI fallback if offline!) and crisp light text.",
+            tts: "Applies Google's Pixelify Sans pixel font, with Segoe U I and Arial as offline fallbacks, plus crisp light text."
           },
           {
-            lines: "5-8",
-            note: ".card paints BOTH #hero and #vip slate-blue and centers text inside them.",
-            tts: "Dot card paints both the hero box and the V I P box slate blue, and centers text inside them."
+            lines: "6-9",
+            note: "Tag selector td gives every table cell neat spacing and an inventory-grid border!",
+            tts: "The bare tag selector T D gives every table cell neat padding and a clean inventory grid border!"
           },
           {
-            lines: "9-11",
-            note: "#vip overrides background-color on JUST the VIP card because #id beats .class!",
-            tts: "Hash V I P overrides background color on just the V I P card, because an I D selector is more specific than a class!"
+            lines: "10-11",
+            note: ".card styles ALL cards at once, while #vip overrides border-color on just one!",
+            tts: "Dot card centers text in all cards at once, while hash V I P overrides the border color on just the V I P box!"
           }
         ]
       }
     },
     {
-      id: "slide-17",
+      id: "slide-21",
       type: "reveal",
       badge: "FLASHCARDS • SELECTORS",
       title: "Selector & Syntax Drill",
       subtitle: "Think first, then tap each card to flip",
-      audio: "audio/slide-17.mp3",
+      audio: "audio/slide-21.mp3",
       narration: "Check your CSS reflexes! Predict what each selector targets—and what happens when a semicolon goes missing—then flip all four cards.",
       narrationTts: "Check your C S S reflexes! Predict what each selector targets, and what happens when a semicolon goes missing, then flip all four cards.",
       content: {
         cards: [
           {
-            front: "button",
-            back: "Every <button> tag on page",
-            tts: "A bare word with no dot or hash is a tag selector: it styles every button tag on the page."
+            front: "table",
+            back: "Every <table> tag on page",
+            tts: "A bare word with no dot or hash is a tag selector: it styles every table tag on the page."
           },
           {
-            front: ".card",
-            back: "All elements with class=\"card\"",
-            tts: "Dot card is a class selector: it targets every element that has class equals card."
+            front: ".row",
+            back: "All elements with class=\"row\"",
+            tts: "Dot row is a class selector: it targets every element wearing class equals row."
           },
           {
             front: "#hero",
@@ -546,12 +658,12 @@ window.PRESENTATION_DATA = {
       }
     },
     {
-      id: "slide-18",
+      id: "slide-22",
       type: "input",
-      badge: "CHECKPOINT • 5",
+      badge: "CHECKPOINT • 6",
       title: "Target id=\"hero\" in CSS",
       subtitle: "Type the exact selector that goes before { }",
-      audio: "audio/slide-18.mp3",
+      audio: "audio/slide-22.mp3",
       narration: "Your profile box is written as div id equals hero. Type the exact CSS selector you put in front of the curly braces to target only that hero box.",
       narrationTts: "Your profile box is written as div I D equals hero. Type the exact C S S selector you put in front of the curly braces to target only that hero box.",
       content: {
@@ -564,12 +676,12 @@ window.PRESENTATION_DATA = {
       }
     },
     {
-      id: "slide-19",
+      id: "slide-23",
       type: "quiz",
-      badge: "TRICKY CHECK • 6",
+      badge: "TRICKY CHECK • 7",
       title: "Specificity Color Battle!",
       subtitle: "<div id=\"vip\" class=\"card\">: div=gray, .card=blue, #vip=purple",
-      audio: "audio/slide-19.mp3",
+      audio: "audio/slide-23.mp3",
       narration: "Tricky brain-teaser! One box matches three CSS rules at the same time: div sets gray, dot card sets blue, and hash vip sets purple. Which background color wins on screen?",
       narrationTts: "Tricky brain teaser! One box matches three C S S rules at the same time: div sets gray, dot card sets blue, and hash V I P sets purple. Which background color wins on screen?",
       content: {
@@ -586,17 +698,17 @@ window.PRESENTATION_DATA = {
     },
 
     // =========================================================================
-    // MODULE 4: BOX MODEL, ROUNDED CORNERS & CIRCULAR PHOTO (SLIDES 20–24)
+    // MODULE 4: BOX MODEL, FROSTED GLASS & FLOATING AVATAR (SLIDES 24–28)
     // =========================================================================
     {
-      id: "slide-20",
+      id: "slide-24",
       type: "cards",
       badge: "MODULE 4 • THE BOX MODEL",
       title: "Every Element Is a 4-Layer Box",
       subtitle: "Content → Padding → Border → Margin",
-      audio: "audio/slide-20.mp3",
-      narration: "Yes, the CSS Box Model is still one hundred percent foundational! Every element has content at its core, wrapped by padding on the inside, a border wall around the edge, and margin pushing other elements away outside.",
-      narrationTts: "Yes, the C S S Box Model is still one hundred percent foundational! Every element has content at its core, wrapped by padding on the inside, a border wall around the edge, and margin pushing other elements away outside.",
+      audio: "audio/slide-24.mp3",
+      narration: "Every HTML element is a four-layer rectangular box! Your text or image sits at the center, cushioned by padding on the inside, framed by a border wall, and separated from neighbors by margin outside.",
+      narrationTts: "Every H T M L element is a four layer rectangular box! Your text or image sits at the center, cushioned by padding on the inside, framed by a border wall, and separated from neighbors by margin outside.",
       content: {
         cards: [
           {
@@ -609,93 +721,93 @@ window.PRESENTATION_DATA = {
           {
             icon: "🖼️",
             tag: "2. BORDER (THE WALL)",
-            title: "border: 2px solid #38bdf8;",
+            title: "border: 2px solid #4ade80;",
             text: "Visible frame around the box: line thickness, style (solid/dashed), and color.",
-            tts: "Border: two pixels solid blue. The visible frame around the box: thickness, line style, and color."
+            tts: "Border: two pixels solid green. The visible frame around the box: thickness, line style, and color."
           },
           {
             icon: "↔️",
             tag: "3. MARGIN (OUTER)",
-            title: "margin-bottom: 16px;",
+            title: "margin-bottom: 12px;",
             text: "Transparent personal space OUTSIDE the border pushing neighbors away.",
-            tts: "Margin bottom: sixteen pixels. Transparent personal space outside the border pushing neighboring elements away."
+            tts: "Margin bottom: twelve pixels. Transparent personal space outside the border pushing neighboring elements away."
           }
         ]
       }
     },
     {
-      id: "slide-21",
+      id: "slide-25",
       type: "code",
-      badge: "HIGH-IMPACT CARDS",
-      title: "Rounded Cards & border-box",
-      subtitle: "Tap › to give .card pro spacing, glow, and smooth corners",
-      audio: "audio/slide-21.mp3",
-      narration: "Here is the exact CSS recipe for a modern card! Notice box-sizing border-box: it tells Chrome to include padding and border inside your three-forty pixel width instead of ballooning the box wider!",
-      narrationTts: "Here is the exact C S S recipe for a modern card! Notice box sizing border box: it tells Chrome to include padding and border inside your three hundred forty pixel width, instead of ballooning the box wider!",
+      badge: "FROSTED GLASS + LIFT",
+      title: "Frosted-Glass Pro Cards!",
+      subtitle: "Tap › for translucent blur, smooth corners & hover lift",
+      audio: "audio/slide-25.mp3",
+      narration: "Want a massive upgrade over a plain blue box? Give dot card a semi-transparent rgba background plus backdrop-filter blur! Your background texture glows softly through frosted glass, and hover lifts the card!",
+      narrationTts: "Want a massive upgrade over a plain blue box? Give dot card a semi transparent R G B A background plus backdrop filter blur! Your background texture glows softly through frosted glass, and hover lifts the card!",
       content: {
         language: "css",
         filename: "style.css",
-        code: ".card {\n  width: 340px;\n  box-sizing: border-box;\n  padding: 24px;\n  border: 2px solid #38bdf8;\n  border-radius: 20px;\n  box-shadow: 0 12px 28px #020617;\n}",
+        code: ".card {\n  width: 340px;\n  box-sizing: border-box;\n  padding: 24px;\n  background: rgba(15,23,42,0.82);\n  backdrop-filter: blur(8px);\n  border: 2px solid #4ade80;\n  border-radius: 16px;\n  transition: 0.2s;\n}\n.card:hover {\n  transform: translateY(-4px);\n}",
         steps: [
           {
-            lines: "2-3",
-            note: "340px wide, and border-box keeps padding from expanding the total width!",
-            tts: "Sets a clean three hundred forty pixel width, and border box keeps padding from expanding the total width!"
-          },
-          {
-            lines: "4-5",
-            note: "24px inner padding stops text touching the glowing 2px cyan border.",
-            tts: "Twenty-four pixels of inner padding stops your text and inputs from touching the two pixel cyan border."
-          },
-          {
-            lines: "6-7",
-            note: "border-radius: 20px rounds sharp corners; box-shadow floats the card in 3D!",
-            tts: "Border radius twenty pixels rounds sharp ninety degree corners, while box shadow floats the card with depth!"
-          }
-        ]
-      }
-    },
-    {
-      id: "slide-22",
-      type: "code",
-      badge: "CIRCULAR HERO PHOTO",
-      title: "Photo in a Perfect Circle",
-      subtitle: "Tap › to turn any phone selfie into a crisp round avatar",
-      audio: "audio/slide-22.mp3",
-      narration: "How do you put a photo of yourself inside a crisp circle at the top of your Hero Card? Give it equal width and height, set border-radius to fifty percent, and add object-fit cover so a rectangular photo never squishes your face!",
-      narrationTts: "How do you put a photo of yourself inside a crisp circle at the top of your Hero Card? Give it equal width and height, set border radius to fifty percent, and add object fit cover so a rectangular photo never squishes your face!",
-      content: {
-        language: "css",
-        filename: "style.css",
-        code: "#avatar {\n  width: 110px;\n  height: 110px;\n  object-fit: cover;\n  border-radius: 50%;\n  border: 3px solid #00ff85;\n}",
-        steps: [
-          {
-            lines: "2-3",
-            note: "A true circle MUST start as a square: width and height both 110px!",
-            tts: "A true circle must start as an exact square: width and height are both one hundred ten pixels!"
-          },
-          {
-            lines: "4",
-            note: "object-fit: cover crops rectangular photos cleanly instead of squishing faces!",
-            tts: "Object fit cover crops rectangular phone photos cleanly instead of squishing your face!"
+            lines: "2-4",
+            note: "340px wide, 24px inner padding, and border-box stops width from ballooning!",
+            tts: "Three hundred forty pixels wide, twenty-four pixels of padding, and border box stops the width from ballooning!"
           },
           {
             lines: "5-6",
-            note: "border-radius: 50% curves the square into a circle with a neon green ring!",
-            tts: "Border radius fifty percent curves the square into a perfect circle framed by a neon green ring!"
+            note: "rgba(..., 0.82) + backdrop-filter: blur(8px) creates real frosted glass!",
+            tts: "R G B A at eighty-two percent opacity plus backdrop filter blur creates real frosted glass over your texture!"
+          },
+          {
+            lines: "7-13",
+            note: "Rounded corners + .card:hover smoothly floats any card up 4px under the mouse!",
+            tts: "Rounded corners plus dot card colon hover smoothly floats any card up four pixels when the mouse moves over it!"
           }
         ]
       }
     },
     {
-      id: "slide-23",
+      id: "slide-26",
+      type: "code",
+      badge: "AVATAR + ANIMATION",
+      title: "Floating Circular Avatar!",
+      subtitle: "Tap › for a round selfie + 4-line @keyframes item float",
+      audio: "audio/slide-26.mp3",
+      narration: "Here are two high-impact tricks in one! Equal width and height plus border-radius fifty percent puts your selfie inside a crisp circle—and a tiny keyframes rule makes it gently bob up and down like a Minecraft item!",
+      narrationTts: "Here are two high impact tricks in one! Equal width and height plus border radius fifty percent puts your selfie inside a crisp circle, and a tiny keyframes rule makes it gently bob up and down like a Minecraft item!",
+      content: {
+        language: "css",
+        filename: "style.css",
+        code: "#avatar {\n  width: 110px;\n  height: 110px;\n  object-fit: cover;\n  border-radius: 50%;\n  border: 3px solid #4ade80;\n  animation: float 3s infinite;\n}\n@keyframes float {\n  50% {\n    transform: translateY(-8px);\n  }\n}",
+        steps: [
+          {
+            lines: "2-5",
+            note: "110×110 square + object-fit: cover + border-radius: 50% = zero-squish circle!",
+            tts: "A one-ten by one-ten square plus object fit cover and border radius fifty percent makes a zero-squish circle!"
+          },
+          {
+            lines: "6-7",
+            note: "Emerald ring + animation: float 3s infinite loops our 'float' motion every 3s!",
+            tts: "An emerald ring plus animation float three seconds infinite loops our float motion smoothly forever!"
+          },
+          {
+            lines: "9-13",
+            note: "@keyframes float lifts the photo 8px halfway through, then glides back down!",
+            tts: "At keyframes float lifts the photo eight pixels halfway through, then glides smoothly right back down!"
+          }
+        ]
+      }
+    },
+    {
+      id: "slide-27",
       type: "input",
-      badge: "CHECKPOINT • 7",
+      badge: "CHECKPOINT • 8",
       title: "Fix Cramped Box Content",
       subtitle: "Type the CSS property that adds cushion INSIDE the border",
-      audio: "audio/slide-23.mp3",
-      narration: "Your text and inputs are pressed right up against the blue border of your card. Type the CSS property that adds breathing space on the inside of the wall!",
-      narrationTts: "Your text and inputs are pressed right up against the blue border of your card. Type the C S S property that adds breathing space on the inside of the wall!",
+      audio: "audio/slide-27.mp3",
+      narration: "Your text and inputs are pressed right up against the border wall of your card. Type the CSS property that adds breathing space on the inside of the wall!",
+      narrationTts: "Your text and inputs are pressed right up against the border wall of your card. Type the C S S property that adds breathing space on the inside of the wall!",
       content: {
         placeholder: "CSS property...",
         answers: ["padding"],
@@ -706,12 +818,12 @@ window.PRESENTATION_DATA = {
       }
     },
     {
-      id: "slide-24",
+      id: "slide-28",
       type: "quiz",
-      badge: "TRICKY CHECK • 8",
+      badge: "TRICKY CHECK • 9",
       title: "The Egg-Shaped Selfie Bug!",
       subtitle: "You set border-radius: 50% on a 400×250 photo and got an oval!",
-      audio: "audio/slide-24.mp3",
+      audio: "audio/slide-28.mp3",
       narration: "Classic real-world bug! You took a wide landscape selfie, added border-radius fifty percent, and got a stretched sideways egg instead of a circle. What fixes it?",
       narrationTts: "Classic real world bug! You took a wide landscape selfie, added border radius fifty percent, and got a stretched sideways egg instead of a circle. What fixes it?",
       content: {
@@ -728,143 +840,113 @@ window.PRESENTATION_DATA = {
     },
 
     // =========================================================================
-    // MODULE 5: BACKGROUND TEXTURES & MODERN CENTERING (SLIDES 25–29)
+    // MODULE 5: TEXTURES, FLEXBOX CENTERING & TACTILE 3D BUTTONS (29–32)
     // =========================================================================
     {
-      id: "slide-25",
+      id: "slide-29",
       type: "code",
       badge: "MODULE 5 • TEXTURES",
-      title: "Background Colors & Textures",
-      subtitle: "Tap › for both pure-CSS dot textures and image tiles",
-      audio: "audio/slide-25.mp3",
-      narration: "Solid backgrounds are fine, but subtle textures look next-level! You can tile a local image file with url, or generate a crisp cyber dot-matrix texture directly in CSS with radial-gradient—zero external files needed!",
-      narrationTts: "Solid backgrounds are fine, but subtle textures look next level! You can tile a local image file with U R L, or generate a crisp cyber dot matrix texture directly in C S S with radial gradient, zero external files needed!",
+      title: "Seamless Background Textures",
+      subtitle: "Tap › to tile a downloaded texture or a pure-CSS grid",
+      audio: "audio/slide-29.mp3",
+      narration: "Save any seamless tile pattern like bg dot png into your project folder, and background-image url repeats it smoothly across the whole screen! Or use radial-gradient for a zero-file voxel dot grid.",
+      narrationTts: "Save any seamless tile pattern like B G dot P N G into your project folder, and background image U R L repeats it smoothly across the whole screen! Or use radial gradient for a zero file voxel dot grid.",
       content: {
         language: "css",
         filename: "style.css",
-        code: "body {\n  background-color: #0b1120;\n  background-image:\n    radial-gradient(#334155 1.5px,\n      transparent 1.5px);\n  background-size: 22px 22px;\n}\n/* Or tile an image file:\n  background-image: url(\"bg.png\");\n*/",
+        code: "body {\n  background-color: #0b1120;\n  background-image: url(\"bg.png\");\n  background-repeat: repeat;\n}\n/* Zero-file CSS grid alternative:\n  background-image:\n    radial-gradient(#334155 2px,\n      transparent 2px);\n  background-size: 22px 22px;\n*/",
         steps: [
           {
             lines: "2",
-            note: "Sets a deep midnight base color underneath any pattern or transparent image.",
-            tts: "Sets a deep midnight base color underneath any pattern or transparent image."
+            note: "Always set a dark fallback background-color underneath transparent textures!",
+            tts: "Always set a dark fallback background color underneath transparent tile textures!"
           },
           {
-            lines: "3-6",
-            note: "Draws tiny slate dots every 22px—instant developer grid texture with zero files!",
-            tts: "Draws tiny slate dots every twenty-two pixels, giving you an instant developer grid texture with zero image files!"
+            lines: "3-4",
+            note: "Tiles bg.png seamlessly in every direction across the entire page!",
+            tts: "Tiles B G dot P N G seamlessly in every direction across the entire page!"
           },
           {
-            lines: "8-10",
-            note: "Have a cool texture file? Swap in background-image: url(\"bg.png\"); instead!",
-            tts: "Have a cool texture image file in your folder? Swap in background image U R L B G dot P N G instead!"
+            lines: "6-11",
+            note: "Want a crisp grid before picking a PNG? radial-gradient draws dots in pure CSS!",
+            tts: "Want a crisp grid before picking an image? Radial gradient draws dots right in pure C S S!"
           }
         ]
       }
     },
     {
-      id: "slide-26",
-      type: "compare",
-      badge: "MODERN LAYOUTS",
-      title: "Centering: Old vs. Modern",
-      subtitle: "Goodbye negative margins—hello CSS Flexbox!",
-      audio: "audio/slide-26.mp3",
-      narration: "Years ago, centering a box on screen required ugly absolute positioning and negative-margin math! Today, CSS Flexbox centers one or multiple cards horizontally and vertically in just three clean lines on the parent.",
-      narrationTts: "Years ago, centering a box on screen required ugly absolute positioning and negative margin math! Today, C S S Flexbox centers one or multiple cards horizontally and vertically in just three clean lines on the parent.",
-      content: {
-        left: {
-          tag: "❌ 2010 OLD-SCHOOL",
-          title: "Negative Margin Hacks",
-          points: [
-            "position: absolute; top: 50%;",
-            "Manual margin-left: -170px math.",
-            "Breaks when content grows taller!"
-          ]
-        },
-        right: {
-          tag: "✅ MODERN FLEXBOX",
-          title: "display: flex on body",
-          points: [
-            "Centers any box size automatically.",
-            "Works horizontally AND vertically.",
-            "gap: 24px spaces multiple cards!"
-          ]
-        }
-      }
-    },
-    {
-      id: "slide-27",
+      id: "slide-30",
       type: "code",
-      badge: "MODERN CENTERING",
+      badge: "FLEXBOX CENTERING",
       title: "Centering Cards with Flexbox",
-      subtitle: "Tap › to center your Hero & VIP cards on any screen",
-      audio: "audio/slide-27.mp3",
-      narration: "Put these lines on body and watch the magic: display flex activates Flexbox, flex-direction column stacks your Hero card above your VIP card, align-items and justify-content center them, and gap spaces them cleanly!",
-      narrationTts: "Put these lines on body and watch the magic: display flex activates Flexbox, flex direction column stacks your Hero card above your V I P card, align items and justify content center them, and gap spaces them cleanly!",
+      subtitle: "Tap › to center all your cards on any screen automatically",
+      audio: "audio/slide-30.mp3",
+      narration: "To center every card cleanly in the middle of the screen, put CSS Flexbox on body! Display flex activates it, column stacks your cards top-to-bottom, justify-content and align-items center them, and gap spaces them out!",
+      narrationTts: "To center every card cleanly in the middle of the screen, put C S S Flexbox on body! Display flex activates it, column stacks your cards top to bottom, justify content and align items center them, and gap spaces them out!",
       content: {
         language: "css",
         filename: "style.css",
-        code: "body {\n  min-height: 100vh;\n  margin: 0;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  gap: 24px;\n}",
+        code: "body {\n  min-height: 100vh;\n  margin: 0;\n  padding: 32px 16px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  gap: 24px;\n}",
         steps: [
           {
-            lines: "2-3",
-            note: "100vh makes body fill 100% of the screen height; margin: 0 removes edge gaps.",
-            tts: "One hundred V H makes body fill one hundred percent of the viewport height, and margin zero removes default browser gaps."
+            lines: "2-4",
+            note: "100vh fills the full screen height; padding keeps breathing room at top & bottom.",
+            tts: "One hundred V H fills the full screen height, and padding keeps breathing room at the top and bottom."
           },
           {
-            lines: "4-5",
-            note: "Turns body into a Flexbox container stacking children top-to-bottom (column).",
-            tts: "Display flex turns body into a Flexbox container, and column stacks your cards top to bottom."
+            lines: "5-6",
+            note: "display: flex turns on Flexbox; column stacks Hero, Table, and VIP cards!",
+            tts: "Display flex turns on Flexbox, and column stacks your Hero, Table, and V I P cards vertically!"
           },
           {
-            lines: "6-8",
-            note: "Dead-centers both cards on screen and puts 24px of clean air between them!",
-            tts: "Justify content and align items dead-center both cards on screen, and gap puts twenty-four pixels between them!"
+            lines: "7-9",
+            note: "Dead-centers every card on screen and puts 24px of clean air between them!",
+            tts: "Justify content and align items dead-center every card on screen, and gap puts twenty-four pixels between them!"
           }
         ]
       }
     },
     {
-      id: "slide-28",
+      id: "slide-31",
       type: "code",
-      badge: "POLISHING CONTROLS",
-      title: "Styling Inputs & Hover Buttons",
-      subtitle: "Tap › to make inputs fit cleanly and buttons glow",
-      audio: "audio/slide-28.mp3",
-      narration: "One sneaky CSS trap: setting width one hundred percent plus padding on an input makes it poke outside its card—unless you add box-sizing border-box! Finish with a bold neon button and a hover effect.",
-      narrationTts: "One sneaky C S S trap: setting width one hundred percent plus padding on an input makes it poke outside its card, unless you add box sizing border box! Finish with a bold neon button and a hover effect.",
+      badge: "3D TACTILE CONTROLS",
+      title: "Pressable 3D Game Buttons!",
+      subtitle: "Tap › for clean inputs + a button that physically clicks down",
+      audio: "audio/slide-31.mp3",
+      narration: "Here is a five-minute CSS trick teachers love! Give your button a five-pixel bottom shadow ledge, then on button colon active shift it down three pixels and shrink the shadow—it physically clicks down like a real game button!",
+      narrationTts: "Here is a five minute C S S trick teachers love! Give your button a five pixel bottom shadow ledge, then on button colon active shift it down three pixels and shrink the shadow. It physically clicks down like a real game button!",
       content: {
         language: "css",
         filename: "style.css",
-        code: "input {\n  width: 100%;\n  box-sizing: border-box;\n  padding: 12px;\n  margin-bottom: 14px;\n  border-radius: 10px;\n}\nbutton {\n  width: 100%;\n  padding: 12px;\n  border-radius: 10px;\n  background-color: #00ff85;\n  cursor: pointer;\n}\nbutton:hover { opacity: 0.85; }",
+        code: "input {\n  width: 100%; padding: 10px;\n  box-sizing: border-box;\n  margin-bottom: 12px;\n}\nbutton {\n  width: 100%; padding: 12px;\n  background: #4ade80;\n  box-shadow: 0 5px 0 #14532d;\n  transition: 0.1s;\n}\nbutton:hover { opacity: 0.92; }\nbutton:active {\n  transform: translateY(3px);\n  box-shadow: 0 2px 0 #14532d;\n}",
         steps: [
           {
-            lines: "1-7",
-            note: "border-box keeps 100%-wide padded inputs tucked neatly inside .card!",
-            tts: "Box sizing border box keeps one hundred percent wide padded inputs tucked neatly inside your card!"
+            lines: "1-5",
+            note: "border-box keeps 100%-wide padded <input /> boxes tucked neatly inside .card!",
+            tts: "Border box keeps one hundred percent wide padded inputs tucked neatly inside your card!"
           },
           {
-            lines: "8-14",
-            note: "Full-width neon button with 10px rounded corners and a hand pointer icon.",
-            tts: "Styles a full width neon green button with ten pixel rounded corners and a clickable hand cursor."
+            lines: "6-12",
+            note: "box-shadow: 0 5px 0 #14532d builds a solid 3D emerald ledge underneath!",
+            tts: "Box shadow zero five pixels zero dark green builds a solid three D ledge right under the button!"
           },
           {
-            lines: "15",
-            note: ":hover reacts live the instant your mouse moves over the button!",
-            tts: "Button colon hover reacts live the instant your mouse cursor moves over the button!"
+            lines: "13-16",
+            note: ":active fires while clicking—pushing the button 3px down into its shadow ledge!",
+            tts: "Colon active fires the instant you click, pushing the button three pixels down into its shadow ledge!"
           }
         ]
       }
     },
     {
-      id: "slide-29",
+      id: "slide-32",
       type: "input",
-      badge: "TRICKY CHECK • 9",
+      badge: "CHECKPOINT • 10",
       title: "Unlock Flexbox Centering!",
       subtitle: "justify-content & align-items do NOTHING until display is set to...?",
-      audio: "audio/slide-29.mp3",
-      narration: "Tricky bug! You wrote justify-content center and align-items center on body, refreshed Chrome, and your boxes stayed stuck in the corner! What value must display be set to?",
-      narrationTts: "Tricky bug! You wrote justify content center and align items center on body, refreshed Chrome, and your boxes stayed stuck in the corner! What value must display be set to?",
+      audio: "audio/slide-32.mp3",
+      narration: "Final checkpoint! You wrote justify-content center and align-items center on body, refreshed Chrome, and your boxes stayed stuck in the corner! What value must display be set to?",
+      narrationTts: "Final checkpoint! You wrote justify content center and align items center on body, refreshed Chrome, and your boxes stayed stuck in the corner! What value must display be set to?",
       content: {
         placeholder: "display: ___",
         answers: ["flex", "display: flex", "display:flex"],
@@ -876,78 +958,159 @@ window.PRESENTATION_DATA = {
     },
 
     // =========================================================================
-    // MODULE 6: BUG DETECTIVE, PERSONAL SITE MISSION & FINAL SCORE (30–32)
+    // MODULE 6: PRO TIPS, DOCS, PUBLISHING, WHAT'S NEXT & QUEST (33–37)
     // =========================================================================
     {
-      id: "slide-30",
-      type: "quiz",
-      badge: "TRICKY CHECK • 10",
-      title: "Why Did ZERO Styles Appear?",
-      subtitle: "Your CSS code & <link href=\"style.css\"> are both error-free!",
-      audio: "audio/slide-30.mp3",
-      narration: "Final boss question! Your HTML link tag is spotless, your CSS syntax has zero typos, both files sit in the same folder—yet pressing F5 in Chrome still shows plain white HTML. Why?",
-      narrationTts: "Final boss question! Your H T M L link tag is spotless, your C S S syntax has zero typos, both files sit in the same folder, yet pressing F five in Chrome still shows plain white H T M L. Why?",
+      id: "slide-33",
+      type: "cards",
+      badge: "MODULE 6 • DEV TOOLKIT",
+      title: "Docs, Textures & Chrome F12",
+      subtitle: "Where pros look up tags, grab textures, and live-debug",
+      audio: "audio/slide-33.mp3",
+      narration: "Real developers never memorize everything—they know where to look and how to inspect live! Here are three secret weapons for building fast and proving to your teacher that you understand every single line.",
+      narrationTts: "Real developers never memorize everything: they know where to look and how to inspect live! Here are three secret weapons for building fast and proving to your teacher that you understand every single line.",
       content: {
-        options: [
-          { text: "Forgot Ctrl+S in VS Code!", correct: true },
-          { text: "CSS needs Wi-Fi to run" },
-          { text: "Chrome blocks dark colors" },
-          { text: "<img> must load before CSS" }
-        ],
-        hint: "Look at the tab bar at the top of VS Code—what does that white dot next to style.css mean?",
-        explanation: "Every developer has done this! A white dot on a VS Code tab means unsaved changes—Chrome only reads what's saved on disk with Ctrl+S.",
-        explanationTts: "Every developer has done this! A white dot on a V S Code tab means unsaved changes. Chrome only reads what is saved on disk with Control S."
+        cards: [
+          {
+            icon: "🔍",
+            tag: "CHROME F12 POWER MOVE",
+            title: "Right-Click → Inspect",
+            text: "Edit colors & sizes live in Chrome to show your teacher you master every rule!",
+            tts: "Chrome F twelve Inspect! Right click any element and pick Inspect to toggle and edit C S S live right in front of your teacher!"
+          },
+          {
+            icon: "📚",
+            tag: "WHEN YOU GET STUCK",
+            title: "W3Schools.com",
+            text: "Search 'w3schools html table' or 'css shadow' for instant Try-It examples!",
+            tts: "W three Schools dot com! Search W three Schools plus any tag or C S S property for interactive Try It Yourself examples."
+          },
+          {
+            icon: "🧱",
+            tag: "FREE TEXTURE VAULTS",
+            title: "TransparentTextures & Kenney",
+            text: "Grab seamless tiles at TransparentTextures.com or pixel art at Kenney.nl!",
+            tts: "Free texture vaults! Grab seamless dark tiles at Transparent Textures dot com, or free pixel game packs at Kenney dot N L and Lospec!"
+          }
+        ]
       }
     },
     {
-      id: "slide-31",
-      type: "mission",
-      badge: "WEEKEND MISSION • VS CODE",
-      title: "Build Your Personal Site!",
-      subtitle: "Keep this phone beside your keyboard and type every line yourself",
-      audio: "audio/slide-31.mp3",
-      narration: "You now have the full semester toolkit—and way better styling tricks! Open VS Code on your computer, keep this deck next to your keyboard to swipe back to any code slide, and build your complete two-card personal website.",
-      narrationTts: "You now have the full semester toolkit, and way better styling tricks! Open V S Code on your computer, keep this deck next to your keyboard to swipe back to any code slide, and build your complete two card personal website.",
+      id: "slide-34",
+      type: "cards",
+      badge: "GOING LIVE • FREE",
+      title: "Publish Live in 60 Seconds!",
+      subtitle: "Open a real public URL on Monday + carry a USB backup",
+      audio: "audio/slide-34.mp3",
+      narration: "Want to really impress on Monday? Instead of only carrying files, publish your folder to the real internet for free in under a minute—and still bring a USB stick just in case school Wi-Fi is offline!",
+      narrationTts: "Want to really impress on Monday? Instead of only carrying files, publish your folder to the real internet for free in under a minute, and still bring a U S B stick just in case school Wi-Fi is offline!",
       content: {
-        goal: "Build a centered, textured personal webpage with a Hero Profile Card and a VIP Login Card.",
+        cards: [
+          {
+            icon: "🚀",
+            tag: "NETLIFY DROP (10 SEC)",
+            title: "app.netlify.com/drop",
+            text: "Drag your project folder into Chrome for a live shareable link in 10 seconds!",
+            tts: "Netlify Drop: open app dot netlify dot com slash drop, drag your folder onto the page, and get a live web link in ten seconds!"
+          },
+          {
+            icon: "🐙",
+            tag: "GITHUB PAGES (PRO)",
+            title: "yourname.github.io",
+            text: "Push index.html, test.html & style.css to GitHub for a permanent dev URL.",
+            tts: "GitHub Pages: upload your folder to a GitHub repository to host a permanent your name dot github dot I O address!"
+          },
+          {
+            icon: "💾",
+            tag: "MONDAY DOUBLE SHIELD",
+            title: "Ctrl+S + Live URL + USB",
+            text: "Check VS Code tabs for unsaved white dots (Ctrl+S), publish live, AND pack a USB!",
+            tts: "Monday double shield: check V S Code tabs for unsaved white dots with Control S, publish your U R L, and pack a U S B backup!"
+          }
+        ]
+      }
+    },
+    {
+      id: "slide-35",
+      type: "code",
+      badge: "WHAT'S NEXT? • LEVEL 2",
+      title: "Next Unlock: Sounds & JS!",
+      subtitle: "Tap › to see how JavaScript adds sound effects & logic",
+      audio: "audio/slide-35.mp3",
+      narration: "Curious what comes right after HTML and CSS? JavaScript! Since you already know programming, look how easy it is: HTML builds the button, CSS animates it, and a tiny script function plays an MP3 sound when clicked!",
+      narrationTts: "Curious what comes right after H T M L and C S S? JavaScript! Since you already know programming, look how easy it is: H T M L builds the button, C S S animates it, and a tiny script function plays an M P three sound when clicked!",
+      content: {
+        language: "html",
+        filename: "future-unlock.html",
+        code: "<!-- HTML + CSS + JavaScript -->\n<button onclick=\"collectXp()\">\n  Collect XP\n</button>\n\n<script>\n  function collectXp() {\n    new Audio(\"xp.mp3\").play();\n    alert(\"Level Up! +100 XP\");\n  }\n</script>",
+        steps: [
+          {
+            lines: "2-4",
+            note: "onclick=\"collectXp()\" tells your HTML <button> which function to run on click!",
+            tts: "On click equals collect X P tells your H T M L button which function to run when clicked!"
+          },
+          {
+            lines: "6-8",
+            note: "new Audio(\"xp.mp3\").play() plays any sound effect file in a single line of JS!",
+            tts: "New Audio X P dot M P three dot play plays any sound effect file in one single line of JavaScript!"
+          },
+          {
+            lines: "9-11",
+            note: "HTML = structure, CSS = visuals & @keyframes motion, JS = sounds & game logic!",
+            tts: "That's the full web trio: H T M L builds structure, C S S handles visuals and motion, and JavaScript runs sounds and logic!"
+          }
+        ]
+      }
+    },
+    {
+      id: "slide-36",
+      type: "mission",
+      badge: "WEEKEND QUEST • VS CODE",
+      title: "Weekend Quest: 2-Page Site!",
+      subtitle: "Keep this phone beside your keyboard and type every line yourself",
+      audio: "audio/slide-36.mp3",
+      narration: "Time to build! Keep this phone propped next to your keyboard so you can swipe back to any code slide. First knock out Friday's exact test in five minutes, then craft your personal site linking right to it!",
+      narrationTts: "Time to build! Keep this phone propped next to your keyboard so you can swipe back to any code slide. First knock out Friday's exact test in five minutes, then craft your personal site linking right to it!",
+      content: {
+        goal: "Build test.html (Friday's Test) + index.html (Personal Site) linked together!",
         steps: [
           {
             number: "01",
-            title: "Folder, Selfie & Google Font",
-            text: "Create my-site/ with index.html, style.css, and me.jpg. Link a Google Font + style.css.",
-            tts: "Step one: Folder, selfie, and Google Font. Create a my site folder with index dot H T M L, style dot C S S, and your photo, then link a Google Font and style dot C S S."
+            title: "Ace Friday's Test",
+            text: "Build test.html + test.css: blue box, Name & Pass rows!",
+            tts: "Step one: Ace Friday's Test. Create test dot H T M L plus external test dot C S S with the blue box, Name row, Password row, and Home link."
           },
           {
             number: "02",
-            title: "Hero Card + VIP Login Card",
-            text: "Add #hero.card (round photo, bio, hobbies/link) and #vip.card (Name, Password, Button).",
-            tts: "Step two: Hero Card plus V I P Login Card. Add your hero card with a round photo, bio, and hobby list, plus your V I P card with Name input, Password input, and Button."
+            title: "Craft index.html + CSS",
+            text: "Add Hero (floating photo, <table>, link) + glass VIP card!",
+            tts: "Step two: Craft index dot H T M L plus style dot C S S. Add your Hero card with floating round photo, stats table, and test link, plus your frosted V I P card!"
           },
           {
             number: "03",
-            title: "Flexbox, Texture & Live Test",
-            text: "Center on body with display: flex + dot texture, round corners, Ctrl+S, and test live!",
-            tts: "Step three: Flexbox, texture, and live test. Center on body with display flex plus a dot texture, round your corners, press Control S, and practice editing colors live!"
+            title: "Texture, F12 & Publish",
+            text: "Add a tile texture, test Chrome F12, and publish + USB!",
+            tts: "Step three: Texture, F twelve flex, and publish. Pick a texture on Transparent Textures or Kenney, practice Chrome F twelve live edits, and publish plus U S B!"
           }
         ],
-        reward: "🏆 Ready for Monday: You can explain and live-edit every single tag and CSS rule!"
+        reward: "🏆 Ready for Monday: Live URL + USB + Chrome F12 mastery!"
       }
     },
     {
-      id: "slide-32",
+      id: "slide-37",
       type: "results",
-      badge: "SEMESTER MASTERED",
+      badge: "QUEST COMPLETE",
       title: "Grade: Your First-Try Score!",
-      subtitle: "Out of 10 HTML & CSS checkpoints—ready to code!",
-      audio: "audio/slide-32.mp3",
-      narration: "Congratulations on completing the full HTML and CSS masterclass! Here is your first-try score out of ten tricky checkpoints. Swipe back to any code card whenever you want while building your website in VS Code!",
-      narrationTts: "Congratulations on completing the full H T M L and C S S masterclass! Here is your first try score out of ten tricky checkpoints. Swipe back to any code card whenever you want while building your website in V S Code!",
+      subtitle: "Out of 10 HTML & CSS checkpoints—ready to craft!",
+      audio: "audio/slide-37.mp3",
+      narration: "Congratulations on completing the full HTML and CSS masterclass! Here is your first-try score out of ten checkpoints. Swipe back to any code card whenever you need while crafting your two-page showcase in VS Code!",
+      narrationTts: "Congratulations on completing the full H T M L and C S S masterclass! Here is your first try score out of ten checkpoints. Swipe back to any code card whenever you need while crafting your two page showcase in V S Code!",
       content: {
-        icon: "🏆",
+        icon: "💎",
         tiers: [
-          { min: 0.9, text: "Grade 10 Master! Unstoppable! 🥇" },
-          { min: 0.7, text: "Strong Coder! Ready to Shine! ⚡" },
-          { min: 0, text: "Solid Run! Now Build It Live in VS Code! 💻" }
+          { min: 0.9, text: "Grade 10 Master! Diamond Tier! 💎" },
+          { min: 0.7, text: "Emerald Crafter! Ready to Shine! ⛏️" },
+          { min: 0, text: "Solid Run! Now Craft It Live in VS Code! 🧱" }
         ]
       }
     }

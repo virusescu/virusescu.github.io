@@ -1,6 +1,232 @@
-/* Crash Course: HTML & CSS Styling — Dark cyber stage with electric cyan accent */
+/* ==========================================================================
+   Masterclass: HTML & CSS — Minecraft-Inspired Voxel & Deepslate Theme
+   100% offline local OFL pixel fonts (./assets/) + 3D stone/emerald bevels
+   ========================================================================== */
+
+@font-face {
+  font-family: "Pixelify Sans";
+  src: url("./assets/PixelifySans.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Silkscreen";
+  src: url("./assets/Silkscreen-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --theme-accent: #38bdf8;
-  --theme-accent-glow: rgba(56, 189, 248, 0.32);
-  --theme-badge: #00ff85;
+  --theme-accent: #4ade80;
+  --theme-accent-glow: rgba(74, 222, 128, 0.35);
+  --theme-badge: #4aedef;
+
+  --bg-primary: #0d1117;
+  --bg-card: rgba(27, 34, 44, 0.92);
+  --bg-card-border: #384457;
+  --text-main: #f1f5f9;
+  --text-muted: #a3b3c9;
+}
+
+/* ---------- Deepslate Voxel Grid Stage & Cover ---------- */
+
+.format-mobile .deck-stage {
+  background-color: #10151c;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(74, 222, 128, 0.14) 0%, transparent 55%),
+    linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px);
+  background-size: 100% 100%, 20px 20px, 20px 20px;
+}
+
+@media (min-width: 560px) {
+  .format-mobile .deck-stage {
+    border-radius: 10px;
+    border: 3px solid #384457;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.1);
+  }
+}
+
+.stories-cover {
+  background-color: #0e1319;
+  background-image:
+    radial-gradient(circle at 50% 30%, rgba(74, 222, 128, 0.24), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 20px 20px, 20px 20px;
+}
+
+/* ---------- Pixel Typography Hierarchy ---------- */
+
+.stories-cover-title,
+.format-mobile .slide-title,
+.format-mobile .hero-card-title,
+.format-mobile .concept-title,
+.format-mobile .compare-title,
+.format-mobile .mission-step-title,
+.format-mobile .reveal-front-text,
+.format-mobile .results-num,
+.format-mobile .results-tier,
+.stories-start,
+.format-mobile .answer-submit {
+  font-family: "Pixelify Sans", "Segoe UI", Arial, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.stories-cover-title,
+.format-mobile .slide-title {
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.75);
+}
+
+.format-mobile .slide-badge,
+.format-mobile .concept-tag,
+.format-mobile .compare-tag,
+.stories-count,
+.stories-cover-meta,
+.format-mobile .reveal-tap,
+.format-mobile .quiz-option-key,
+.format-mobile .mission-step-number,
+.format-mobile .code-step-counter,
+.format-mobile .feedback-label {
+  font-family: "Silkscreen", Consolas, monospace;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Minecraft XP Bar Progress Segments ---------- */
+
+.stories-progress {
+  gap: 3px;
+}
+
+.stories-seg {
+  height: 5px;
+  border-radius: 1px;
+  background: #090d12;
+  border: 1px solid #293545;
+}
+
+.stories-seg-fill {
+  background: #4ade80;
+  box-shadow: inset 0 1px 0 #bbf7d0;
+}
+
+/* ---------- Blocky 3D Stone Inventory Cards & Panels ---------- */
+
+.format-mobile .slide-badge {
+  border-radius: 4px;
+  background: rgba(15, 23, 34, 0.9);
+  border: 2px solid #2b4c59;
+  padding: 4px 10px;
+}
+
+.format-mobile .hero-card,
+.format-mobile .concept-card,
+.format-mobile .mission-step-card,
+.format-mobile .compare-col,
+.format-mobile .quiz-option,
+.format-mobile .reveal-face,
+.format-mobile .results-card,
+.format-mobile .code-note,
+.format-mobile .answer-explanation,
+.format-mobile .feedback-hint,
+.format-mobile .feedback-answer {
+  border-radius: 4px;
+  border: 2px solid #384457;
+  background: rgba(25, 32, 42, 0.94);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.5),
+    0 4px 0 rgba(0, 0, 0, 0.45);
+}
+
+.format-mobile .compare-col.wrong {
+  border-color: #7f1d1d;
+}
+
+.format-mobile .compare-col.right {
+  border-color: #166534;
+}
+
+.format-mobile .quiz-option.is-correct {
+  border-color: #4ade80;
+  background: rgba(20, 83, 45, 0.45);
+}
+
+.format-mobile .quiz-option.is-picked-wrong {
+  border-color: var(--answer-wrong);
+}
+
+.format-mobile .hero-card-icon,
+.format-mobile .concept-icon,
+.format-mobile .quiz-option-key,
+.stories-btn {
+  border-radius: 4px;
+  border: 2px solid #3b485c;
+  background: #121720;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.format-mobile .mission-goal-bar,
+.format-mobile .mission-reward {
+  border-radius: 4px;
+  border-width: 2px;
+}
+
+/* Command-Block Dark Code Panel */
+.format-mobile .code-panel {
+  border-radius: 4px;
+  border: 2px solid #3b485c;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.55);
+}
+
+.format-mobile .code-dots span {
+  border-radius: 2px;
+}
+
+.format-mobile .code-note-step {
+  border-radius: 4px;
+}
+
+/* ---------- Blocky 3D Emerald / Stone Buttons & Inputs ---------- */
+
+.format-mobile .answer-input {
+  border-radius: 4px;
+  border: 2px solid #475569;
+  background: #0b0f15;
+  box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.55);
+}
+
+.stories-start,
+.format-mobile .answer-submit {
+  border-radius: 4px;
+  border: 2px solid #14532d;
+  background: #4ade80;
+  color: #052e16;
+  box-shadow:
+    inset 0 3px 0 #bbf7d0,
+    inset 0 -4px 0 #16a34a,
+    0 4px 0 #052e16;
+}
+
+.stories-next {
+  border-radius: 6px;
+  border: 2px solid #475569;
+  background: #1e2633;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.55),
+    0 4px 0 #070a0f;
+}
+
+.stories-next.pulse-ready {
+  border-color: #14532d;
+  background: #4ade80;
+  color: #052e16;
+  box-shadow:
+    inset 0 3px 0 #bbf7d0,
+    inset 0 -4px 0 #16a34a,
+    0 4px 0 #052e16;
 }
