@@ -135,6 +135,11 @@
       border-color: rgba(56, 189, 248, 0.4);
       color: #38bdf8;
     }
+    .course-badge.mobile {
+      background: rgba(244, 114, 182, 0.15);
+      border-color: rgba(244, 114, 182, 0.4);
+      color: #f472b6;
+    }
     .course-title {
       font-size: 1.45rem;
       font-weight: 800;
@@ -207,11 +212,64 @@
     <div class="tutorials-hero">
       <p class="tutorials-tag">Private Knowledge Base</p>
       <h1>Interactive Slide Decks</h1>
-      <p>Data-driven 16:9 presentation tutorials powered by Vanilla Web tech, full keyboard controls, and local neural voice narration.</p>
+      <p>Data-driven 16:9 and mobile Stories tutorials powered by Vanilla Web tech, full keyboard controls, and local neural voice narration.</p>
     </div>
 
     <!-- Courses Grid -->
     <div class="courses-grid">
+
+      <!-- Course: HTML Basics (Română, mobile Stories) -->
+      <a href="./html-basics-mobile/index.html" class="course-card" style="--card-accent: #ff7a3d; --card-glow: rgba(255, 122, 61, 0.32);">
+        <div class="course-card-top">
+          <div class="course-icon-box" style="color: #ff7a3d;">🏷️</div>
+          <div class="course-badges">
+            <span class="course-badge mobile">📱 Mobil</span>
+            <span class="course-badge" style="color: #ff7a3d; border-color: rgba(255, 122, 61, 0.4); background: rgba(255, 122, 61, 0.15);">11 Slide-uri</span>
+            <span class="course-badge highlight">Interactiv</span>
+          </div>
+        </div>
+        <h2 class="course-title">HTML: Limba Secretă a Paginilor Web (Mobil)</h2>
+        <p class="course-desc">
+          Aceeași lecție HTML în format Stories pentru telefon: atingi ca să avansezi, răspunzi la întrebări cu tastatura telefonului și vezi scorul la final.
+        </p>
+        <div class="course-tags">
+          <span class="course-tag">Stories 9:16</span>
+          <span class="course-tag">Taguri</span>
+          <span class="course-tag">Linkuri &lt;a&gt;</span>
+          <span class="course-tag">Quiz</span>
+        </div>
+        <div class="course-action" style="color: #ff7a3d;">
+          <span>Începe pe telefon (~5 min)</span>
+          <span class="course-action-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- Course: HTML Basics (Română, desktop) -->
+      <a href="./html-basics/index.html" class="course-card" style="--card-accent: #ff7a3d; --card-glow: rgba(255, 122, 61, 0.32);">
+        <div class="course-card-top">
+          <div class="course-icon-box" style="color: #ff7a3d;">🏷️</div>
+          <div class="course-badges">
+            <span class="course-badge" style="color: #ff7a3d; border-color: rgba(255, 122, 61, 0.4); background: rgba(255, 122, 61, 0.15);">11 Slide-uri</span>
+            <span class="course-badge highlight">Interactiv</span>
+            <span class="course-badge" style="color: #97D700; border-color: rgba(151, 215, 0, 0.4); background: rgba(151, 215, 0, 0.15);">Română</span>
+          </div>
+        </div>
+        <h2 class="course-title">HTML: Limba Secretă a Paginilor Web</h2>
+        <p class="course-desc">
+          Prima ta pagină web în 10 minute: taguri ca niște cutii, cod explicat pas cu pas, cartonașe de ghicit, întrebări cu răspuns scris și o misiune practică în Notepad.
+        </p>
+        <div class="course-tags">
+          <span class="course-tag">Taguri</span>
+          <span class="course-tag">&lt;h1&gt; &amp; &lt;p&gt;</span>
+          <span class="course-tag">Linkuri &lt;a&gt;</span>
+          <span class="course-tag">Quiz</span>
+          <span class="course-tag">Cod pas cu pas</span>
+        </div>
+        <div class="course-action" style="color: #ff7a3d;">
+          <span>Începe Prezentarea (~6 min + Misiune)</span>
+          <span class="course-action-arrow">→</span>
+        </div>
+      </a>
 
       <!-- Course: Agricover Ecosystem (Română) -->
       <a href="./agricover-presentation-ro/index.html" class="course-card" style="--card-accent: #FF8200; --card-glow: rgba(255, 130, 0, 0.35);">

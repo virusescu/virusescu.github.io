@@ -1,0 +1,6 @@
+/* HTML Basics: dark site stage with an HTML-orange accent (token-only theme) */
+:root {
+  --theme-accent: #ff7a3d;
+  --theme-accent-glow: rgba(255, 122, 61, 0.32);
+  --theme-badge: #fbbf24;
+}

@@ -3,7 +3,7 @@
 > **Source:** grill-me interview, 2026-11-04
 > **Builds on:** [implementation_plan.md](../tutorials/implementation_plan.md) (v1 engine) and the `presentation-creator` skill
 > **Constraints (unchanged):** vanilla HTML/CSS/JS, zero runtime deps, works under `file:///`, local TTS → static MP3s.
-> **Status:** 📝 Draft, awaiting approval. Nothing built yet.
+> **Status:** ✅ Implemented 2026-11-04. See §7 for where the build differs from this plan.
 
 ---
 
@@ -186,3 +186,24 @@ Script load order for both formats: `slides.js` → `sfx.js` → `highlight.js` 
 2. **Mobile stage**: fluid full-viewport rather than a fixed scaled 9:16 canvas, to avoid letterboxing on tall phones.
 3. **Romanian plurals**: authors list them in `answers`; automatic plural tolerance covers English `-s/-es` only.
 4. **Hub**: mobile decks are listed in the same hub with a badge, not on a separate page.
+
+---
+
+## 7. Implementation Notes (what was actually built)
+
+Everything in §1–§5 shipped. Differences from the plan:
+
+| Plan | Built | Why |
+| :--- | :--- | :--- |
+| `stories.css` standalone, sharing only tokens | Mobile decks load `player.css` **then** `stories.css`, which is fully scoped to `html.format-mobile` | Reuses all card/animation styling; desktop decks never load `stories.css`, so they're unaffected |
+| `screenshot-slides.ps1 -Mobile` | Replaced by `scripts/screenshot-slides.mjs` (Node + DevTools protocol, real device emulation; `--mobile`, `--state answered`, `--cover`, `--slides`) | Headless Edge can't render narrower than ~484px, so `--window-size=390,…` screenshots were silently wrong |
+| `?state=answered` debug param | `?qa` (skip mobile cover) / `?qa=answered` | One param for all QA modes |
+| Validator re-implements type rules | `validate-course.mjs` reads slide-type support from `player.js` (`window.PresentationEngineInfo`) and expected clips from `generate_audio.py --list` | Single source of truth, no drift |
+| Narration 30–55 words everywhere | 15–45 for `quiz`/`input`/`reveal` | Interactive slides should hand over to the learner quickly |
+
+Verification done:
+- Regression: the 3 existing decks screenshot pixel-identical before/after (the only diffs were the Agricover theme's own infinite `c360Pulse` animation frame).
+- Functional browser test: 46 checks (quiz/input answer flow, matching rules, hint/reveal, keyboard isolation in inputs, code step navigation incl. entering backwards, scoring, flashcards, mobile cover/tap zones/next button/progress, no horizontal or vertical overflow at 390×844, no JS errors). All pass.
+- Demo decks `tutorials/html-basics` + `tutorials/html-basics-mobile` validate with 0 errors / 0 warnings.
+
+Not yet verified: a real phone (on-screen keyboard behaviour, iOS Safari audio unlock, safe-area insets).

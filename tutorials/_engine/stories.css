@@ -1,0 +1,559 @@
+/* ==========================================================================
+   virusescu.github.io — Mobile Stories Format (9:16)
+   Load AFTER player.css in decks with PRESENTATION_DATA.format = "mobile".
+   Everything is scoped to html.format-mobile; desktop decks never load this file.
+   Sizes use container query units (cqw) of the stage, so a phone and the
+   480px desktop-browser preview column render identically.
+   ========================================================================== */
+
+/* ---------- Fluid full-viewport stage ---------- */
+
+html.format-mobile,
+.format-mobile body {
+  height: var(--app-height, 100dvh);
+}
+
+.format-mobile .deck-viewport {
+  width: 100vw;
+  height: var(--app-height, 100dvh);
+}
+
+.format-mobile .deck-stage {
+  width: min(100vw, 480px);
+  height: 100%;
+  transform: none;
+  border-radius: 0;
+  container-type: inline-size;
+  background: radial-gradient(circle at 50% 0%, rgba(25, 34, 52, 0.6) 0%, rgba(10, 13, 20, 0.98) 70%);
+}
+
+/* Desktop browser preview: centered phone-shaped column */
+@media (min-width: 560px) {
+  .format-mobile .deck-stage {
+    height: min(calc(100% - 32px), 940px);
+    border-radius: 28px;
+  }
+}
+
+.format-mobile .deck-stage::before {
+  display: none;
+}
+
+.format-mobile .slide {
+  padding: calc(env(safe-area-inset-top, 0px) + 66px) 20px calc(env(safe-area-inset-bottom, 0px) + 92px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.format-mobile .slide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Header ---------- */
+
+.format-mobile .slide-header {
+  margin-bottom: 18px;
+  gap: 8px;
+}
+
+.format-mobile .slide-badge {
+  font-size: 0.66rem;
+  padding: 3px 10px;
+}
+
+.format-mobile .slide-title {
+  font-size: clamp(1.45rem, 7.2cqw, 2.1rem);
+  line-height: 1.15;
+}
+
+.format-mobile .slide-subtitle {
+  font-size: clamp(0.95rem, 4.2cqw, 1.15rem);
+}
+
+/* ---------- Body: everything stacks vertically ---------- */
+
+.format-mobile .slide-body {
+  flex: 1 0 auto;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.format-mobile .layout-compare .slide-body,
+.format-mobile .layout-cards .slide-body,
+.format-mobile .layout-code .slide-body,
+.format-mobile .layout-code .slide-body.code-has-notes {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.format-mobile .layout-hero .slide-body {
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Compact icon-left cards used by hero + cards */
+.format-mobile .hero-highlights {
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 0;
+}
+
+.format-mobile .hero-card,
+.format-mobile .concept-card {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  column-gap: 14px;
+  row-gap: 4px;
+  align-items: start;
+  padding: 16px 16px;
+  border-radius: 14px;
+}
+
+.format-mobile .hero-card-icon,
+.format-mobile .concept-icon {
+  grid-row: span 3;
+  width: 46px;
+  height: 46px;
+  font-size: 1.5rem;
+  border-radius: 12px;
+}
+
+.format-mobile .hero-card-title,
+.format-mobile .concept-title {
+  font-size: clamp(1rem, 4.6cqw, 1.2rem);
+}
+
+.format-mobile .hero-card-text,
+.format-mobile .concept-text {
+  font-size: clamp(0.88rem, 3.9cqw, 1rem);
+  line-height: 1.45;
+}
+
+.format-mobile .concept-tag {
+  font-size: 0.62rem;
+}
+
+/* Compare: top/bottom instead of side by side */
+.format-mobile .compare-col {
+  padding: 18px 18px;
+  gap: 10px;
+  border-radius: 14px;
+}
+
+.format-mobile .compare-tag {
+  font-size: 0.62rem;
+  padding: 4px 10px;
+}
+
+.format-mobile .compare-title {
+  font-size: clamp(1.05rem, 4.8cqw, 1.25rem);
+}
+
+.format-mobile .compare-points {
+  gap: 8px;
+  margin-top: 0;
+}
+
+.format-mobile .compare-point {
+  font-size: clamp(0.88rem, 3.9cqw, 1rem);
+  line-height: 1.45;
+  gap: 10px;
+}
+
+/* Mission */
+.format-mobile .mission-goal-bar {
+  padding: 12px 14px;
+  font-size: clamp(0.9rem, 4cqw, 1.02rem);
+}
+
+.format-mobile .mission-steps {
+  grid-template-columns: 1fr;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.format-mobile .mission-step-card {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  column-gap: 12px;
+  row-gap: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+}
+
+.format-mobile .mission-step-number {
+  grid-row: span 2;
+  font-size: 1.3rem;
+}
+
+.format-mobile .mission-step-title {
+  font-size: clamp(1rem, 4.4cqw, 1.15rem);
+}
+
+.format-mobile .mission-step-text {
+  font-size: clamp(0.86rem, 3.8cqw, 0.98rem);
+  line-height: 1.45;
+}
+
+.format-mobile .mission-reward {
+  padding: 12px 14px;
+  font-size: clamp(0.86rem, 3.8cqw, 0.98rem);
+}
+
+/* Quiz */
+.format-mobile .quiz-options,
+.format-mobile .quiz-options[data-count="3"] {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.format-mobile .quiz-option {
+  padding: 14px 16px;
+  gap: 14px;
+  font-size: clamp(1rem, 4.6cqw, 1.15rem);
+  border-radius: 14px;
+}
+
+.format-mobile .quiz-option:hover {
+  transform: none;
+}
+
+.format-mobile .quiz-option-key {
+  width: 34px;
+  height: 34px;
+  font-size: 0.9rem;
+}
+
+/* Typed answer */
+.format-mobile .layout-input .slide-body {
+  padding-top: 0;
+}
+
+.format-mobile .answer-form {
+  gap: 10px;
+}
+
+.format-mobile .answer-input {
+  padding: 14px 16px;
+  font-size: 1.15rem; /* ≥16px keeps iOS from zooming in on focus */
+  border-radius: 12px;
+}
+
+.format-mobile .answer-submit {
+  padding: 0 18px;
+  font-size: 1rem;
+  border-radius: 12px;
+}
+
+.format-mobile .feedback-msg {
+  font-size: 1rem;
+}
+
+.format-mobile .feedback-hint,
+.format-mobile .feedback-answer,
+.format-mobile .answer-explanation {
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  font-size: clamp(0.9rem, 4cqw, 1rem);
+}
+
+/* Reveal flashcards */
+.format-mobile .layout-reveal .slide-body {
+  justify-content: center;
+}
+
+.format-mobile .reveal-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.format-mobile .reveal-grid[data-count="1"],
+.format-mobile .reveal-grid[data-count="3"] {
+  grid-template-columns: 1fr;
+}
+
+.format-mobile .reveal-card {
+  height: 190px;
+}
+
+.format-mobile .reveal-grid[data-count="1"] .reveal-card,
+.format-mobile .reveal-grid[data-count="3"] .reveal-card {
+  height: 140px;
+}
+
+.format-mobile .reveal-face {
+  padding: 14px;
+  gap: 8px;
+  border-radius: 14px;
+}
+
+.format-mobile .reveal-front-text {
+  font-size: clamp(1.25rem, 6cqw, 1.6rem);
+}
+
+.format-mobile .reveal-back-text {
+  font-size: clamp(0.9rem, 4cqw, 1.05rem);
+}
+
+.format-mobile .reveal-tap {
+  font-size: 0.62rem;
+}
+
+/* Code: wraps instead of scrolling; only the current step note is shown */
+.format-mobile .code-panel {
+  border-radius: 12px;
+}
+
+.format-mobile .code-titlebar {
+  padding: 9px 12px;
+  gap: 10px;
+  font-size: 0.72rem;
+}
+
+.format-mobile .code-dots span {
+  width: 9px;
+  height: 9px;
+}
+
+.format-mobile .code-block {
+  padding: 12px 0;
+  font-size: clamp(0.74rem, 3.6cqw, 0.95rem);
+  line-height: 1.6;
+}
+
+.format-mobile .code-ln {
+  width: 2.4em;
+  padding-right: 0.8em;
+}
+
+.format-mobile .code-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding-right: 12px;
+}
+
+.format-mobile .code-note {
+  padding: 12px 14px;
+  font-size: clamp(0.9rem, 4cqw, 1rem);
+  transform: none;
+}
+
+.format-mobile .code-note:not(.is-current) {
+  display: none;
+}
+
+/* Results */
+.format-mobile .results-card {
+  padding: 28px 22px;
+  gap: 10px;
+  width: 100%;
+}
+
+.format-mobile .results-trophy {
+  font-size: 3.6rem;
+}
+
+.format-mobile .results-num {
+  font-size: 4.2rem;
+}
+
+.format-mobile .results-total {
+  font-size: 2.2rem;
+}
+
+.format-mobile .results-label {
+  font-size: 1rem;
+}
+
+.format-mobile .results-tier {
+  font-size: 1.3rem;
+}
+
+.format-mobile .voice-prompt-pill {
+  top: auto;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   Stories chrome: progress segments, top controls, next button, cover
+   ========================================================================== */
+
+.stories-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 14px;
+  background: linear-gradient(180deg, rgba(10, 13, 20, 0.94) 55%, rgba(10, 13, 20, 0));
+  pointer-events: none;
+}
+
+.stories-top > * {
+  pointer-events: auto;
+}
+
+.stories-progress {
+  display: flex;
+  gap: 4px;
+}
+
+.stories-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  overflow: hidden;
+}
+
+.stories-seg-fill {
+  width: 0;
+  height: 100%;
+  background: #ffffff;
+  transition: width 0.15s linear;
+}
+
+.stories-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.stories-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.stories-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.stories-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.stories-next {
+  position: absolute;
+  right: 18px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  z-index: 20;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(18, 24, 38, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-size: 2.2rem;
+  line-height: 1;
+  padding-bottom: 4px;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+.stories-next:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stories-next.pulse-ready {
+  background: var(--theme-accent);
+  border-color: var(--theme-accent);
+  color: #05160d;
+  animation: nextPulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.stories-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background:
+    radial-gradient(circle at 50% 30%, var(--theme-accent-glow), transparent 62%),
+    #0a0d14;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.stories-cover.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.stories-cover-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.stories-cover-title {
+  font-size: clamp(1.8rem, 9cqw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: #ffffff;
+}
+
+.stories-cover-subtitle {
+  font-size: clamp(1rem, 4.4cqw, 1.2rem);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.stories-cover-meta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.stories-start {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 999px;
+  background: var(--theme-accent);
+  color: #05160d;
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  animation: nextPulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.stories-start-icon {
+  font-size: 0.95rem;
+}

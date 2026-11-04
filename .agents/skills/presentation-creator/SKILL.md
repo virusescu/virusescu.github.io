@@ -2,375 +2,196 @@
 name: presentation-creator
 description: >-
   Scaffold, author, and synthesize voice-over audio for interactive HTML5/CSS3/JS
-  presentations and tutorials inside the `tutorials/` module of virusescu.github.io.
+  presentations and tutorials inside the `tutorials/` module of virusescu.github.io,
+  as desktop 16:9 decks or mobile Stories-style 9:16 decks, with optional quizzes,
+  typed-answer questions, flashcards, step-through code slides and a final score.
   Use this skill whenever the user asks to create a presentation, add a tutorial,
-  build a course deck, or update slides/voice-overs ("creează o prezentare",
-  "adaugă un tutorial", "generează un curs nou").
+  build a course deck, make a mobile/phone version, or update slides/voice-overs
+  ("creează o prezentare", "adaugă un tutorial", "generează un curs nou").
 ---
 
 # Presentation Creator Skill (`tutorials/`)
 
-This skill defines the exact architecture, data schema, visual rules, and local TTS audio pipeline for building presentations inside `tutorials/`.
+Builds narrated, data-driven decks on the shared engine in `tutorials/_engine/`. A deck is a folder with
+`index.html`, `theme.css`, `slides.js` (`window.PRESENTATION_DATA`) and `audio/*.mp3`.
 
-**Skill resources:**
-| File | Use it when |
+**Skill resources (read when the step needs them):**
+| File | Read it when |
 | :--- | :--- |
-| [`references/engine-dom.md`](references/engine-dom.md) | Before writing **any** CSS: the real DOM/class map, tokens, and the engine's hardcoded dark-mode values |
-| [`templates/theme-light.css`](templates/theme-light.css) | Starting point for light, corporate or brand-guideline themes (copy it to `tutorials/<slug>/theme.css`) |
-| [`scripts/screenshot-slides.ps1`](scripts/screenshot-slides.ps1) | Optional: renders every slide to PNG for visual inspection when requested or when diagnosing layout issues |
+| [`references/slide-types.md`](references/slide-types.md) | Writing `slides.js`: schema + every slide type with examples |
+| [`references/interactive.md`](references/interactive.md) | Adding `quiz`, `input`, `reveal`, `results` slides: answer flow, matching rules, writing hints/explanations |
+| [`references/mobile-stories.md`](references/mobile-stories.md) | Building a `format: "mobile"` deck: Stories UX, text budgets, phone pitfalls |
+| [`references/engine-dom.md`](references/engine-dom.md) | Before writing **any** non-token CSS: real DOM/class map, tokens, hardcoded dark values |
+| [`templates/theme-light.css`](templates/theme-light.css) | Light, corporate or brand-guideline themes (desktop) |
+| [`scripts/validate-course.mjs`](scripts/validate-course.mjs) | Always, before reporting a deck as done |
+| [`scripts/screenshot-slides.mjs`](scripts/screenshot-slides.mjs) | Visual QA (desktop or real phone emulation, normal or answered state) |
 
 ---
 
-## 1. Core Architectural Rules
+## 1. Engine Capabilities (what you can build)
 
-1. **Zero Dependencies:** Use pure Vanilla HTML5, CSS3, and ES6+ JavaScript. Never introduce NPM runtime packages, bundlers, or external CSS/JS CDNs.
-2. **Offline `file:///` Compatibility:** Slide data is defined on `window.PRESENTATION_DATA` inside `slides.js` (never fetched via `fetch('slides.json')`, which fails under `file:///` CORS).
-3. **Shared Engine:** All courses mount the shared runtime from `tutorials/_engine/player.css` and `tutorials/_engine/player.js`.
-4. **1 MP3 Per Slide:** Every slide references `audio/slide-XX.mp3`. When audio finishes (`ended` event), the player does **not** auto-advance; it triggers a neon pulse on the `Next` button (`→`) for manual learner control.
-5. **No In-Slide Quizzes:** Keep presentations visual, story-driven, and analogy-rich. Place a practical real-world challenge on the final `mission` slide.
-6. **Secret Hub Isolation:** Register new courses in `tutorials/index.html`, but **never** link `tutorials/` from the root `index.html`, `school/`, or `habits/`.
-7. **Click-to-Read Interactive Main Cards:** Primary card components (`.hero-card`, `.concept-card`, `.callout-card`, `.mission-step-card`) play matching pre-rendered `.mp3` clips using the identical narration voice when clicked. Clicking an active card pauses it; switching slides stops playback.
-8. **Staggered Keynote Entrance Animations:** Child elements animate automatically into place when `.slide.active` is applied, with spring curves and staggered delays (cards sliding up from lower, split tiles zooming from center, list points fading in). Pressing `R` or Replay resets and re-triggers animations synchronously with audio.
+| Slide type | Desktop 16:9 | Mobile 9:16 | Voiced extras (besides slide narration) | Scored |
+| :--- | :---: | :---: | :--- | :---: |
+| `hero` (intro, 3 highlight cards) | ✅ | ✅ | click-to-read cards → `-card-N` | |
+| `cards` (3–4 concept cards / analogies) | ✅ | ✅ (≤3) | click-to-read cards → `-card-N` | |
+| `compare` (Așa NU vs Așa DA) | ✅ | ✅ stacked | | |
+| `mockup` (simulated app UI + callouts) | ✅ | ❌ **never on mobile** | click-to-read callouts → `-card-N` | |
+| `code` (highlighted, step-through lines) | ✅ | ✅ wraps | each step note → `-step-N` | |
+| `quiz` (multiple choice, 1 correct) | ✅ | ✅ | explanation → `-explain` | ✅ |
+| `input` (typed answer, lenient matching) | ✅ | ✅ | explanation → `-explain` | ✅ |
+| `reveal` (tap-to-flip flashcards) | ✅ | ✅ | card backs → `-card-N` | |
+| `mission` (hands-on challenge, anywhere) | ✅ | ✅ | click-to-read steps → `-step-N` | |
+| `results` (first-try score + confetti) | ✅ | ✅ | | shows score |
+
+Engine behaviours you get for free:
+- **No auto-advance.** When narration ends, the Next button pulses (HUD on desktop, `›` on mobile).
+- **Sound effects** (`sfx.js`, synthesized, no files): tap, flip, question, hint, wrong, correct, results. Disable per deck with `sfx: false`.
+- **Code steps consume Next.** Next/→/tap advances the highlight first and leaves the slide after the last step. Prev steps back, and entering backwards lands on the last step.
+- **Answer flow:** wrong → "try again" + shake → 2nd wrong shows the hint → 3rd wrong reveals the answer + voiced explanation. Next is never blocked.
+- **Keyboard:** ←/→/PageUp/PageDown navigate, Space play/pause, R replay (re-runs animations), M mute, F fullscreen (desktop), 1–4 answer a quiz. Keys typed into an answer box never navigate.
+- **Mobile Stories:** tap-to-start cover (unlocks audio), segmented progress bar, tap left third = back / rest = forward, swipe, no captions.
+- Staggered entrance animations per layout, plus author classes `anim-slide-up|down|left|right|zoom|fade` + `delay-1..8`.
 
 ---
 
-## 2. Step-by-Step Course Creation Workflow
+## 2. Core Rules
 
-When asked to create a new course `<slug>` (kebab-case, e.g., `word-crash-course`):
+1. **Zero dependencies, offline `file:///`.** Vanilla HTML/CSS/JS only: no npm runtime packages, bundlers or CDNs. Slide data lives in `slides.js`, never fetched JSON.
+2. **One format per deck.** `format: "desktop"` (default) or `"mobile"`. If both are wanted, build two decks (`<slug>` and `<slug>-mobile`) sharing the same content and audio.
+3. **Shared engine.** Every deck loads `tutorials/_engine/` files. Never copy engine code into a course.
+4. **1 MP3 per slide** at `audio/<slide-id>.mp3`, plus the extra clips in §1. `generate_audio.py` derives all of them from `slides.js`.
+5. **Interactivity is optional and placed on purpose.** Ask the user (Step 0). Kids decks: roughly one interaction every 3–4 slides, ending with `results` if any `quiz`/`input` exist. Tech talks: `code` slides plus an occasional `quiz`. A `mission` can sit anywhere, not only last.
+6. **Secret hub isolation.** Register decks in `tutorials/index.html`. **Never** link `tutorials/` from the root `index.html`, `school/` or `habits/`.
 
-### Step 1: Scaffold Course Directory
-Create `tutorials/<slug>/` with the following structure:
-```text
-tutorials/<slug>/
-├── index.html          # Course player shell
-├── theme.css           # Course theme variables & custom mockup styles
-├── slides.js           # window.PRESENTATION_DATA definition
-└── audio/              # Per-slide MP3 voice-over files
-    ├── slide-01.mp3
-    └── ...
+---
+
+## 3. Workflow
+
+### Step 0: Interview the user first
+Before scaffolding, ask (question tool, 2–4 questions per round) about anything the request doesn't already answer. **Always cover:**
+1. **Format + audience:** desktop 16:9 or mobile Stories 9:16, and who's watching (kid's age, family, devs, client).
+2. **Language + voice:** RO or EN; brand names, acronyms or English loanwords that need phonetic `tts` spellings.
+3. **Length + interactivity:** number of slides; whether to include quizzes, typed answers, flashcards, a mission, a final score, and roughly where.
+4. **Look & brand:** default dark site theme, a different accent, light/corporate, or a brand guide/screenshots to match.
+
+If the user wants a mobile deck with app-UI demos, explain that `mockup` is desktop-only and offer `code`, `cards` or a desktop deck instead.
+Then summarise the brief in one short block (format, audience, language/voice, slide list with types, theme) and build.
+
+### Step 1: Scaffold from a template
+```bash
+cp -r tutorials/_template/        tutorials/<slug>/   # desktop 16:9
+cp -r tutorials/_template-mobile/ tutorials/<slug>/   # mobile Stories 9:16
+rm -f tutorials/<slug>/audio/*.mp3                    # template clips don't belong to the new deck
 ```
+Then edit `index.html`: `<title>`, `lang`. Keep the stylesheet/script order exactly:
+- CSS: `../_engine/player.css` → (mobile only) `../_engine/stories.css` → `./theme.css`
+- JS: `./slides.js` → `../_engine/sfx.js` → `../_engine/highlight.js` → `../_engine/player.js`
+- Mobile viewport meta: `width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content`
 
-### Step 2: Create `tutorials/<slug>/index.html`
-Maintain the exact stylesheet and script load order:
-```html
-<!DOCTYPE html>
-<html lang="ro">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Course Title | virusescu Tutorials</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
-  <link rel="stylesheet" href="../_engine/player.css">
-  <link rel="stylesheet" href="./theme.css">
-</head>
-<body>
-  <div id="deck-viewport" class="deck-viewport"></div>
-  <script src="./slides.js"></script>
-  <script src="../_engine/player.js"></script>
-</body>
-</html>
-```
-
-### Step 3: Create `tutorials/<slug>/theme.css`
-Pick the starting point that matches the requested look, then follow **Section 6 (Theming)**:
-
-| Desired look | Start from |
+### Step 2: Theme (`theme.css`)
+| Desired look | Do |
 | :--- | :--- |
-| Dark stage (site default), just a different accent color | Token-only override (below). Nothing else needed. |
-| Light / white / corporate / brand-guideline deck | Copy [`templates/theme-light.css`](templates/theme-light.css) and edit its `BRAND TOKENS` block. |
+| Dark site stage, different accent | Token-only override: `--theme-accent`, `--theme-accent-glow`, `--theme-badge` |
+| Light / corporate / brand guide (desktop) | Copy `templates/theme-light.css`, edit its `BRAND TOKENS`; follow §5 |
 
-Token-only override for dark decks:
-```css
-:root {
-  --theme-accent: #185abd;
-  --theme-accent-glow: rgba(24, 90, 189, 0.35);
-  --theme-badge: #00ff85;
-}
+Keep `slides.js` `theme` equal to the CSS tokens (or omit it): it is applied inline and wins.
+
+### Step 3: Author `slides.js`
+Set `format`, `lang`, `sfx`, then the slides. See [`references/slide-types.md`](references/slide-types.md) for every type, and [`references/interactive.md`](references/interactive.md) / [`references/mobile-stories.md`](references/mobile-stories.md) when relevant.
+
+### Step 4: Generate voice-over
+```bash
+# Romanian: ALWAYS Edge-TTS (Kokoro has no Romanian phonetics and outputs gibberish)
+python tutorials/_engine/generate_audio.py --course <slug> --engine edge --voice ro-RO-EmilNeural
+# English: local Kokoro-82M
+python tutorials/_engine/generate_audio.py --course <slug> --engine kokoro --voice am_michael
 ```
+Existing non-empty files are skipped. After editing slides, regenerate only those: `--only slide-05,slide-07 --force`.
+For a `<slug>-mobile` twin with identical narration, copy `audio/*.mp3` instead of synthesizing twice.
 
-> [!IMPORTANT]
-> Changing tokens alone **cannot** produce a light theme. The engine hardcodes white text and dark surfaces in about 25 places.
-> Read [`references/engine-dom.md`](references/engine-dom.md) before writing any non-token override.
-
-### Step 4: Author `tutorials/<slug>/slides.js`
-Populate `window.PRESENTATION_DATA` using the schema and slide type taxonomy in **Section 3**.
-
-### Step 5: Generate Voice-Over Audio
-Run the audio generator from the repository root:
-
-* **For Romanian (`ro`):** ALWAYS use Edge-TTS with `ro-RO-EmilNeural` (Kokoro does NOT support Romanian phonetics and outputs unintelligible phonemes):
-  ```bash
-  python tutorials/_engine/generate_audio.py --course <slug> --engine edge --voice ro-RO-EmilNeural
-  ```
-* **For English (`en`):** Use local **Kokoro-82M** with voice `am_michael` (100% offline, studio cadence):
-  ```bash
-  python tutorials/_engine/generate_audio.py --course <slug> --engine kokoro --voice am_michael
-  ```
-- Verify that every slide's `audio/slide-XX.mp3` exists and is non-empty.
-
-### Step 6: Register Course in `tutorials/index.html`
-Add a glassmorphic course card inside the `.courses-grid` container in `tutorials/index.html` with title, subtitle, slide count badge, estimated duration, and link to `./<slug>/index.html`.
-
-### Step 7: Visual QA (Optional / On-Demand)
-*Only execute this step if the user requests visual evaluation or complains about the layout/styling*:
-```powershell
-powershell -ExecutionPolicy Bypass -File .agents/skills/presentation-creator/scripts/screenshot-slides.ps1 -Course <slug>
-```
-PNGs are saved to `tutorials/<slug>/.screenshots/`. Inspect each slide for contrast, alignment, and spacing against the design tokens, and fix any styling issues.
-
----
-
-## 3. `slides.js` Schema & Slide Type Taxonomy
-
-```javascript
-window.PRESENTATION_DATA = {
-  id: "course-slug",
-  title: "Course Main Title",
-  subtitle: "Short engaging subtitle",
-  theme: {
-    accent: "#185abd",
-    accentGlow: "rgba(24, 90, 189, 0.35)",
-    badgeColor: "#00ff85"
-  },
-  slides: [
-    // Array of slide objects (see 5 layout types below)
-  ]
-};
-```
-
-### Supported Slide Types (`slide.type`)
-
-#### 1. `hero` — High-Impact Introduction
-Used for Slide 01 or major section openers.
-```javascript
-{
-  id: "slide-01",
-  type: "hero",
-  badge: "MODULUL 1 • INTRODUCERE",
-  title: "Superputerile unui Document",
-  subtitle: "De ce folosim Word și nu WhatsApp sau Notepad?",
-  audio: "audio/slide-01.mp3",
-  narration: "Salutare! Te-ai întrebat vreodată de ce scriem referate sau proiecte în Microsoft Word, și nu direct pe WhatsApp? Hai să descoperim împreună!",
-  content: {
-    highlights: [
-      { icon: "⚡", title: "Control Total", text: "Aranjezi titluri, pagini și fonturi exact cum vrei." },
-      { icon: "📄", title: "Gata de Print", text: "Fiecare pagină arată impecabil pe orice ecran sau imprimantă." },
-      { icon: "🪄", title: "Automatizare", text: "Cuprinsul și numerotarea se fac singure în 3 secunde." }
-    ]
-  }
-}
-```
-
-#### 2. `compare` — Two-Column "Așa NU vs Așa DA"
-Used to contrast a common mistake against the smart workflow.
-```javascript
-{
-  id: "slide-04",
-  type: "compare",
-  badge: "REGULA DE AUR",
-  title: "Capcana Colorării Manuale",
-  subtitle: "De ce nu vopsim titlurile de mână?",
-  audio: "audio/slide-04.mp3",
-  narration: "Mulți fac greșeala să selecteze textul, să-l mărească și să-l coloreze manual. Dar pentru Word, acela rămâne un simplu text vopsit!",
-  content: {
-    left: {
-      tag: "❌ AȘA NU • Formatare Manuală",
-      title: "Text doar „vopsit”",
-      points: [
-        "Selectezi textul, pui mărimea 20 și culoarea albastră.",
-        "Word NU știe că acela este un capitol real.",
-        "Dacă ai 20 de capitole, pierzi o oră să le modifici pe toate."
-      ]
-    },
-    right: {
-      tag: "✅ AȘA DA • Stiluri Inteligente",
-      title: "Eticheta Heading 1",
-      points: [
-        "Apeși un singur buton: Heading 1 (Titlu 1).",
-        "Word înțelege structura documentului tău.",
-        "Schimbi stilul o dată și toate cele 20 de capitole se actualizează instant!"
-      ]
-    }
-  }
-}
-```
-
-#### 3. `cards` — 3 to 4 Concept Cards with Analogies
-Used to explain mental models (e.g., Chef vs Recipe, App vs File Format).
-```javascript
-{
-  id: "slide-02",
-  type: "cards",
-  badge: "CONCEPT CHEIE",
-  title: "Aplicația vs Fișierul .docx",
-  subtitle: "Bucătarul și Caietul cu Rețete",
-  audio: "audio/slide-02.mp3",
-  narration: "Gândește-te la Microsoft Word ca la un bucătar priceput, iar la fișierul punct docx ca la caietul cu rețete...",
-  content: {
-    cards: [
-      { icon: "👨‍🍳", tag: "PROGRAMUL", title: "Microsoft Word (Bucătarul)", text: "Este aplicația instalată pe calculator care știe să gătească și să aranjeze textul." },
-      { icon: "📓", tag: "FIȘIERUL", title: "Documentul .docx (Rețeta)", text: "Este fișierul salvat de tine, pe care îl poți trimite pe email sau deschide oriunde." },
-      { icon: "🌍", tag: "COMPATIBILITATE", title: "Liber pe orice dispozitiv", text: "Aceeași rețetă .docx poate fi deschisă și în Google Docs, LibreOffice sau pe telefon." }
-    ]
-  }
-}
-```
-
-#### 4. `mockup` — Simulated App UI + Visual Callouts
-Used to demonstrate real application interfaces (e.g., Word Ribbon, A4 page preview, TOC generator).
-```javascript
-{
-  id: "slide-05",
-  type: "mockup",
-  badge: "SECRETELE WORD",
-  title: "Magia Stilurilor: Heading 1 & 2",
-  subtitle: "Etichete inteligente pentru capitole și subcapitole",
-  audio: "audio/slide-05.mp3",
-  narration: "Sus în panglica Home găsești caseta Styles. Când apeși pe Heading 1, îi pui textului o etichetă inteligentă de capitol principal!",
-  content: {
-    callouts: [
-      { step: "1", title: "Selectează rândul titlului", text: "Pune cursorul pe titlul capitolului tău." },
-      { step: "2", title: "Apasă pe Heading 1", text: "Din meniul Home → galeria Styles." },
-      { step: "3", title: "Folosește Heading 2", text: "Pentru subcapitolele din interiorul capitolului." }
-    ],
-    mockupHtml: `<div class="word-window">...</div>`
-  }
-}
-```
-
-#### 5. `mission` — Final Real-World Practical Challenge
-Used as the final slide of a course. Never put quizzes inside the presentation; give a concrete 5-minute hands-on mission in the real software.
-```javascript
-{
-  id: "slide-08",
-  type: "mission",
-  badge: "MISIUNEA TA PRACTICĂ • 5 MINUTE",
-  title: "Testează Superputerile în Word!",
-  subtitle: "Deschide Microsoft Word și parcurge cei 3 pași de mai jos",
-  audio: "audio/slide-08.mp3",
-  narration: "Acum e rândul tău! Deschide Microsoft Word și hai să facem împreună un document cu cuprins automat în mai puțin de cinci minute!",
-  content: {
-    goal: "Creează o mini-poveste sau o listă cu 3 jocuri/rețete preferate și generează cuprinsul automat.",
-    steps: [
-      { number: "01", title: "Scrie 3 Titluri de Capitole", text: "Deschide un document gol în Word și scrie 3 titluri pe rânduri diferite, cu câte o propoziție sub fiecare." },
-      { number: "02", title: "Aplică Stilul Heading 1", text: "Selectează fiecare titlu și apasă pe butonul Heading 1 (Titlu 1) din bara Home." },
-      { number: "03", title: "Generează Cuprinsul Magic", text: "Mergi la primul rând, intră în meniul References → Table of Contents și alege primul model!" }
-    ],
-    reward: "🏆 Misiune îndeplinită! Acum știi secretul pe care 90% dintre utilizatori îl descoperă abia la facultate."
-  }
-}
-```
-
----
-
-## 4. Voice-Over Strategy & Pedagogy Guidelines
-
-1. **Target Language Engine Selection (Strict Rule):**
-   - **Romanian (`ro`):** **MANDATORY**: Always synthesize via Edge-TTS using `ro-RO-EmilNeural` (`--engine edge --voice ro-RO-EmilNeural`). **NEVER use Kokoro for Romanian text**, as Kokoro lacks Romanian G2P (grapheme-to-phoneme) models and outputs garbled gibberish ("Sims language").
-   - **English (`en`):** Default to local **Kokoro-82M** with voice `am_michael` (`--engine kokoro --voice am_michael`) for 100% offline studio-grade narration.
-2. **Setup Script & Local Weights:**
-   - New environments run `tutorials/_engine/setup_voices.bat` to install `kokoro-onnx`, `soundfile`, `edge-tts`, and download weights into `tutorials/_engine/models/`.
-   - Downloaded models (`*.onnx`, `*.bin`) are strictly excluded from git tracking via `.gitignore`.
-3. **Voice & Tone:** Enthusiastic, clear, warm mentor addressing family/learners (including a 12-year-old). Use relatable analogies (*The Chef vs The Recipe*, *Clothes of Letters*, *Smart Labels*).
-4. **Length per Slide:** Keep `narration` between **30 and 55 words** (~15–25 seconds of spoken audio).
-5. **TTS Prosody & Phonetic Respelling:**
-   - Use commas, exclamation marks, and ellipses (`...`) to create natural breathing pauses.
-   - When writing Romanian, always use proper diacritics (`ă, â, î, ș, ț`).
-   - **Phonetic overrides for brand names and acronyms:**
-     TTS engines often butcher brand names, English loanwords, or Romanian acronyms (e.g. pronouncing *Agricover* as "agri-co-ver" instead of "Agri Covăr", *APIA* as individual letters, or *Crop360* as English words).
-     Use optional `narrationTts` on slides and `tts` on card items:
-     - `narration`: Displayed visually to the user on the slide.
-     - `narrationTts`: Read exclusively by the TTS engine (e.g. `"Bine ați venit la Agri Covăr!"`).
-     - `tts`: Read by the TTS engine for cards/callouts/steps (e.g. `tts: "Distribuție Agri Biznis..."`).
-     Common phonetic fakes:
-     - `Agricover` → `Agri Covăr`
-     - `AgriFinance` → `Agri Fainans`
-     - `AgriBusiness` → `Agri Biznis`
-     - `Technology` → `Tehnologii`
-     - `APIA` → `apia` (reads as a single word instead of spelling A-P-I-A)
-     - `IFN` → `I F N` (spaces ensure each letter is pronounced distinctly)
-     - `NDVI` → `N D V I`
-     - `Crop360` → `Crop trei sute șaizeci`
-
----
-
-## 5. Staggered Animation System & Author Guidelines
-
-The shared engine (`tutorials/_engine/player.css`) provides a built-in entrance animation system powered by CSS keyframes and spring timing curves (`cubic-bezier(0.175, 0.885, 0.32, 1.15)`):
-
-### 1. Automatic Timing by Layout Archetype
-Whenever a slide receives `.active`, the engine automatically sequences child elements:
-- **`hero`**: Category badge pops first (`0.04s`), title slides in from left (`0.12s`), subtitle fades up (`0.22s`), and the 3 hero cards slide up from lower position one by one (`0.24s`, `0.38s`, `0.52s`).
-- **`compare`**: The two large split columns zoom in from the center with a delayed spring pop (Wrong column at `0.22s`, Right column at `0.40s`). Comparison list points then slide up one by one (`0.48s`, `0.62s`, `0.76s`, `0.90s`).
-- **`cards`**: Concept cards zoom into place staggered (`0.22s`, `0.38s`, `0.54s`, `0.70s`).
-- **`mockup`**: Left action callouts slide in from the left sequentially (`0.22s`, `0.38s`, `0.54s`), while the right application chrome / document preview zooms in from the right (`0.32s`).
-- **`mission`**: Goal banner slides down (`0.18s`), the 3 action steps spring up one by one (`0.30s`, `0.46s`, `0.62s`), and the reward banner fades in last (`0.80s`).
-
-### 2. Manual Utility Classes for Custom Slides
-When building custom slide content, authors can apply these utility classes directly:
+### Step 5: Register in the hub
+Add a card inside `.courses-grid` in `tutorials/index.html` (newest first):
 ```html
-<!-- Entrance styles -->
-<div class="anim-slide-up delay-2">Slides from 70px lower</div>
-<div class="anim-slide-left delay-3">Slides in from left</div>
-<div class="anim-slide-right delay-4">Slides in from right</div>
-<div class="anim-zoom delay-1">Zooms in from center with spring</div>
-<div class="anim-fade delay-5">Gentle opacity fade</div>
-
-<!-- Timing delays -->
-.delay-1 /* 0.1s */  .delay-2 /* 0.2s */  .delay-3 /* 0.3s */  .delay-4 /* 0.4s */
-.delay-5 /* 0.5s */  .delay-6 /* 0.6s */  .delay-7 /* 0.7s */  .delay-8 /* 0.8s */
+<a href="./<slug>/index.html" class="course-card" style="--card-accent: #ff7a3d; --card-glow: rgba(255, 122, 61, 0.32);">
+  <div class="course-card-top">
+    <div class="course-icon-box" style="color: #ff7a3d;">🏷️</div>
+    <div class="course-badges">
+      <span class="course-badge mobile">📱 Mobil</span>          <!-- mobile decks only -->
+      <span class="course-badge">11 Slide-uri</span>
+      <span class="course-badge highlight">Interactiv</span>     <!-- or Voice-Over -->
+    </div>
+  </div>
+  <h2 class="course-title">Course Title</h2>
+  <p class="course-desc">One or two sentences on what the learner gets.</p>
+  <div class="course-tags"><span class="course-tag">Topic</span> …</div>
+  <div class="course-action" style="color: #ff7a3d;"><span>Începe Prezentarea (~6 min)</span><span class="course-action-arrow">→</span></div>
+</a>
 ```
 
-### 3. Replay Synchronization
-When a user presses `R` or clicks the HUD replay button, `player.js` forces a DOM reflow on the active slide, cleanly resetting and re-running all staggered animations synchronously with the audio narration.
+### Step 6: Validate (always)
+```bash
+node .agents/skills/presentation-creator/scripts/validate-course.mjs <slug>
+```
+Fix every `ERROR`. Fix `WARN`s unless there is a reason not to, and mention any you leave.
+
+### Step 7: Visual QA
+Run it for new decks, new slide types or layouts, theme work, and whenever the user reports visual problems:
+```bash
+S=.agents/skills/presentation-creator/scripts/screenshot-slides.mjs
+node $S <slug>                       # desktop 1600×900
+node $S <slug> --mobile              # real phone emulation 390×844 @2x
+node $S <slug> --state answered      # quiz/input solved, code on last step, cards flipped
+node $S <slug> --mobile --cover      # the tap-to-start cover
+node $S <slug> --slides 3,5-7        # subset
+```
+PNGs go to `tutorials/<slug>/.screenshots/` (git-ignored). Look at every slide for clipping, overflow, contrast and empty space, and check the answered state of interactive slides.
+Don't use plain `msedge --headless --screenshot` for phone sizes: headless windows can't go below ~484px wide and give misleading results.
+
+### Editing an existing deck
+- Change text → edit `slides.js` → `generate_audio.py --only <ids> --force` → validate.
+- Adding/removing slides: ids are `slide-XX` and audio names derive from ids. When renumbering, rename the matching `audio/slide-XX*.mp3` files too (or regenerate with `--force`), then validate.
 
 ---
 
-## 6. Theming: Writing Correct `theme.css` Overrides
+## 4. Voice-Over & Pedagogy
 
-`theme.css` loads **after** `player.css`, so a selector with the same specificity wins without `!important`. The work is mostly about targeting the **right selectors** and overriding **every** hardcoded color.
-
-### 6.1 Golden Rules
-1. **Only use selectors the engine actually renders.** The full DOM/class map is in [`references/engine-dom.md`](references/engine-dom.md). Never guess names like `.stage`, `.slide-category`, `.concept-card-title`, `.hud-btn` or `.compare-col-title`: they don't exist and fail silently. The real names are `.deck-stage`, `.slide-badge`, `.concept-title`, `.btn-hud`, `.compare-title`.
-2. **Tokens are only half the theme.** `--bg-card`, `--text-muted`, `--theme-accent` and the rest cover the shared surfaces. About 25 declarations hardcode `#ffffff` text, dark gradients and neon-green borders (listed in `engine-dom.md` §5). A light theme must override all of them, which [`templates/theme-light.css`](templates/theme-light.css) already does.
-3. **`slides.js` `theme` overrides `theme.css`.** `applyThemeTokens()` writes `theme.accent / accentGlow / badgeColor` as inline styles on `<html>`. Keep these equal to the CSS values, or leave them out.
-4. **Avoid `!important`.** Matching the engine's selector is enough. The one place it's needed is `.interactive-card.is-speaking`, because the engine itself uses `!important` there.
-5. **Never touch geometry tokens**: `--stage-scale` and the 1600×900 `.deck-stage` size. Keep the slide's bottom padding at 110px or more so content clears the HUD.
-6. **Contrast check per surface:** every text color must be chosen for the background it actually sits on. Light text on light cards was exactly the "barely readable" failure. Brand accents like neon green and bright orange are for titles, icons and bars, not for body text on white.
-7. **No external fonts or CDNs.** Put the brand font first in `--font-family`, followed by local fallbacks (`"Segoe UI", Arial, sans-serif`).
-
-### 6.2 Brand Template → Theme Workflow
-When the user supplies a brand guide or template screenshots:
-1. **Extract the tokens**: primary dark color, title color, 1–3 accent colors, gray surfaces, font, corner radius, and any signature motif (e.g. a tri-color strip).
-2. **Map the template's slide types to engine layouts**: cover → `hero` (dark brand background, logo top-left), "three pillars" → `cards`, rules/insight panel → the dark side of `compare` or `mission-goal-bar`, app screenshots → `mockup`.
-3. Copy `templates/theme-light.css` and fill in the `BRAND TOKENS`. Change the per-layout rules only where the template differs.
-4. **Logo and art** go in `tutorials/<slug>/assets/` (SVG preferred) and are referenced from CSS as `url("./assets/…")`, which works under `file:///`. Use `.slide::after` for the logo, with a light variant on the dark `hero` slide. Tell the user when a logo is a placeholder.
-5. Run **Step 7: Visual QA**, then iterate.
-
-### 6.3 Icons & Custom Markup
-- `icon` fields (hero/cards) and `mockupHtml` are injected as **raw HTML**, so prefer inline SVG line icons (`stroke="currentColor"`) over emojis for corporate decks. The icon circle's `color` then sets the stroke.
-- `slides.js` may wrap its content in an IIFE to define icon or mockup constants (`(function(){ const ICONS = {...}; window.PRESENTATION_DATA = {...}; })();`). `generate_audio.py` reads the file through Node `eval`, so this works as long as Node is installed. Keep `narration` and card text as plain strings.
-- Style `mockupHtml` with **course-prefixed classes** (e.g. `.c360-*`, `.word-*`) defined in that course's `theme.css`. Never use inline styles for a full mockup, and remember these classes are not part of the starter template.
-
-### 6.4 Layout Pitfalls (seen in practice)
-| Symptom | Cause | Fix |
-| :--- | :--- | :--- |
-| Huge, mostly empty cards or columns | `cards` / `compare` / `mission` stretch to fill the body | `align-items: center` on `.slide-body` + `min-height` on cards; `.mission-steps { flex: 0 0 auto }` |
-| Dark halo behind a light slide | `.deck-viewport` background-image and `.deck-stage` radial gradient | Set `background-image: none` and give the stage a plain background |
-| Thin accent line at the top of every slide | `.deck-stage::before` | `display: none`, or restyle it |
-| 🎯 / ✕ / ✓ glyphs clash with the brand | Hardcoded engine glyphs | Hide `.mission-goal-icon`; restyle `.point-icon` as filled circles |
-| Logo overlaps the title | Long title under a top-right logo | `.slide-header { max-width: ~1150px }` |
+1. **Engines (strict):** Romanian → Edge-TTS `ro-RO-EmilNeural`, **never Kokoro**. English → Kokoro `am_michael`.
+2. **Setup:** new machines run `tutorials/_engine/setup_voices.bat` (installs `kokoro-onnx`, `soundfile`, `edge-tts`, downloads weights to `tutorials/_engine/models/`, which is git-ignored).
+3. **Tone:** enthusiastic, warm mentor; relatable analogies (*The Chef vs The Recipe*, *tags are boxes*). Kids: short sentences, "tu", a challenge feel.
+4. **Narration length:** 30–55 words for content slides (~15–25 s); 15–45 for `quiz`/`input`/`reveal` (the learner should act, not listen).
+5. **Prosody:** commas, exclamation marks and ellipses for pauses; always Romanian diacritics (`ă â î ș ț`).
+6. **Phonetic overrides:** `narration` is the slide text; `narrationTts` (slide), `tts` (cards, steps, flashcards, code steps) and `explanationTts` (quiz/input) are what the TTS reads. Use them for brands, acronyms, English words and **code** (TTS reads `<h1>` badly → `"h unu"`).
+   Common fixes: `Agricover → Agri Covăr`, `AgriFinance → Agri Fainans`, `AgriBusiness → Agri Biznis`, `APIA → apia`, `IFN → I F N`, `NDVI → N D V I`, `Crop360 → Crop trei sute șaizeci`, `HTML → H T M L`, `YouTube → Iutub`, `href → h ref`, `</a> → bară a`.
 
 ---
 
-## 7. Validation Checklist Before Completing a Course
+## 5. Theming (desktop decks)
 
-- [ ] `tutorials/<slug>/index.html`, `theme.css`, and `slides.js` exist and follow the schema.
-- [ ] Every slide in `slides.js` has a corresponding `tutorials/<slug>/audio/slide-XX.mp3` file (> 5 KB).
-- [ ] Every `theme.css` selector exists in `references/engine-dom.md` (or is a course-prefixed mockup class).
-- [ ] `slides.js` `theme` values match the `theme.css` accent and badge tokens.
-- [ ] If user reported styling or visual complaints, `scripts/screenshot-slides.ps1` was executed and screenshots reviewed.
-- [ ] Opening `tutorials/<slug>/index.html` renders all slides at 16:9 without scrollbars.
-- [ ] `tutorials/index.html` includes a card linking to `./<slug>/index.html`.
-- [ ] Root `index.html` remains untouched (zero public links to `tutorials/`).
+`theme.css` loads after the engine CSS, so matching the engine's selector is enough. No `!important`, except `.interactive-card.is-speaking`.
+
+1. **Only use selectors the engine renders** ([`references/engine-dom.md`](references/engine-dom.md)). Invented names (`.stage`, `.slide-category`, `.hud-btn`) fail silently.
+2. **Tokens are half the theme.** About 25 declarations hardcode white text and dark surfaces (`engine-dom.md` §5). A light theme must override all of them; `templates/theme-light.css` does. The interactive/code types use tokens (`--bg-card`, `--text-main`, `--answer-wrong`, `--answer-hint`, `--code-*`), and code panels stay dark on purpose.
+3. **Never touch geometry:** `--stage-scale`, the 1600×900 stage, and the ≥110px bottom padding that clears the HUD.
+4. **Contrast per surface:** pick each text color for the background it actually sits on. Bright brand accents are for titles, icons and bars, not body text on white.
+5. **No external fonts/CDNs:** brand font first in `--font-family`, then `"Segoe UI", Arial, sans-serif`.
+6. **Brand template → theme:** extract the tokens (dark primary, title color, 1–3 accents, grays, font, radius, motif). Map the template's slides to engine layouts (cover → `hero`, pillars → `cards`, insight panel → `compare`/`mission-goal-bar`, screenshots → `mockup`). Put logos/art in `tutorials/<slug>/assets/` (SVG) and reference them via `url("./assets/…")`. Say so when a logo is a placeholder.
+7. **Icons & custom markup:** `icon` fields and `mockupHtml` are raw HTML, so prefer inline SVG (`stroke="currentColor"`) for corporate decks. Style mockups with course-prefixed classes (`.c360-*`, `.word-*`) in the course's `theme.css`. `slides.js` may use an IIFE for icon/mockup constants (`generate_audio.py` evaluates it with Node).
+
+Layout pitfalls seen in practice:
+| Symptom | Fix |
+| :--- | :--- |
+| Huge mostly-empty cards/columns | `align-items: center` on `.slide-body` + `min-height` on cards; `.mission-steps { flex: 0 0 auto }` |
+| Dark halo behind a light slide | `.deck-viewport { background-image: none }`, plain `.deck-stage` background |
+| Thin accent line atop every slide | `.deck-stage::before { display: none }` |
+| 🎯 ✕ ✓ glyphs clash with the brand | hide `.mission-goal-icon`; restyle `.point-icon` |
+| Logo overlaps the title | `.slide-header { max-width: ~1150px }` |
+
+---
+
+## 6. Done Checklist
+
+- [ ] Step 0 interview done; brief summarised to the user.
+- [ ] `validate-course.mjs <slug>` passes with 0 errors (remaining warnings explained).
+- [ ] Screenshots reviewed in the deck's format, including `--state answered` for interactive decks.
+- [ ] `tutorials/index.html` has the card (with `📱 Mobil` badge for mobile decks).
+- [ ] Root `index.html` untouched (no public link to `tutorials/`).

@@ -8,6 +8,9 @@ Supports:
 Generates:
   - Main slide narration (audio/slide-XX.mp3)
   - Interactive main card audio (audio/slide-XX-card-Y.mp3, audio/slide-XX-step-Y.mp3)
+  - Quiz / typed-answer explanations (audio/slide-XX-explain.mp3)
+  - Flashcard backs (reveal → -card-Y) and code step notes (code → -step-Y)
+Use --only slide-05[,slide-07] --force to regenerate selected slides.
 =============================================================================
 """
 
@@ -123,7 +126,40 @@ def get_audio_items(presentation_data):
                     "text": card_text.strip()
                 })
 
+        # 3. Interactive slides: only the explanation is voiced (feedback uses engine sound effects)
+        elif stype in ("quiz", "input") and (content.get("explanationTts") or content.get("explanation")):
+            items.append({
+                "id": f"{s_id}-explain",
+                "audio": f"audio/{s_id}-explain.mp3",
+                "text": (content.get("explanationTts") or content["explanation"]).strip()
+            })
+
+        # 4. Flashcards: the back side is read when a card is flipped
+        elif stype == "reveal" and "cards" in content:
+            for idx, c in enumerate(content["cards"]):
+                items.append({
+                    "id": f"{s_id}-card-{idx+1}",
+                    "audio": f"audio/{s_id}-card-{idx+1}.mp3",
+                    "text": (c.get("tts") or c.get("back", "")).strip()
+                })
+
+        # 5. Code steps: each note is read as its lines get highlighted
+        elif stype == "code" and "steps" in content:
+            for idx, st in enumerate(content["steps"]):
+                items.append({
+                    "id": f"{s_id}-step-{idx+1}",
+                    "audio": f"audio/{s_id}-step-{idx+1}.mp3",
+                    "text": (st.get("tts") or st.get("note", "")).strip()
+                })
+
     return items
+
+def filter_items(items, only):
+    """Keep only the tracks of the given slide ids (e.g. 'slide-05,slide-07'), including their card/step/explain clips."""
+    if not only:
+        return items
+    wanted = [s.strip() for s in only.split(",") if s.strip()]
+    return [it for it in items if any(it["id"] == w or it["id"].startswith(f"{w}-") for w in wanted)]
 
 def ensure_kokoro_models():
     onnx_file = os.path.join(MODELS_DIR, "kokoro-v0_19.onnx")
@@ -207,6 +243,8 @@ def main():
     parser.add_argument("--speed", type=float, default=1.0, help="Speech speed (Kokoro only, default 1.0)")
     parser.add_argument("--rate", default="+0%", help="Edge-TTS speech rate (e.g. +5%%, -5%%)")
     parser.add_argument("--force", action="store_true", help="Force overwrite existing audio files")
+    parser.add_argument("--list", action="store_true", help="Print the expected audio tracks as JSON and exit (used by validate-course.mjs)")
+    parser.add_argument("--only", default=None, help="Comma-separated slide ids to (re)generate, e.g. slide-05,slide-07 (combine with --force)")
 
     args = parser.parse_args()
 
@@ -225,7 +263,10 @@ def main():
         sys.exit(1)
 
     data = extract_presentation_data(slides_js_path)
-    items = get_audio_items(data)
+    items = filter_items(get_audio_items(data), args.only)
+    if args.list:
+        print(json.dumps(items, ensure_ascii=False))
+        return
     if not items:
         print(f"[ERROR] No slides or interactive elements could be extracted from {slides_js_path}")
         sys.exit(1)
