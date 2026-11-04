@@ -23,3 +23,6 @@ Thumbs.db
 .DS_Store
 
 tutorials/*/.screenshots/
+
+# Junction to .agents/skills so Claude Code picks up the shared skills
+.claude/skills/presentation-creator
