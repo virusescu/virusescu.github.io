@@ -1,0 +1,6 @@
+/* Crash Course: HTML & CSS Styling — Dark cyber stage with electric cyan accent */
+:root {
+  --theme-accent: #38bdf8;
+  --theme-accent-glow: rgba(56, 189, 248, 0.32);
+  --theme-badge: #00ff85;
+}
