@@ -51,9 +51,9 @@ will watch on a phone. Desktop decks are **not** adapted for phones, so build a 
 | Flashcard back | ≤ 40 characters |
 
 Slides do scroll vertically if content overflows, but a story that needs scrolling is too long, so split it into two slides.
-`validate-course.mjs` checks the title, card count, card text and code budgets.
+On request, `validate-course.mjs` checks the title, card count, card text and code budgets.
 
-## 4. QA
+## 4. QA (only when the user asks for a review or reports a problem)
 
 ```bash
 node .agents/skills/presentation-creator/scripts/screenshot-slides.mjs <slug> --mobile

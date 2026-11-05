@@ -23,8 +23,8 @@ Builds narrated, data-driven decks on the shared engine in `tutorials/_engine/`.
 | [`references/mobile-stories.md`](references/mobile-stories.md) | Building a `format: "mobile"` deck: Stories UX, text budgets, phone pitfalls |
 | [`references/engine-dom.md`](references/engine-dom.md) | Before writing **any** non-token CSS: real DOM/class map, tokens, hardcoded dark values |
 | [`templates/theme-light.css`](templates/theme-light.css) | Light, corporate or brand-guideline themes (desktop) |
-| [`scripts/validate-course.mjs`](scripts/validate-course.mjs) | Always, before reporting a deck as done |
-| [`scripts/screenshot-slides.mjs`](scripts/screenshot-slides.mjs) | Visual QA (desktop or real phone emulation, normal or answered state) |
+| [`scripts/screenshot-slides.mjs`](scripts/screenshot-slides.mjs) | End of every build: slide images for the user to review |
+| [`scripts/validate-course.mjs`](scripts/validate-course.mjs) | Only when the user asks for a review or reports a problem |
 
 ---
 
@@ -128,28 +128,32 @@ Add a card inside `.courses-grid` in `tutorials/index.html` (newest first):
 </a>
 ```
 
-### Step 6: Validate (always)
+### Step 6: Hand over screenshots for the user to review
+Generate the slide images in the deck's format. **Don't open or review them yourself.**
 ```bash
-node .agents/skills/presentation-creator/scripts/validate-course.mjs <slug>
+node .agents/skills/presentation-creator/scripts/screenshot-slides.mjs <slug>            # desktop deck
+node .agents/skills/presentation-creator/scripts/screenshot-slides.mjs <slug> --mobile   # mobile deck
 ```
-Fix every `ERROR`. Fix `WARN`s unless there is a reason not to, and mention any you leave.
+Give the user the folder (`tutorials/<slug>/.screenshots/`, git-ignored), then stop and wait:
+- **"go"** (or similar) → commit and push to `main`.
+- **Feedback** → fix what they describe, regenerate only the affected slides (`--slides 3,5`), and hand over again.
 
-### Step 7: Visual QA
-Run it for new decks, new slide types or layouts, theme work, and whenever the user reports visual problems:
-```bash
-S=.agents/skills/presentation-creator/scripts/screenshot-slides.mjs
-node $S <slug>                       # desktop 1600×900
-node $S <slug> --mobile              # real phone emulation 390×844 @2x
-node $S <slug> --state answered      # quiz/input solved, code on last step, cards flipped
-node $S <slug> --mobile --cover      # the tap-to-start cover
-node $S <slug> --slides 3,5-7        # subset
-```
-PNGs go to `tutorials/<slug>/.screenshots/` (git-ignored). Look at every slide for clipping, overflow, contrast and empty space, and check the answered state of interactive slides.
-Don't use plain `msedge --headless --screenshot` for phone sizes: headless windows can't go below ~484px wide and give misleading results.
+Don't run checks or reviews on your own (Claude reviewing screenshots, the validator, extra screenshot states). Use them only when the user explicitly asks for a review or reports a problem; see *Checks on request* below.
 
 ### Editing an existing deck
-- Change text → edit `slides.js` → `generate_audio.py --only <ids> --force` → validate.
-- Adding/removing slides: ids are `slide-XX` and audio names derive from ids. When renumbering, rename the matching `audio/slide-XX*.mp3` files too (or regenerate with `--force`), then validate.
+- Change text → edit `slides.js` → `generate_audio.py --only <ids> --force` → hand over screenshots of those slides.
+- Adding/removing slides: ids are `slide-XX` and audio names derive from ids. When renumbering, rename the matching `audio/slide-XX*.mp3` files too (or regenerate with `--force`).
+
+### Checks on request (only when the user asks for a review or reports a problem)
+| Tool | What it does |
+| :--- | :--- |
+| `node .agents/skills/presentation-creator/scripts/validate-course.mjs <slug>` | Seconds. Errors: unsupported type for the format, missing/empty audio, broken quiz/input/code data, wrong `index.html` wiring. Warnings: narration length, text budgets, theme drift, missing hub card. |
+| `screenshot-slides.mjs <slug> --state answered` | Interactive slides solved (explanations visible, code on last step, cards flipped) |
+| `screenshot-slides.mjs <slug> --mobile --cover` | The mobile tap-to-start cover |
+| `screenshot-slides.mjs <slug> --slides 3,5-7` | Just some slides |
+| Claude reviews the PNGs | Only on explicit request: check clipping, overflow, contrast, empty space |
+
+Don't use plain `msedge --headless --screenshot` for phone sizes: headless windows can't go below ~484px wide and give misleading results.
 
 ---
 
@@ -185,13 +189,3 @@ Layout pitfalls seen in practice:
 | Thin accent line atop every slide | `.deck-stage::before { display: none }` |
 | 🎯 ✕ ✓ glyphs clash with the brand | hide `.mission-goal-icon`; restyle `.point-icon` |
 | Logo overlaps the title | `.slide-header { max-width: ~1150px }` |
-
----
-
-## 6. Done Checklist
-
-- [ ] Step 0 interview done; brief summarised to the user.
-- [ ] `validate-course.mjs <slug>` passes with 0 errors (remaining warnings explained).
-- [ ] Screenshots reviewed in the deck's format, including `--state answered` for interactive decks.
-- [ ] `tutorials/index.html` has the card (with `📱 Mobil` badge for mobile decks).
-- [ ] Root `index.html` untouched (no public link to `tutorials/`).

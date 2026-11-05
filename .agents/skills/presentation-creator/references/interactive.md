@@ -55,6 +55,6 @@ Override per slide with `match: { caseSensitive: true }` (e.g. code identifiers)
 - Desktop: quiz options in a 2×2 grid (3 options → one row); keys `1–4` answer; the input is never autofocused (so arrow keys keep navigating until the learner clicks it).
 - Mobile: options stack full-width; tapping an option, card or the input never triggers tap-to-navigate. The first tap outside an open keyboard only closes it. The input uses `enterkeyhint="done"` and no autocorrect/autocapitalize, and the stage follows `visualViewport` so the field stays above the keyboard.
 
-## 5. QA
+## 5. QA (only when the user asks for a review or reports a problem)
 
 `node scripts/screenshot-slides.mjs <slug> --state answered` renders every interactive slide solved (explanation visible, code on the last step, flashcards flipped, results at full score), which is the quickest way to check feedback panels fit.
