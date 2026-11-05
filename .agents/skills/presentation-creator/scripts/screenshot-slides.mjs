@@ -165,7 +165,8 @@ try {
   if (!total) throw new Error("Could not read slide count from window.PRESENTATION_DATA");
 
   for (const n of cover ? [1] : parseSlides(opt("--slides"), total)) {
-    if (n !== 1 || opt("--slides")) await load(n);
+    // slide 1 is already loaded (re-navigating to the identical URL never fires a new load event)
+    if (n !== 1) await load(n);
     const shot = await cdp.send("Page.captureScreenshot", { format: "png" });
     const file = path.join(outDir, cover ? "cover.png" : `slide-${String(n).padStart(2, "0")}.png`);
     fs.writeFileSync(file, Buffer.from(shot.data, "base64"));

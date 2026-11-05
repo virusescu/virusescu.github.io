@@ -68,12 +68,11 @@
     #0a1428;
 }
 
-/* Portrait on the intro slide: photo from assets/christian.jpg; initials show until then.
-   When the photo is added, set content: "" so the initials don't sit on top of it. */
+/* Portrait on the intro slide (assets/christian.jpg); the gradient shows only if the photo fails to load */
 .slide[data-slide-id="slide-01"] .slide-header::before {
-  content: "CL";
-  width: 96px;
-  height: 96px;
+  content: "";
+  width: 112px;
+  height: 112px;
   margin-bottom: 6px;
   border-radius: 50%;
   display: flex;
