@@ -1,0 +1,75 @@
+/* The Lup: dark navy corporate theme, single electric-blue accent (mobile Stories) */
+
+:root {
+  --theme-accent: #4f8cff;
+  --theme-accent-glow: rgba(79, 140, 255, 0.32);
+  --theme-badge: #8fb8ff;
+
+  --bg-primary: #0a1428;
+  --bg-card: rgba(19, 33, 62, 0.78);
+  --bg-card-border: rgba(143, 184, 255, 0.14);
+  --text-main: #eef3fb;
+  --text-muted: #9fb0cc;
+  --font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+}
+
+/* Navy backdrop instead of the site's green/cyan glows */
+.deck-viewport {
+  background-color: var(--bg-primary);
+  background-image: radial-gradient(circle at 50% 10%, rgba(79, 140, 255, 0.10) 0%, transparent 55%);
+}
+
+.format-mobile .deck-stage {
+  background: linear-gradient(180deg, #0f1d3a 0%, #0a1428 55%, #081022 100%);
+}
+
+/* Thin accent rule under each header: corporate touch */
+.format-mobile .slide-header::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin-top: 6px;
+  border-radius: 2px;
+  background: var(--theme-accent);
+}
+
+.slide-badge {
+  background: rgba(79, 140, 255, 0.10);
+  border-color: rgba(79, 140, 255, 0.28);
+}
+
+/* Line icons inherit the accent */
+.hero-card-icon,
+.concept-icon {
+  color: var(--theme-accent);
+  background: rgba(79, 140, 255, 0.10);
+  border-color: rgba(79, 140, 255, 0.22);
+}
+
+.hero-card-icon svg,
+.concept-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Stories chrome in navy */
+.stories-top {
+  background: linear-gradient(180deg, rgba(10, 20, 40, 0.95) 55%, rgba(10, 20, 40, 0));
+}
+
+.stories-next {
+  background: rgba(19, 33, 62, 0.92);
+}
+
+.stories-cover {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(79, 140, 255, 0.28), transparent 62%),
+    #0a1428;
+}
+
+.stories-next.pulse-ready,
+.stories-start,
+.quiz-option.is-correct .quiz-option-key {
+  color: #061230;
+}
