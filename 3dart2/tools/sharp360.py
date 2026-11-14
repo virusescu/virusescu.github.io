@@ -1,7 +1,7 @@
 """Cut perspective views from an equirectangular panorama and run Apple SHARP on each.
 
 Run with the SHARP environment:
-    D:/Programs/ml-sharp/.venv/Scripts/python.exe tools/sharp360.py <panorama> <outdir>
+    D:/Programs/PythonLibs/sharp/Scripts/python.exe tools/sharp360.py <panorama> <outdir>
 
 World convention (three.js): +Y up, -Z forward (panorama centre), +X right.
 Panorama pixel (u, v) in [0,1): lon = (u - 0.5) * 2pi, lat = (0.5 - v) * pi.
@@ -15,8 +15,11 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import sys
 from pathlib import Path
+
+os.environ.setdefault("TORCH_HOME", r"D:\Programs\AIModels\torch")  # SHARP checkpoint lives here
 
 import numpy as np
 import torch

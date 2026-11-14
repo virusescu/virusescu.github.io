@@ -1,7 +1,7 @@
 """Stitch the per-view SHARP Gaussians (from sharp360.py) into one 360 degree splat.
 
 Run with the SHARP environment:
-    D:/Programs/ml-sharp/.venv/Scripts/python.exe tools/merge.py <viewsdir> <out.ply>
+    D:/Programs/PythonLibs/sharp/Scripts/python.exe tools/merge.py <viewsdir> <out.ply>
 
 Per view:
   1. Scale: SHARP's metric scale drifts from view to view. Each horizon view is scaled so

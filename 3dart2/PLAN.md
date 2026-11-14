@@ -18,12 +18,21 @@ Decided: local only (B1, then B2), a step of about 1 m, 360° from the start, pe
 Commands (from `3dart2/`):
 
 ```
-D:/Programs/ml-sharp/.venv/Scripts/python.exe tools/sharp360.py ../3dart/scenes/winter-landscape/color.jpg work/views
-D:/Programs/ml-sharp/.venv/Scripts/python.exe tools/merge.py work/views work/world.ply
-D:/Programs/spark-src/rust/target/release/build-lod.exe work/world.ply --quality --csplat --rad-chunked
+D:/Programs/PythonLibs/sharp/Scripts/python.exe tools/sharp360.py ../3dart/scenes/winter-landscape/color.jpg work/views
+D:/Programs/PythonLibs/sharp/Scripts/python.exe tools/merge.py work/views work/world.ply
+D:/Programs/DevTools/src/spark/rust/target/release/build-lod.exe work/world.ply --quality --csplat --rad-chunked
 ```
 
-Set `TORCH_HOME=D:/Programs/ml-sharp/torch-cache` for SHARP. Installed on the PC, all in `D:\Programs`: `uv` (Python 3.13), `ml-sharp` with PyTorch 2.8 CUDA 12.8, `shot-venv` (Playwright), Rust (GNU toolchain), `mingw64`, `spark-src` (for `build-lod`).
+Installed on the PC, grouped in `D:\Programs`:
+
+| Folder | Contents |
+|---|---|
+| `PythonLibs\uv` | uv, Python 3.13, download cache |
+| `PythonLibs\sharp`, `flux`, `shot` | Python environments: SHARP (PyTorch 2.8, CUDA 12.8), FLUX outpainting (diffusers), screenshots (Playwright) |
+| `AIModels\torch` | SHARP checkpoint (`TORCH_HOME`, set by `sharp360.py` itself) |
+| `AIModels\huggingface` | FLUX models and the Hugging Face token (`HF_HOME`) |
+| `DevTools\rust`, `DevTools\mingw64` | Rust (GNU toolchain) and MinGW, only needed to rebuild `build-lod` |
+| `DevTools\src\ml-sharp`, `DevTools\src\spark` | Source of SHARP and Spark; `build-lod.exe` is in `spark\rust\target\release` |
 
 What it looks like: the stitch has no visible seams, trees occlude the far shore correctly, and at the edge of the 1 m bubble there are no holes. Weak spots: the river reflection becomes a flat streak on the water when seen from the side, and the snow right at the feet is soft.
 

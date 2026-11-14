@@ -1,6 +1,6 @@
 """Render screenshots of the viewer from fixed camera poses, using the installed Edge headless.
 
-    D:/Programs/shot-venv/Scripts/python.exe tools/shots.py <extra-query-or-""> <out.jpg> [pose ...]
+    D:/Programs/PythonLibs/shot/Scripts/python.exe tools/shots.py <extra-query-or-""> <out.jpg> [pose ...]
 
 extra-query: e.g. "splat=work/world.ply" or "budget=1000000" (phone-sized splat budget).
 
