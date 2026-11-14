@@ -33,7 +33,7 @@ from plyfile import PlyData, PlyElement
 from sharp.utils import color_space as cs_utils
 from sharp.utils import linalg
 
-EYE = 1.6  # metres above the ground
+EYE = 2.2  # metres above the ground; higher = the whole world sits further away
 SKY_FROM = 80.0
 SKY_R = 250.0
 NEAR_MIN = 0.6  # nothing closer than this to the eye

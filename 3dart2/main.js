@@ -42,7 +42,7 @@ function resize() {
   const w = window.innerWidth, h = window.innerHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
-  baseFov = w < h ? 88 : 68; // portrait phones need a taller view to feel wide enough
+  baseFov = w < h ? 100 : 80; // portrait phones need a taller view to feel wide enough
   camera.fov = baseFov / zoom;
   camera.updateProjectionMatrix();
 }
