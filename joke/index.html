@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 5-Minute Fix — Illustrated SVG &amp; Audio Joke | virusescu</title>
+  <meta name="description" content="An illustrated, animated SVG programmer joke with Kokoro AI voice-over, karaoke-synced text, and reactive background animations.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <style>
+    :root {
+      --bg: #070b12;
+      --surface: rgba(13, 20, 33, 0.86);
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #00ff85;
+      --cyan: #38bdf8;
+      --warn: #f59e0b;
+      --danger: #f43f5e;
+      --violet: #a78bfa;
+      --glow-color: rgba(0, 255, 133, 0.14);
+      --font-sans: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      --font-mono: "Cascadia Code", "Fira Code", Consolas, "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Mood-reactive ambient backdrop */
+    .ambient-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      transition: background 0.8s ease;
+      background:
+        radial-gradient(circle at 20% 20%, var(--glow-color), transparent 50%),
+        radial-gradient(circle at 82% 78%, rgba(56, 189, 248, 0.11), transparent 50%),
+        linear-gradient(180deg, #06090f 0%, #090f1a 100%);
+    }
+
+    body[data-mood="warn"] .ambient-layer { --glow-color: rgba(245, 158, 11, 0.2); }
+    body[data-mood="chaos"] .ambient-layer { --glow-color: rgba(249, 115, 22, 0.24); }
+    body[data-mood="alert"] .ambient-layer {
+      --glow-color: rgba(244, 63, 94, 0.3);
+      animation: pulseAlert 1.4s ease-in-out infinite;
+    }
+    body[data-mood="void"] .ambient-layer { --glow-color: rgba(167, 139, 250, 0.2); }
+    body[data-mood="tense"] .ambient-layer { --glow-color: rgba(250, 204, 21, 0.22); }
+    body[data-mood="victory"] .ambient-layer { --glow-color: rgba(0, 255, 133, 0.3); }
+    body[data-mood="punchline"] .ambient-layer { --glow-color: rgba(59, 130, 246, 0.34); }
+
+    @keyframes pulseAlert {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.24); }
+    }
+
+    #bgCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: radial-gradient(circle at center, black 42%, transparent 96%);
+    }
+
+    .app {
+      position: relative;
+      z-index: 2;
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 18px 20px 44px;
+    }
+
+    /* Header */
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 12px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 255, 133, 0.1);
+      border: 1px solid rgba(0, 255, 133, 0.35);
+      flex-shrink: 0;
+    }
+
+    .title-wrap h1 {
+      font-size: clamp(1.08rem, 2vw, 1.42rem);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(0, 255, 133, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(0, 255, 133, 0.3);
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: rgba(30, 41, 59, 0.78);
+      color: var(--text);
+      padding: 8px 13px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      background: rgba(51, 65, 85, 0.88);
+      border-color: rgba(148, 163, 184, 0.38);
+      transform: translateY(-1px);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, #00ff85 0%, #10b981 100%);
+      color: #03150d;
+      border-color: transparent;
+      box-shadow: 0 0 22px rgba(0, 255, 133, 0.28);
+    }
+
+    button.primary.needs-click {
+      animation: invitePulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes invitePulse {
+      0%, 100% { box-shadow: 0 0 14px rgba(0, 255, 133, 0.35); transform: scale(1); }
+      50% { box-shadow: 0 0 32px rgba(0, 255, 133, 0.78); transform: scale(1.03); }
+    }
+
+    button.active-toggle {
+      border-color: rgba(0, 255, 133, 0.45);
+      color: var(--accent);
+    }
+
+    .autoplay-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: rgba(0, 255, 133, 0.11);
+      border: 1px solid rgba(0, 255, 133, 0.35);
+      color: #d1fae5;
+      font-size: 0.88rem;
+    }
+
+    .autoplay-banner.visible { display: flex; }
+
+    /* Scrubber */
+    .scrubber-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 16px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(12px);
+    }
+
+    .scrubber-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .timecode {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      min-width: 92px;
+      text-align: right;
+    }
+
+    .scrubber-track {
+      position: relative;
+      flex: 1;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .scrubber-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--cyan), var(--danger));
+      transition: width 0.08s linear;
+    }
+
+    /* Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.22fr 0.78fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    @media (max-width: 1020px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.38);
+    }
+
+    body[data-mood="punchline"] .panel.shake-on-punch {
+      animation: punchShake 0.48s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes punchShake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(3px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-5px, 0, 0); }
+      40%, 60% { transform: translate3d(5px, 0, 0); }
+    }
+
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .panel-title {
+      font-size: 0.94rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* Animated SVG Comic Stage */
+    .stage-wrap {
+      position: relative;
+      background: #070c16;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    svg#sceneSvg {
+      width: 100%;
+      height: auto;
+      display: block;
+      user-select: none;
+    }
+
+    /* SVG Internal Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes bouncePop {
+      0% { transform: scale(0.86) translateY(8px); opacity: 0; }
+      65% { transform: scale(1.03) translateY(-2px); opacity: 1; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    @keyframes steamRise {
+      0% { transform: translateY(4px) scaleX(1); opacity: 0; }
+      35% { opacity: 0.75; }
+      100% { transform: translateY(-16px) scaleX(1.2); opacity: 0; }
+    }
+    @keyframes shakeGentle {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-2px, 1px) rotate(-1deg); }
+      75% { transform: translate(2px, -1px) rotate(1deg); }
+    }
+    @keyframes spinGear {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes blinkPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    @keyframes soulRise {
+      0% { transform: translateY(8px) scale(0.9); opacity: 0.3; }
+      50% { transform: translateY(-14px) scale(1.02); opacity: 0.9; }
+      100% { transform: translateY(-32px) scale(1.08); opacity: 0; }
+    }
+    @keyframes shredDrop {
+      0% { transform: translateY(0px); opacity: 1; }
+      100% { transform: translateY(24px); opacity: 0; }
+    }
+
+    .anim-float { animation: floatSlow 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    .anim-pop { animation: bouncePop 0.45s cubic-bezier(.22,1,.36,1) both; transform-box: fill-box; transform-origin: center; }
+    .anim-steam { animation: steamRise 2.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+    .anim-shake { animation: shakeGentle 0.28s linear infinite; transform-box: fill-box; transform-origin: center; }
+    .anim-spin { animation: spinGear 5s linear infinite; transform-box: fill-box; transform-origin: center; }
+    .anim-blink { animation: blinkPulse 0.9s ease-in-out infinite; }
+    .anim-soul { animation: soulRise 2.8s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+    .anim-shred { animation: shredDrop 1.1s linear infinite; transform-box: fill-box; transform-origin: center; }
+
+    /* Compact SVG Telemetry Graph Strip below stage */
+    .mini-graph-wrap {
+      position: relative;
+      background: rgba(6, 10, 18, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 12px;
+      padding: 8px 10px 6px;
+    }
+
+    .mini-graph-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    svg#miniGraph {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .svg-tooltip {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -110%);
+      background: rgba(10, 15, 26, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 9px;
+      padding: 6px 9px;
+      font-size: 0.74rem;
+      white-space: nowrap;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.15s ease;
+      z-index: 10;
+    }
+
+    /* Transcript / Synced Story */
+    .transcript-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      max-height: 556px;
+      overflow-y: auto;
+      padding-right: 4px;
+      scroll-behavior: smooth;
+    }
+
+    .transcript-list::-webkit-scrollbar { width: 6px; }
+    .transcript-list::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.25);
+      border-radius: 999px;
+    }
+
+    .beat-card {
+      padding: 11px 13px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(15, 23, 42, 0.55);
+      cursor: pointer;
+      transition: all 0.24s ease;
+      opacity: 0.6;
+    }
+
+    .beat-card:hover { opacity: 0.92; border-color: rgba(148, 163, 184, 0.32); }
+    .beat-card.past { opacity: 0.72; }
+
+    .beat-card.active {
+      opacity: 1;
+      background: rgba(20, 32, 54, 0.96);
+      border-color: rgba(0, 255, 133, 0.55);
+      box-shadow: 0 0 22px rgba(0, 255, 133, 0.12);
+      transform: translateX(3px);
+    }
+
+    .beat-card.active[data-mood="chaos"],
+    .beat-card.active[data-mood="alert"] {
+      border-color: rgba(244, 63, 94, 0.65);
+      box-shadow: 0 0 22px rgba(244, 63, 94, 0.15);
+    }
+
+    .beat-card.active[data-mood="punchline"] {
+      border-color: rgba(59, 130, 246, 0.75);
+      box-shadow: 0 0 24px rgba(59, 130, 246, 0.22);
+    }
+
+    .beat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 5px;
+      font-family: var(--font-mono);
+      font-size: 0.71rem;
+      color: var(--muted);
+    }
+
+    .beat-badge {
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text);
+    }
+
+    .beat-card.active .beat-badge {
+      background: rgba(0, 255, 133, 0.16);
+      color: var(--accent);
+    }
+
+    .beat-card.active[data-mood="chaos"] .beat-badge,
+    .beat-card.active[data-mood="alert"] .beat-badge {
+      background: rgba(244, 63, 94, 0.18);
+      color: #fda4af;
+    }
+
+    .beat-text {
+      font-size: 0.93rem;
+      line-height: 1.52;
+      color: #cbd5e1;
+    }
+
+    .beat-card.active .beat-word.spoken {
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(0, 255, 133, 0.35);
+    }
+
+    .beat-card.active .beat-word.current {
+      color: var(--accent);
+      font-weight: 650;
+      text-decoration: underline;
+      text-decoration-color: rgba(0, 255, 133, 0.55);
+      text-underline-offset: 4px;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .footer-note a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body data-mood="calm">
+  <div class="ambient-layer"></div>
+  <canvas id="bgCanvas"></canvas>
+  <div class="grid-overlay"></div>
+
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="../index.html" title="Back to virusescu.github.io">
+        <div class="brand-mark">
+          <svg viewBox="0 0 40 40" width="22" height="22" fill="none">
+            <polygon points="20,34 6,9 34,9" fill="rgba(0,255,133,0.16)" stroke="#00ff85" stroke-width="2.6" stroke-linejoin="round"/>
+            <polyline points="13,15 20,27 27,15" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="title-wrap">
+          <h1>The 5-Minute Fix <span class="pill">ANIMATED SVG STORY</span></h1>
+          <div class="subtitle">Illustrated scene-by-scene &bull; Kokoro-82M voice-over &bull; Audio-synced text</div>
+        </div>
+      </a>
+
+      <div class="controls">
+        <button id="playBtn" class="primary" type="button">
+          <span id="playIcon">&#9654;</span>
+          <span id="playLabel">Play Joke</span>
+        </button>
+        <button id="restartBtn" type="button" title="Restart">&#8634; Restart</button>
+        <button id="speedBtn" type="button" title="Speed">1.0x</button>
+        <button id="sfxBtn" class="active-toggle" type="button" title="Sound Effects">SFX: ON</button>
+      </div>
+    </header>
+
+    <div id="autoplayBanner" class="autoplay-banner">
+      <span>Browser paused autoplay with sound. Click <strong>Play Joke</strong> (or press <strong>Space</strong>) to watch the animated scenes with audio.</span>
+      <button id="bannerPlayBtn" class="primary" type="button">&#9654; Start Audio</button>
+    </div>
+
+    <div class="scrubber-card">
+      <div class="scrubber-row">
+        <span class="pill" id="activeTimeLabel">Fri 4:55 PM</span>
+        <div class="scrubber-track" id="scrubberTrack" title="Click to seek">
+          <div class="scrubber-fill" id="scrubberFill"></div>
+        </div>
+        <span class="timecode" id="timecode">0:00 / 2:36</span>
+      </div>
+    </div>
+
+    <main class="main-grid">
+      <!-- Left: Illustrated Animated SVG Scene + Mini Telemetry Graph -->
+      <section class="panel shake-on-punch">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="live-dot"></span>
+            <span id="sceneTitle">Scene 1: "Quick 5-Minute Question"</span>
+          </div>
+          <span class="pill" id="moodPill">MOOD: CALM</span>
+        </div>
+
+        <div class="stage-wrap">
+          <svg id="sceneSvg" viewBox="0 0 820 390" role="img" aria-label="Animated comic SVG illustrating the programmer joke"></svg>
+        </div>
+
+        <div class="mini-graph-wrap" id="graphWrap">
+          <div class="mini-graph-head">
+            <span>INCIDENT GRAPH &bull; <span style="color:#00ff85;">Confidence: <strong id="kpiConfidence">96%</strong></span> &bull; <span style="color:#38bdf8;">Sanity: <strong id="kpiSanity">95%</strong></span> &bull; <span style="color:#fb7185;">Tabs: <strong id="kpiTabs">4</strong></span></span>
+            <span>Click graph dot to jump scene</span>
+          </div>
+          <svg id="miniGraph" viewBox="0 0 820 96"></svg>
+          <div id="svgTooltip" class="svg-tooltip"></div>
+        </div>
+      </section>
+
+      <!-- Right: Synced Story Transcript -->
+      <section class="panel shake-on-punch">
+        <div class="panel-header">
+          <div class="panel-title">Synced Story Transcript</div>
+          <span class="pill" id="beatCounter">SCENE 1 / 14</span>
+        </div>
+        <div class="transcript-list" id="transcriptList"></div>
+      </section>
+    </main>
+
+    <footer class="footer-note">
+      <span>Space: Play/Pause &bull; &larr;/&rarr;: Prev/Next Scene &bull; Click any line or graph dot to jump</span>
+      <span><a href="../index.html">virusescu.github.io</a></span>
+    </footer>
+  </div>
+
+  <audio id="jokeAudio" src="./joke.mp3" preload="auto"></audio>
+
+  <script>
+    const JOKE_DATA = {
+      totalDuration: 156.285,
+      beats: [
+        { id: 1, timeLabel: "Fri 4:55 PM", mood: "calm", confidence: 96, sanity: 95, tabs: 4, badge: "Quick Question", text: "A project manager walks up to a senior developer at four fifty-five on a Friday afternoon and says: \"Hey, quick question—can we just change one tiny button color before the weekend?\"", start: 0.25, end: 12.879 },
+        { id: 2, timeLabel: "Fri 4:56 PM", mood: "calm", confidence: 100, sanity: 94, tabs: 5, badge: "Famous Last Words", text: "The developer laughs and says: \"Sure, five minutes, tops. What could possibly go wrong?\"", start: 13.229, end: 19.011 },
+        { id: 3, timeLabel: "Fri 5:02 PM", mood: "warn", confidence: 78, sanity: 80, tabs: 9, badge: "legacy_final_v3_REAL.css", text: "At five oh two, he opens the stylesheet and discovers the button class is defined inside legacy_do_not_touch_final_v3_REAL.css.", start: 19.361, end: 30.198 },
+        { id: 4, timeLabel: "Fri 5:11 PM", mood: "chaos", confidence: 42, sanity: 48, tabs: 16, badge: "Layout Exploded", text: "He changes #3b82f6 to #10b981, hits save, and suddenly the entire checkout page flips upside down and starts speaking Portuguese.", start: 30.548, end: 42.815 },
+        { id: 5, timeLabel: "Fri 5:19 PM", mood: "chaos", confidence: 30, sanity: 36, tabs: 22, badge: "git blame -> SELF", text: "Confused, he runs git blame to see which lunatic wrote that CSS—only to discover the author was himself, three years ago, with a commit message reading: \"Temporary hack, fix Monday.\"", start: 43.165, end: 56.199 },
+        { id: 6, timeLabel: "Fri 5:34 PM", mood: "chaos", confidence: 18, sanity: 25, tabs: 31, badge: "Docker Downloading Earth", text: "At five thirty, he tries to revert, which triggers a CI pipeline that fails because Node sixteen is deprecated, Python wants a virtual environment, and Docker is downloading half the internet.", start: 56.549, end: 70.032 },
+        { id: 7, timeLabel: "Fri 6:15 PM", mood: "chaos", confidence: 12, sanity: 16, tabs: 47, badge: "47 Stack Overflow Tabs", text: "By six fifteen, he has forty-seven Stack Overflow tabs open, two are his own unanswered questions from 2021, and the top reply says: \"Never mind, figured it out.\"", start: 70.382, end: 82.926 },
+        { id: 8, timeLabel: "Fri 6:40 PM", mood: "alert", confidence: 5, sanity: 8, tabs: 58, badge: "AI Deleted Auth", text: "Desperate, he asks an AI assistant for help. It cheerfully replies: \"Great catch! Here is a clean, modern refactor,\" and deletes the entire authentication module.", start: 83.276, end: 94.519 },
+        { id: 9, timeLabel: "Fri 7:05 PM", mood: "alert", confidence: 2, sanity: 4, tabs: 64, badge: "Slack On Fire", text: "At seven PM, his coffee goes cold, Slack alerts start screaming, and the database is locked by a migration script from a microservice nobody remembers building.", start: 94.869, end: 106.282 },
+        { id: 10, timeLabel: "Fri 7:45 PM", mood: "void", confidence: 1, sanity: 2, tabs: 64, badge: "Woodworking?", text: "So he does what every battle-hardened engineer eventually does under extreme pressure: he closes his laptop, stares into the void, and whispers, \"Have I considered woodworking?\"", start: 106.632, end: 118.451 },
+        { id: 11, timeLabel: "Fri 8:42 PM", mood: "tense", confidence: 20, sanity: 18, tabs: 65, badge: "Line 412 Semicolon", text: "Then, at eight forty-two, with trembling hands, he deletes one stray semicolon on line four hundred and twelve, clears the cache, and hits refresh.", start: 119.101, end: 128.85 },
+        { id: 12, timeLabel: "Fri 8:43 PM", mood: "victory", confidence: 95, sanity: 96, tabs: 12, badge: "All Green!", text: "Miraculously, everything turns green. All tests pass. The button is emerald. Checkout works. Even the Portuguese vanished.", start: 129.2, end: 138.16 },
+        { id: 13, timeLabel: "Fri 8:45 PM", mood: "victory", confidence: 99, sanity: 98, tabs: 1, badge: "\"Took 5 Minutes\"", text: "Exhausted, he pushes to main, messages the project manager: \"Done! Just took five minutes,\" and collapses onto his keyboard.", start: 138.51, end: 146.766 },
+        { id: 14, timeLabel: "Mon 9:00 AM", mood: "punchline", confidence: 0, sanity: 0, tabs: 99, badge: "Switch It Back", text: "On Monday morning, the project manager replies: \"Awesome, thanks! Actually, the client liked the blue better—can we switch it back?\"", start: 147.416, end: 155.885 }
+      ]
+    };
+
+    const audio = document.getElementById("jokeAudio");
+    const playBtn = document.getElementById("playBtn");
+    const bannerPlayBtn = document.getElementById("bannerPlayBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const speedBtn = document.getElementById("speedBtn");
+    const sfxBtn = document.getElementById("sfxBtn");
+    const playIcon = document.getElementById("playIcon");
+    const playLabel = document.getElementById("playLabel");
+    const autoplayBanner = document.getElementById("autoplayBanner");
+    const scrubberTrack = document.getElementById("scrubberTrack");
+    const scrubberFill = document.getElementById("scrubberFill");
+    const timecodeEl = document.getElementById("timecode");
+    const activeTimeLabel = document.getElementById("activeTimeLabel");
+    const moodPill = document.getElementById("moodPill");
+    const sceneTitle = document.getElementById("sceneTitle");
+    const beatCounter = document.getElementById("beatCounter");
+    const kpiConfidence = document.getElementById("kpiConfidence");
+    const kpiSanity = document.getElementById("kpiSanity");
+    const kpiTabs = document.getElementById("kpiTabs");
+    const transcriptList = document.getElementById("transcriptList");
+    const sceneSvg = document.getElementById("sceneSvg");
+    const miniGraph = document.getElementById("miniGraph");
+    const svgTooltip = document.getElementById("svgTooltip");
+    const graphWrap = document.getElementById("graphWrap");
+
+    let sfxEnabled = true;
+    let lastBeatIdx = -1;
+    let punchPlayed = false;
+    let victoryPlayed = false;
+    let audioCtx = null;
+    const speeds = [1.0, 1.25, 1.5, 0.85];
+    let speedIdx = 0;
+
+    // ---------------------------------------------------------
+    // 1. Web Audio SFX
+    // ---------------------------------------------------------
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) audioCtx = new Ctx();
+      }
+      if (audioCtx && audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+      return audioCtx;
+    }
+
+    function playTone(freq, dur, type = "sine", vol = 0.05, delay = 0) {
+      if (!sfxEnabled) return;
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      const t = ctx.currentTime + delay;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + dur + 0.02);
+    }
+
+    function playRimshot() {
+      if (!sfxEnabled) return;
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      playTone(170, 0.11, "triangle", 0.14, 0.0);
+      playTone(130, 0.14, "triangle", 0.16, 0.16);
+      const bufferSize = ctx.sampleRate * 0.45;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.14));
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = "highpass";
+      filter.frequency.value = 4800;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.12, ctx.currentTime + 0.34);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.78);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      noise.start(ctx.currentTime + 0.34);
+    }
+
+    function playBeatSfx(beat) {
+      if (!sfxEnabled) return;
+      if (beat.mood === "alert") {
+        playTone(620, 0.09, "square", 0.03, 0);
+        playTone(480, 0.11, "square", 0.03, 0.11);
+      } else if (beat.mood === "victory" && !victoryPlayed) {
+        victoryPlayed = true;
+        playTone(523.25, 0.14, "triangle", 0.07, 0);
+        playTone(659.25, 0.14, "triangle", 0.07, 0.09);
+        playTone(783.99, 0.25, "triangle", 0.08, 0.18);
+      } else if (beat.mood === "punchline" && !punchPlayed) {
+        punchPlayed = true;
+        setTimeout(() => playRimshot(), 7200);
+      } else {
+        playTone(440, 0.05, "sine", 0.022, 0);
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 2. Illustrated SVG Comic Scene Renderer (14 Scenes!)
+    // ---------------------------------------------------------
+    function speechBubble(x, y, w, h, textLines, tailDir = "left", bg = "#ffffff", fg = "#0f172a") {
+      const tail = tailDir === "left"
+        ? `<polygon points="${x + 26},${y + h - 2} ${x + 10},${y + h + 18} ${x + 48},${y + h - 2}" fill="${bg}"/>`
+        : tailDir === "right"
+          ? `<polygon points="${x + w - 48},${y + h - 2} ${x + w - 12},${y + h + 18} ${x + w - 26},${y + h - 2}" fill="${bg}"/>`
+          : `<polygon points="${x + w / 2 - 12},${y + h - 2} ${x + w / 2},${y + h + 16} ${x + w / 2 + 12},${y + h - 2}" fill="${bg}"/>`;
+
+      const linesSvg = textLines.map((line, i) =>
+        `<text x="${x + w / 2}" y="${y + 26 + i * 20}" text-anchor="middle" fill="${fg}" font-size="14" font-weight="700" font-family="Segoe UI, sans-serif">${line}</text>`
+      ).join("");
+
+      return `<g class="anim-pop">
+        ${tail}
+        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="${bg}" stroke="rgba(15,23,42,0.25)" stroke-width="2"/>
+        ${linesSvg}
+      </g>`;
+    }
+
+    function wallClock(cx, cy, timeText, alert = false) {
+      const ringColor = alert ? "#f43f5e" : "#475569";
+      return `<g transform="translate(${cx}, ${cy})">
+        <circle r="30" fill="#0f172a" stroke="${ringColor}" stroke-width="3"/>
+        <circle r="24" fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="1"/>
+        <text y="5" text-anchor="middle" fill="${alert ? '#fda4af' : '#e2e8f0'}" font-family="monospace" font-size="12" font-weight="700">${timeText}</text>
+      </g>`;
+    }
+
+    function devCharacter(x, y, state = "happy") {
+      // state: happy, cool, sweat, shock, facepalm, panic, void, tense, cheer, collapse, ghost
+      if (state === "collapse") {
+        return `<g transform="translate(${x}, ${y})">
+          <!-- Chair -->
+          <rect x="-32" y="40" width="64" height="14" rx="6" fill="#1e293b"/>
+          <!-- Slumped body onto desk -->
+          <path d="M-26,42 Q-5,8 35,28 L50,36 L-28,50 Z" fill="#1d4ed8"/>
+          <!-- Head flat on desk -->
+          <circle cx="48" cy="26" r="22" fill="#fbd3b6"/>
+          <path d="M28,16 Q48,-2 68,18 Q54,6 32,18 Z" fill="#1e293b"/>
+          <text x="82" y="2" fill="#94a3b8" font-family="monospace" font-size="16" font-weight="700" class="anim-float">Zzz...</text>
+        </g>`;
+      }
+
+      const bodyColor = state === "alert" || state === "panic" ? "#be123c" : state === "cheer" ? "#059669" : "#2563eb";
+      const headOffset = state === "shock" ? "rotate(-10)" : state === "void" ? "translate(0,4)" : "";
+      let eyes = `<circle cx="-8" cy="-4" r="2.8" fill="#0f172a"/><circle cx="8" cy="-4" r="2.8" fill="#0f172a"/>`;
+      let mouth = `<path d="M-8,7 Q0,13 8,7" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>`;
+      let extra = "";
+
+      if (state === "cool") {
+        eyes = `<rect x="-17" y="-9" width="14" height="9" rx="2" fill="#020617"/><rect x="3" y="-9" width="14" height="9" rx="2" fill="#020617"/><line x1="-3" y1="-5" x2="3" y2="-5" stroke="#020617" stroke-width="2"/>`;
+        mouth = `<path d="M-9,7 Q0,15 10,6" fill="none" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round"/>`;
+      } else if (state === "sweat") {
+        eyes = `<circle cx="-8" cy="-4" r="3" fill="#0f172a"/><circle cx="8" cy="-4" r="3" fill="#0f172a"/><path d="M-13,-11 L-4,-8 M4,-8 L13,-11" stroke="#0f172a" stroke-width="2"/>`;
+        mouth = `<path d="M-7,9 Q0,5 7,9" fill="none" stroke="#0f172a" stroke-width="2.3" stroke-linecap="round"/>`;
+        extra = `<path d="M24,-14 Q29,-4 24,0 Q19,-4 24,-14 Z" fill="#38bdf8" class="anim-float"/>`;
+      } else if (state === "shock" || state === "panic") {
+        eyes = `<circle cx="-8" cy="-5" r="5" fill="#fff" stroke="#0f172a" stroke-width="2"/><circle cx="-8" cy="-5" r="2" fill="#0f172a"/><circle cx="8" cy="-5" r="5" fill="#fff" stroke="#0f172a" stroke-width="2"/><circle cx="8" cy="-5" r="2" fill="#0f172a"/>`;
+        mouth = `<ellipse cx="0" cy="9" rx="6" ry="8" fill="#0f172a"/>`;
+        if (state === "panic") extra = `<text x="-38" y="-34" fill="#f43f5e" font-size="18" font-weight="800" class="anim-shake">?!</text>`;
+      } else if (state === "facepalm") {
+        eyes = `<line x1="-12" y1="-4" x2="-4" y2="-4" stroke="#0f172a" stroke-width="2.5"/><line x1="4" y1="-4" x2="12" y2="-4" stroke="#0f172a" stroke-width="2.5"/>`;
+        mouth = `<line x1="-7" y1="9" x2="7" y2="9" stroke="#0f172a" stroke-width="2.5"/>`;
+        extra = `<ellipse cx="10" cy="-2" rx="9" ry="12" fill="#f5c09e" stroke="#0f172a" stroke-width="1.5"/>`;
+      } else if (state === "void") {
+        eyes = `<circle cx="-8" cy="-4" r="4" fill="#1e1b4b"/><circle cx="8" cy="-4" r="4" fill="#1e1b4b"/><circle cx="-9" cy="-5" r="1.2" fill="#fff"/><circle cx="7" cy="-5" r="1.2" fill="#fff"/>`;
+        mouth = `<line x1="-5" y1="9" x2="5" y2="9" stroke="#0f172a" stroke-width="2"/>`;
+      } else if (state === "tense") {
+        eyes = `<circle cx="-8" cy="-4" r="4.5" fill="#fff" stroke="#0f172a" stroke-width="2"/><circle cx="-8" cy="-4" r="1.6" fill="#0f172a"/><circle cx="8" cy="-4" r="4.5" fill="#fff" stroke="#0f172a" stroke-width="2"/><circle cx="8" cy="-4" r="1.6" fill="#0f172a"/>`;
+        mouth = `<path d="M-8,8 L-4,6 L0,8 L4,6 L8,8" fill="none" stroke="#0f172a" stroke-width="2"/>`;
+      } else if (state === "cheer") {
+        eyes = `<path d="M-12,-4 Q-8,-9 -4,-4 M4,-4 Q8,-9 12,-4" fill="none" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round"/>`;
+        mouth = `<path d="M-10,5 Q0,17 10,5 Z" fill="#0f172a"/>`;
+        extra = `<path d="M-28,22 L-48,-14 M28,22 L48,-14" stroke="${bodyColor}" stroke-width="11" stroke-linecap="round"/>`;
+      } else if (state === "ghost") {
+        eyes = `<circle cx="-8" cy="-4" r="4.5" fill="#fff" stroke="#0f172a" stroke-width="2"/><circle cx="-8" cy="-4" r="1.5" fill="#0f172a"/><circle cx="8" cy="-4" r="4.5" fill="#fff" stroke="#0f172a" stroke-width="2"/><circle cx="8" cy="-4" r="1.5" fill="#0f172a"/>`;
+        mouth = `<ellipse cx="0" cy="9" rx="5" ry="7" fill="#0f172a"/>`;
+        extra = `<g class="anim-soul" opacity="0.75">
+          <path d="M-16,-40 Q0,-75 16,-40 Q18,-18 10,-22 Q0,-14 -10,-22 Q-18,-18 -16,-40 Z" fill="rgba(226,232,240,0.8)" stroke="#93c5fd" stroke-width="1.5"/>
+          <circle cx="-5" cy="-45" r="2" fill="#0f172a"/><circle cx="5" cy="-45" r="2" fill="#0f172a"/>
+        </g>`;
+      }
+
+      return `<g transform="translate(${x}, ${y})">
+        <!-- Chair back -->
+        <rect x="-34" y="18" width="68" height="62" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+        <!-- Torso -->
+        <path d="M-28,74 L-22,22 Q0,14 22,22 L28,74 Z" fill="${bodyColor}"/>
+        <!-- Head -->
+        <g transform="${headOffset}">
+          <circle cx="0" cy="-6" r="25" fill="#fbd3b6" stroke="#0f172a" stroke-width="2"/>
+          <path d="M-24,-12 Q-8,-36 18,-26 Q26,-20 24,-10 Q6,-22 -24,-12 Z" fill="#1e293b"/>
+          ${eyes}
+          ${mouth}
+          ${extra}
+        </g>
+      </g>`;
+    }
+
+    function pmCharacter(x, y, happy = true) {
+      return `<g transform="translate(${x}, ${y})">
+        <g class="anim-float">
+          <!-- Suit torso -->
+          <path d="M-26,78 L-20,24 Q0,16 20,24 L26,78 Z" fill="#334155"/>
+          <!-- Tie -->
+          <polygon points="0,24 -5,34 0,66 5,34" fill="#3b82f6"/>
+          <!-- Head -->
+          <circle cx="0" cy="-6" r="24" fill="#fde2c8" stroke="#0f172a" stroke-width="2"/>
+          <path d="M-23,-14 Q0,-34 23,-14 Q10,-22 -23,-14 Z" fill="#475569"/>
+          <circle cx="-8" cy="-5" r="2.6" fill="#0f172a"/>
+          <circle cx="8" cy="-5" r="2.6" fill="#0f172a"/>
+          ${happy ? '<path d="M-8,6 Q0,14 8,6" fill="none" stroke="#0f172a" stroke-width="2.4" stroke-linecap="round"/>' : ''}
+        </g>
+      </g>`;
+    }
+
+    function deskAndMonitor(screenContent, monitorClass = "", coffeeState = "hot", laptopClosed = false) {
+      const coffee = coffeeState === "hot"
+        ? `<g transform="translate(155, 272)">
+             <rect x="0" y="0" width="28" height="32" rx="5" fill="#e2e8f0"/>
+             <path d="M28,7 Q38,7 38,16 Q38,25 28,25" fill="none" stroke="#e2e8f0" stroke-width="4"/>
+             <path d="M8,-6 Q12,-14 8,-20 M19,-6 Q23,-14 19,-20" fill="none" stroke="#cbd5e1" stroke-width="2.2" stroke-linecap="round" class="anim-steam"/>
+           </g>`
+        : coffeeState === "cold"
+          ? `<g transform="translate(155, 272)">
+               <rect x="0" y="0" width="28" height="32" rx="5" fill="#64748b"/>
+               <path d="M28,7 Q38,7 38,16 Q38,25 28,25" fill="none" stroke="#64748b" stroke-width="4"/>
+               <text x="14" y="-8" text-anchor="middle" fill="#7dd3fc" font-size="16" class="anim-float">❄️</text>
+             </g>`
+          : `<g transform="translate(155, 286)">
+               <path d="M0,18 L12,4 L24,18 L34,12" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+               <circle cx="14" cy="14" r="4" fill="#38bdf8"/>
+             </g>`;
+
+      if (laptopClosed) {
+        return `<g>
+          <rect x="90" y="304" width="640" height="18" rx="6" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+          <rect x="330" y="290" width="160" height="14" rx="4" fill="#475569" stroke="#64748b" stroke-width="1.5"/>
+          ${coffee}
+        </g>`;
+      }
+
+      return `<g>
+        <!-- Desk -->
+        <rect x="90" y="304" width="640" height="18" rx="6" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+        <!-- Monitor stand -->
+        <rect x="394" y="274" width="32" height="30" fill="#334155"/>
+        <rect x="360" y="296" width="100" height="8" rx="4" fill="#475569"/>
+        <!-- Monitor Frame -->
+        <g class="${monitorClass}">
+          <rect x="235" y="74" width="350" height="206" rx="14" fill="#0b1220" stroke="#475569" stroke-width="4"/>
+          <rect x="249" y="88" width="322" height="178" rx="8" fill="#060a14"/>
+          ${screenContent}
+        </g>
+        <!-- Keyboard -->
+        <rect x="325" y="296" width="170" height="8" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+        ${coffee}
+      </g>`;
+    }
+
+    function renderScene(beatIdx) {
+      const id = beatIdx + 1;
+      let bg = `<rect width="820" height="390" fill="#09101d"/>`;
+      let body = "";
+
+      if (id === 1) {
+        // Scene 1: Fri 4:55 PM, PM walks up asking for tiny button color tweak
+        sceneTitle.textContent = "Scene 1: \"Quick 5-Minute Question\"";
+        body = `
+          ${wallClock(66, 54, "4:55")}
+          ${deskAndMonitor(`
+            <text x="270" y="122" fill="#00ff85" font-family="monospace" font-size="13">$ status: weekend_ready = true</text>
+            <rect x="335" y="152" width="150" height="44" rx="10" fill="#3b82f6"/>
+            <text x="410" y="179" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Checkout (#3b82f6)</text>
+          `, "", "hot")}
+          ${devCharacter(150, 224, "happy")}
+          ${pmCharacter(678, 224, true)}
+          ${speechBubble(520, 48, 244, 72, ["Hey, quick question!", "Change one tiny button color?"], "right")}
+        `;
+      } else if (id === 2) {
+        // Scene 2: Dev laughs "Sure, 5 mins tops!"
+        sceneTitle.textContent = "Scene 2: Famous Last Words";
+        body = `
+          ${wallClock(740, 62, "4:56")}
+          ${deskAndMonitor(`
+            <rect x="330" y="152" width="160" height="44" rx="10" fill="#3b82f6"/>
+            <text x="410" y="179" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Easy 5-min fix ✓</text>
+          `, "", "hot")}
+          ${devCharacter(155, 224, "cool")}
+          ${speechBubble(65, 62, 225, 72, ["Sure, 5 minutes, tops!", "What could go wrong? 😎"], "left", "#00ff85", "#041b11")}
+        `;
+      } else if (id === 3) {
+        // Scene 3: legacy_do_not_touch_final_v3_REAL.css + spider + warning tape
+        sceneTitle.textContent = "Scene 3: The Cursed Stylesheet";
+        body = `
+          ${wallClock(740, 62, "5:02")}
+          ${deskAndMonitor(`
+            <rect x="249" y="88" width="322" height="28" fill="#451a03"/>
+            <text x="410" y="107" text-anchor="middle" fill="#fbbf24" font-family="monospace" font-size="11.5" font-weight="700">⚠ legacy_do_not_touch_final_v3_REAL.css</text>
+            <text x="266" y="146" fill="#94a3b8" font-family="monospace" font-size="12">/* Abandon hope all ye who edit here */</text>
+            <text x="266" y="170" fill="#f59e0b" font-family="monospace" font-size="12">.btn { background: #3b82f6 !important; }</text>
+            <text x="266" y="196" fill="#ef4444" font-family="monospace" font-size="12">/* DO NOT TOUCH OR CHECKOUT BREAKS */</text>
+            <!-- Spider dangling -->
+            <line x1="538" y1="88" x2="538" y2="148" stroke="#94a3b8" stroke-width="1.5"/>
+            <circle cx="538" cy="154" r="7" fill="#cbd5e1" class="anim-float"/>
+          `, "", "hot")}
+          ${devCharacter(150, 224, "sweat")}
+        `;
+      } else if (id === 4) {
+        // Scene 4: Upside down checkout speaking Portuguese!
+        sceneTitle.textContent = "Scene 4: Upside Down & Speaking Portuguese";
+        body = `
+          ${wallClock(740, 62, "5:11", true)}
+          ${deskAndMonitor(`
+            <g transform="rotate(180 410 177)">
+              <rect x="268" y="114" width="284" height="126" rx="10" fill="#1e1b4b" stroke="#f43f5e" stroke-width="2"/>
+              <text x="410" y="150" text-anchor="middle" fill="#fde047" font-size="16" font-weight="800">BEM-VINDO AO CHECKOUT!</text>
+              <rect x="335" y="170" width="150" height="40" rx="8" fill="#10b981"/>
+              <text x="410" y="195" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">FINALIZAR COMPRA</text>
+            </g>
+          `, "anim-shake", "hot")}
+          ${devCharacter(150, 224, "panic")}
+          ${speechBubble(570, 140, 210, 66, ["Por que está de", "cabeça para baixo?! 🇧🇷"], "left", "#fef08a", "#451a03")}
+        `;
+      } else if (id === 5) {
+        // Scene 5: git blame -> SELF
+        sceneTitle.textContent = "Scene 5: git blame Reveals the Monster";
+        body = `
+          ${wallClock(740, 62, "5:19", true)}
+          ${deskAndMonitor(`
+            <text x="266" y="120" fill="#38bdf8" font-family="monospace" font-size="13">$ git blame legacy_final_v3.css</text>
+            <rect x="266" y="138" width="288" height="62" rx="8" fill="rgba(244,63,94,0.16)" stroke="#f43f5e" stroke-width="1.5"/>
+            <text x="278" y="160" fill="#fda4af" font-family="monospace" font-size="12.5" font-weight="700">Author: YOU (3 years ago)</text>
+            <text x="278" y="182" fill="#e2e8f0" font-family="monospace" font-size="12">"Temporary hack, fix Monday."</text>
+            <text x="410" y="238" text-anchor="middle" fill="#fbbf24" font-size="15" font-weight="800">⬅ IT WAS YOU ALL ALONG</text>
+          `, "", "hot")}
+          ${devCharacter(150, 224, "facepalm")}
+        `;
+      } else if (id === 6) {
+        // Scene 6: Node 16 dead, Python venv tangle, Docker downloading the Earth
+        sceneTitle.textContent = "Scene 6: CI Pipeline Hell";
+        body = `
+          ${wallClock(740, 62, "5:34", true)}
+          ${deskAndMonitor(`
+            <!-- Node 16 tombstone -->
+            <g transform="translate(295, 190)">
+              <path d="M-28,45 L-28,-12 Q0,-35 28,-12 L28,45 Z" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+              <text x="0" y="5" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="11" font-weight="700">RIP</text>
+              <text x="0" y="22" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="10">Node 16</text>
+            </g>
+            <!-- Python venv error -->
+            <g transform="translate(410, 130)">
+              <g class="anim-shake">
+                <rect x="-56" y="-22" width="112" height="44" rx="8" fill="#422006" stroke="#f59e0b" stroke-width="2"/>
+                <text x="0" y="-2" text-anchor="middle" fill="#fde047" font-family="monospace" font-size="11" font-weight="700">🐍 python venv</text>
+                <text x="0" y="14" text-anchor="middle" fill="#fca5a5" font-family="monospace" font-size="10">MISSING!</text>
+              </g>
+            </g>
+            <!-- Docker downloading globe -->
+            <g transform="translate(515, 195)">
+              <circle cx="0" cy="-22" r="24" fill="#0284c7" stroke="#38bdf8" stroke-width="2" class="anim-spin"/>
+              <path d="M-12,-32 Q0,-18 12,-28 M-16,-14 Q0,-10 14,-18" fill="none" stroke="#86efac" stroke-width="3"/>
+              <text x="0" y="22" text-anchor="middle" fill="#7dd3fc" font-family="monospace" font-size="10.5" font-weight="700">🐳 PULLING EARTH</text>
+            </g>
+          `, "anim-shake", "hot")}
+          ${devCharacter(145, 224, "panic")}
+        `;
+      } else if (id === 7) {
+        // Scene 7: 47 Stack Overflow tabs stacked high!
+        sceneTitle.textContent = "Scene 7: 47 Stack Overflow Tabs";
+        let tabsStack = "";
+        for (let t = 0; t < 18; t++) {
+          const rx = 252 + (t % 9) * 34;
+          const ry = 88 - Math.floor(t / 9) * 18;
+          tabsStack += `<rect x="${rx}" y="${ry}" width="32" height="16" rx="4" fill="#1e293b" stroke="#f97316" stroke-width="1.2"/>
+                        <text x="${rx + 16}" y="${ry + 11}" text-anchor="middle" fill="#fb923c" font-size="8" font-family="monospace">SO</text>`;
+        }
+        body = `
+          ${wallClock(740, 62, "6:15", true)}
+          ${deskAndMonitor(`
+            <rect x="260" y="102" width="300" height="150" rx="8" fill="#0f172a"/>
+            <text x="410" y="130" text-anchor="middle" fill="#fb923c" font-family="monospace" font-size="13" font-weight="700">47 TABS OPEN (2 BY YOU IN 2021)</text>
+            <rect x="278" y="148" width="264" height="74" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+            <text x="410" y="176" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="700">✓ Accepted Answer:</text>
+            <text x="410" y="200" text-anchor="middle" fill="#fda4af" font-family="monospace" font-size="13">"Never mind, figured it out."</text>
+          `, "", "hot")}
+          ${tabsStack}
+          ${devCharacter(145, 224, "shock")}
+        `;
+      } else if (id === 8) {
+        // Scene 8: AI robot cheerfully shredding the auth module!
+        sceneTitle.textContent = "Scene 8: AI \"Helpful Refactor\"";
+        body = `
+          ${wallClock(66, 54, "6:40", true)}
+          ${deskAndMonitor(`
+            <rect x="252" y="92" width="316" height="170" fill="#2c0711"/>
+            <text x="410" y="130" text-anchor="middle" fill="#f43f5e" font-family="monospace" font-size="16" font-weight="800" class="anim-blink">⚠ AUTH MODULE DELETED</text>
+            <text x="410" y="160" text-anchor="middle" fill="#fda4af" font-family="monospace" font-size="12">rm -rf /src/auth/* complete!</text>
+            <!-- Shredded paper strips -->
+            <rect x="360" y="185" width="10" height="30" fill="#fca5a5" class="anim-shred"/>
+            <rect x="385" y="180" width="10" height="32" fill="#fecaca" class="anim-shred"/>
+            <rect x="410" y="188" width="10" height="28" fill="#fca5a5" class="anim-shred"/>
+            <rect x="435" y="182" width="10" height="30" fill="#fecaca" class="anim-shred"/>
+          `, "anim-shake", "hot")}
+          ${devCharacter(145, 224, "panic")}
+          <!-- Cheerful Robot -->
+          <g transform="translate(675, 200)">
+            <g class="anim-float">
+              <rect x="-26" y="-26" width="52" height="44" rx="12" fill="#38bdf8" stroke="#e0f2fe" stroke-width="2"/>
+              <line x1="0" y1="-26" x2="0" y2="-40" stroke="#38bdf8" stroke-width="3"/>
+              <circle cx="0" cy="-42" r="5" fill="#00ff85"/>
+              <circle cx="-10" cy="-8" r="5" fill="#082f49"/><circle cx="10" cy="-8" r="5" fill="#082f49"/>
+              <path d="M-10,6 Q0,14 10,6" fill="none" stroke="#082f49" stroke-width="2.5"/>
+            </g>
+          </g>
+          ${speechBubble(520, 48, 240, 68, ["\"Great catch! ✨ Clean", "refactor!\" *deletes auth*"], "right", "#e0f2fe", "#082f49")}
+        `;
+      } else if (id === 9) {
+        // Scene 9: Cold coffee, screaming Slack alerts, locked DB padlock
+        sceneTitle.textContent = "Scene 9: Everything Is On Fire";
+        body = `
+          ${wallClock(740, 62, "7:05", true)}
+          ${deskAndMonitor(`
+            <rect x="249" y="88" width="322" height="178" fill="#2a060e"/>
+            <!-- Database cylinder + padlock -->
+            <ellipse cx="410" cy="148" rx="46" ry="14" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+            <path d="M364,148 L364,218 A46,14 0 0,0 456,218 L456,148" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+            <rect x="388" y="172" width="44" height="36" rx="6" fill="#f43f5e" class="anim-shake"/>
+            <path d="M396,172 L396,158 A14,14 0 0,1 424,158 L424,172" fill="none" stroke="#fda4af" stroke-width="4"/>
+            <text x="410" y="250" text-anchor="middle" fill="#fda4af" font-family="monospace" font-size="12" font-weight="700">DB LOCKED BY UNKNOWN SERVICE</text>
+          `, "anim-shake", "cold")}
+          <!-- Screaming Slack notifications -->
+          <g class="anim-shake">
+            <rect x="248" y="22" width="160" height="34" rx="10" fill="#e11d48"/>
+            <text x="328" y="44" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">🔔 SLACK #alerts (99+)</text>
+          </g>
+          <g class="anim-float">
+            <rect x="440" y="26" width="150" height="34" rx="10" fill="#be123c"/>
+            <text x="515" y="48" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">🔥 PROD DOWN</text>
+          </g>
+          ${devCharacter(145, 224, "panic")}
+        `;
+      } else if (id === 10) {
+        // Scene 10: Laptop slammed shut, staring into void, woodworking dream!
+        sceneTitle.textContent = "Scene 10: \"Have I Considered Woodworking?\"";
+        bg = `<rect width="820" height="390" fill="#0d071c"/>
+              <circle cx="480" cy="145" r="140" fill="rgba(167,139,250,0.09)"/>`;
+        body = `
+          ${wallClock(740, 62, "7:45")}
+          ${deskAndMonitor("", "", "cold", true)}
+          ${devCharacter(220, 224, "void")}
+          <!-- Woodworking Dream Cloud -->
+          <g class="anim-float">
+            <circle cx="290" cy="180" r="9" fill="rgba(255,255,255,0.2)"/>
+            <circle cx="322" cy="154" r="14" fill="rgba(255,255,255,0.25)"/>
+            <rect x="355" y="42" width="290" height="146" rx="44" fill="#1e1b4b" stroke="#a78bfa" stroke-width="2.5"/>
+            <text x="500" y="82" text-anchor="middle" fill="#ddd6fe" font-size="17" font-weight="800">🪵 Carpentry &amp; Peace</text>
+            <!-- Cute wooden chair & saw -->
+            <rect x="425" y="114" width="44" height="8" rx="3" fill="#d97706"/>
+            <rect x="428" y="122" width="8" height="34" fill="#b45309"/>
+            <rect x="458" y="122" width="8" height="34" fill="#b45309"/>
+            <rect x="428" y="94" width="8" height="22" fill="#b45309"/>
+            <text x="548" y="138" text-anchor="middle" fill="#fde68a" font-size="28">🪚 🌲</text>
+            <text x="500" y="172" text-anchor="middle" fill="#c4b5fd" font-family="monospace" font-size="11.5">"No CSS. Only oak &amp; quiet."</text>
+          </g>
+        `;
+      } else if (id === 11) {
+        // Scene 11: Line 412 stray semicolon under magnifying glass
+        sceneTitle.textContent = "Scene 11: One Stray Semicolon on Line 412";
+        body = `
+          ${wallClock(740, 62, "8:42")}
+          ${deskAndMonitor(`
+            <text x="266" y="124" fill="#64748b" font-family="monospace" font-size="12">410  .checkout-btn {</text>
+            <text x="266" y="150" fill="#64748b" font-family="monospace" font-size="12">411    background: #10b981;</text>
+            <rect x="260" y="162" width="298" height="38" rx="6" fill="rgba(250,204,21,0.14)" stroke="#facc15" stroke-width="1.5"/>
+            <text x="266" y="186" fill="#facc15" font-family="monospace" font-size="16" font-weight="800">412  }  <tspan fill="#f43f5e" font-size="24">;</tspan>  ← STRAY!</text>
+            <text x="266" y="226" fill="#38bdf8" font-family="monospace" font-size="12">[Trembling finger on BACKSPACE...]</text>
+          `, "", "cold")}
+          ${devCharacter(150, 224, "tense")}
+        `;
+      } else if (id === 12) {
+        // Scene 12: ALL GREEN! Emerald button + cheering dev!
+        sceneTitle.textContent = "Scene 12: ALL TESTS PASS!";
+        bg = `<rect width="820" height="390" fill="#041812"/>
+              <circle cx="410" cy="180" r="190" fill="rgba(0,255,133,0.12)"/>`;
+        body = `
+          ${wallClock(740, 62, "8:43")}
+          ${deskAndMonitor(`
+            <rect x="249" y="88" width="322" height="178" fill="#032216"/>
+            <text x="410" y="128" text-anchor="middle" fill="#00ff85" font-family="monospace" font-size="16" font-weight="800">✓ 100% TESTS PASS</text>
+            <rect x="322" y="150" width="176" height="46" rx="12" fill="#10b981" stroke="#6ee7b7" stroke-width="2"/>
+            <text x="410" y="178" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Checkout ✓</text>
+            <text x="410" y="230" text-anchor="middle" fill="#a7f3d0" font-family="monospace" font-size="11.5">Portuguese vanished! Layout upright!</text>
+          `, "", "hot")}
+          ${devCharacter(145, 224, "cheer")}
+          <text x="640" y="110" fill="#00ff85" font-size="26" class="anim-float">🎉 ✨ ✓</text>
+        `;
+      } else if (id === 13) {
+        // Scene 13: Sends "Done! Took 5 minutes" & collapses onto keyboard
+        sceneTitle.textContent = "Scene 13: \"Done! Just Took 5 Minutes\"";
+        body = `
+          ${wallClock(740, 62, "8:45")}
+          ${deskAndMonitor(`
+            <text x="270" y="128" fill="#00ff85" font-family="monospace" font-size="13">git push origin main ✓</text>
+            <rect x="275" y="148" width="270" height="58" rx="10" fill="#0f172a" stroke="#00ff85" stroke-width="1.5"/>
+            <text x="410" y="172" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="700">Sent to PM:</text>
+            <text x="410" y="194" text-anchor="middle" fill="#00ff85" font-family="monospace" font-size="13">"Done! Just took 5 minutes."</text>
+          `, "", "cold")}
+          ${devCharacter(248, 250, "collapse")}
+        `;
+      } else {
+        // Scene 14: Mon 9:00 AM — PM asks to switch back to BLUE -> soul leaves body!
+        sceneTitle.textContent = "Scene 14: Monday Morning 9:00 AM";
+        bg = `<rect width="820" height="390" fill="#071226"/>`;
+        body = `
+          ${wallClock(740, 62, "9:00", true)}
+          ${deskAndMonitor(`
+            <rect x="255" y="96" width="310" height="162" rx="10" fill="#172554" stroke="#3b82f6" stroke-width="2.5" class="anim-pop"/>
+            <text x="410" y="130" text-anchor="middle" fill="#93c5fd" font-family="monospace" font-size="12" font-weight="700">💬 SLACK FROM PM (MON 9:00 AM)</text>
+            <text x="410" y="164" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">"Awesome, thanks! Actually,</text>
+            <text x="410" y="186" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">client liked BLUE better—</text>
+            <text x="410" y="210" text-anchor="middle" fill="#60a5fa" font-size="15" font-weight="800">can we switch it back?"</text>
+          `, "anim-shake", "broken")}
+          ${devCharacter(145, 224, "ghost")}
+          ${pmCharacter(680, 224, true)}
+        `;
+      }
+
+      sceneSvg.innerHTML = bg + body;
+    }
+
+    // ---------------------------------------------------------
+    // 3. Build Transcript Cards
+    // ---------------------------------------------------------
+    const beatEls = [];
+    const beatWordSpans = [];
+
+    JOKE_DATA.beats.forEach((beat, idx) => {
+      const card = document.createElement("div");
+      card.className = "beat-card";
+      card.dataset.mood = beat.mood;
+
+      const top = document.createElement("div");
+      top.className = "beat-top";
+      top.innerHTML = `<span>${beat.timeLabel}</span><span class="beat-badge">${beat.badge}</span>`;
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "beat-text";
+
+      const wordSpans = [];
+      beat.text.split(/(\s+)/).forEach((chunk) => {
+        if (/^\s+$/.test(chunk)) {
+          textDiv.appendChild(document.createTextNode(chunk));
+        } else if (chunk.length > 0) {
+          const span = document.createElement("span");
+          span.className = "beat-word";
+          span.textContent = chunk;
+          textDiv.appendChild(span);
+          wordSpans.push(span);
+        }
+      });
+
+      card.appendChild(top);
+      card.appendChild(textDiv);
+      card.addEventListener("click", () => seekToBeat(idx, true));
+
+      transcriptList.appendChild(card);
+      beatEls.push(card);
+      beatWordSpans.push(wordSpans);
+    });
+
+    // ---------------------------------------------------------
+    // 4. Compact Interactive SVG Telemetry Graph Strip
+    // ---------------------------------------------------------
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const GW = 820, GH = 96;
+    const GP = { top: 12, right: 20, bottom: 20, left: 20 };
+    const PW = GW - GP.left - GP.right;
+    const PH = GH - GP.top - GP.bottom;
+
+    function svgEl(tag, attrs = {}) {
+      const el = document.createElementNS(SVG_NS, tag);
+      for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+      return el;
+    }
+
+    function gx(i) { return GP.left + (i / (JOKE_DATA.beats.length - 1)) * PW; }
+    function gy(v) { return GP.top + ((100 - Math.max(0, Math.min(100, v))) / 100) * PH; }
+
+    function polyPath(pts) {
+      return pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
+    }
+
+    const confPts = JOKE_DATA.beats.map((b, i) => ({ x: gx(i), y: gy(b.confidence) }));
+    const sanPts = JOKE_DATA.beats.map((b, i) => ({ x: gx(i), y: gy(b.sanity) }));
+    const tabPts = JOKE_DATA.beats.map((b, i) => ({ x: gx(i), y: gy(b.tabs) }));
+
+    let miniClipRect, miniPlayhead, miniNodes = [];
+
+    function buildMiniGraph() {
+      const defs = svgEl("defs");
+      const clip = svgEl("clipPath", { id: "miniClip" });
+      miniClipRect = svgEl("rect", { x: GP.left, y: 0, width: 0, height: GH });
+      clip.appendChild(miniClipRect);
+      defs.appendChild(clip);
+      miniGraph.appendChild(defs);
+
+      [0, 50, 100].forEach((v) => {
+        miniGraph.appendChild(svgEl("line", {
+          x1: GP.left, y1: gy(v), x2: GW - GP.right, y2: gy(v),
+          stroke: "rgba(148,163,184,0.12)", "stroke-width": "1"
+        }));
+      });
+
+      miniGraph.appendChild(svgEl("path", { d: polyPath(confPts), fill: "none", stroke: "rgba(0,255,133,0.18)", "stroke-width": "1.6" }));
+      miniGraph.appendChild(svgEl("path", { d: polyPath(tabPts), fill: "none", stroke: "rgba(244,63,94,0.18)", "stroke-width": "1.6" }));
+
+      const activeG = svgEl("g", { "clip-path": "url(#miniClip)" });
+      activeG.appendChild(svgEl("path", { d: polyPath(tabPts), fill: "none", stroke: "#f43f5e", "stroke-width": "2" }));
+      activeG.appendChild(svgEl("path", { d: polyPath(sanPts), fill: "none", stroke: "#38bdf8", "stroke-width": "2" }));
+      activeG.appendChild(svgEl("path", { d: polyPath(confPts), fill: "none", stroke: "#00ff85", "stroke-width": "2.4" }));
+      miniGraph.appendChild(activeG);
+
+      miniPlayhead = svgEl("line", {
+        x1: GP.left, y1: GP.top, x2: GP.left, y2: GP.top + PH,
+        stroke: "rgba(255,255,255,0.5)", "stroke-width": "1.4", "stroke-dasharray": "3 3"
+      });
+      miniGraph.appendChild(miniPlayhead);
+
+      JOKE_DATA.beats.forEach((b, i) => {
+        const pt = confPts[i];
+        const g = svgEl("g", { style: "cursor:pointer;" });
+        g.appendChild(svgEl("circle", { cx: pt.x, cy: pt.y, r: "11", fill: "transparent" }));
+        const dot = svgEl("circle", { cx: pt.x, cy: pt.y, r: "3.5", fill: "#0f172a", stroke: "#00ff85", "stroke-width": "1.8" });
+        g.appendChild(dot);
+
+        g.addEventListener("mouseenter", () => {
+          svgTooltip.style.left = `${Math.min(82, Math.max(18, (pt.x / GW) * 100))}%`;
+          svgTooltip.style.top = "10%";
+          svgTooltip.innerHTML = `<strong>Scene ${b.id}: ${b.timeLabel}</strong> &bull; ${b.badge}`;
+          svgTooltip.style.opacity = "1";
+        });
+        g.addEventListener("mouseleave", () => { svgTooltip.style.opacity = "0"; });
+        g.addEventListener("click", () => seekToBeat(i, true));
+
+        miniGraph.appendChild(g);
+        miniNodes.push(dot);
+      });
+    }
+
+    buildMiniGraph();
+
+    // ---------------------------------------------------------
+    // 5. Mood-Reactive Canvas Background
+    // ---------------------------------------------------------
+    const bgCanvas = document.getElementById("bgCanvas");
+    const ctx2d = bgCanvas.getContext("2d");
+    let particles = [];
+    let currentMood = "calm";
+
+    const MOOD_TOKENS = {
+      calm: ["{ }", "#3b82f6", "5 min", "☕", "git status"],
+      warn: ["legacy_v3.css", "!important", "⚠ TODO"],
+      chaos: ["Olá!", "git blame", "47 tabs", "Docker 14GB", "ERR!"],
+      alert: ["AUTH DELETED", "SLACK 99+", "DB LOCKED", "🔥"],
+      void: ["woodworking.pdf", "oak", "pine", "🪚", "..."],
+      tense: [";", "line 412", "Ctrl+Shift+R"],
+      victory: ["200 OK", "PASS ✓", "#10b981", "🎉"],
+      punchline: ["blue better?", "#3b82f6", ";", "Mon 9am"]
+    };
+
+    const MOOD_COLORS = {
+      calm: "rgba(0, 255, 133, 0.22)",
+      warn: "rgba(245, 158, 11, 0.28)",
+      chaos: "rgba(251, 146, 60, 0.3)",
+      alert: "rgba(244, 63, 94, 0.36)",
+      void: "rgba(167, 139, 250, 0.25)",
+      tense: "rgba(250, 204, 21, 0.32)",
+      victory: "rgba(0, 255, 133, 0.38)",
+      punchline: "rgba(59, 130, 246, 0.38)"
+    };
+
+    function resizeCanvas() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function spawnParticle(randomY = false) {
+      const pool = MOOD_TOKENS[currentMood] || MOOD_TOKENS.calm;
+      const isPunch = currentMood === "punchline";
+      return {
+        x: Math.random() * bgCanvas.width,
+        y: randomY ? Math.random() * bgCanvas.height : (isPunch ? -20 : bgCanvas.height + 20),
+        vy: isPunch ? (1.3 + Math.random() * 2.1) : -(0.35 + Math.random() * (currentMood === "alert" || currentMood === "chaos" ? 1.4 : 0.7)),
+        vx: (Math.random() - 0.5) * 0.4,
+        text: pool[Math.floor(Math.random() * pool.length)],
+        size: 11 + Math.floor(Math.random() * 5),
+        alpha: 0.32 + Math.random() * 0.48
+      };
+    }
+
+    for (let i = 0; i < 32; i++) particles.push(spawnParticle(true));
+
+    function tickParticles() {
+      ctx2d.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      const color = MOOD_COLORS[currentMood] || MOOD_COLORS.calm;
+      ctx2d.textBaseline = "middle";
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        ctx2d.font = `600 ${p.size}px ${getComputedStyle(document.body).getPropertyValue("--font-mono")}`;
+        ctx2d.fillStyle = color;
+        ctx2d.globalAlpha = p.alpha;
+        ctx2d.fillText(p.text, p.x, p.y);
+        if (p.y < -40 || p.y > bgCanvas.height + 40) particles[i] = spawnParticle(false);
+      }
+      ctx2d.globalAlpha = 1;
+      requestAnimationFrame(tickParticles);
+    }
+    requestAnimationFrame(tickParticles);
+
+    // ---------------------------------------------------------
+    // 6. Sync Engine (Audio <-> Animated SVG <-> Text)
+    // ---------------------------------------------------------
+    function formatTime(sec) {
+      const s = Math.max(0, Math.floor(sec));
+      return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
+    }
+
+    function syncUI() {
+      const t = audio.currentTime || 0;
+      const total = audio.duration && isFinite(audio.duration) ? audio.duration : JOKE_DATA.totalDuration;
+      scrubberFill.style.width = `${(Math.max(0, Math.min(1, t / total)) * 100).toFixed(2)}%`;
+      timecodeEl.textContent = `${formatTime(t)} / ${formatTime(total)}`;
+
+      let activeIdx = 0;
+      for (let i = 0; i < JOKE_DATA.beats.length; i++) {
+        if (t >= JOKE_DATA.beats[i].start) activeIdx = i;
+      }
+
+      const beat = JOKE_DATA.beats[activeIdx];
+      const nextBeat = JOKE_DATA.beats[activeIdx + 1];
+
+      let frac = 0;
+      if (t >= beat.start) {
+        const span = nextBeat ? nextBeat.start : total;
+        frac = Math.max(0, Math.min(1, (t - beat.start) / Math.max(0.1, span - beat.start)));
+      }
+      const curX = gx(activeIdx) + ((nextBeat ? gx(activeIdx + 1) : gx(activeIdx)) - gx(activeIdx)) * frac;
+      miniClipRect.setAttribute("width", Math.max(0, curX - GP.left));
+      miniPlayhead.setAttribute("x1", curX);
+      miniPlayhead.setAttribute("x2", curX);
+
+      if (activeIdx !== lastBeatIdx) {
+        lastBeatIdx = activeIdx;
+        currentMood = beat.mood;
+        document.body.dataset.mood = beat.mood;
+        activeTimeLabel.textContent = beat.timeLabel;
+        moodPill.textContent = `MOOD: ${beat.mood.toUpperCase()}`;
+        beatCounter.textContent = `SCENE ${beat.id} / ${JOKE_DATA.beats.length}`;
+        kpiConfidence.textContent = `${beat.confidence}%`;
+        kpiSanity.textContent = `${beat.sanity}%`;
+        kpiTabs.textContent = `${beat.tabs}`;
+
+        renderScene(activeIdx);
+
+        if (!audio.paused) playBeatSfx(beat);
+
+        beatEls.forEach((el, idx) => {
+          el.classList.toggle("active", idx === activeIdx);
+          el.classList.toggle("past", idx < activeIdx);
+        });
+
+        miniNodes.forEach((dot, idx) => {
+          dot.setAttribute("r", idx === activeIdx ? "5.2" : "3.5");
+          dot.setAttribute("fill", idx <= activeIdx ? "#00ff85" : "#0f172a");
+        });
+
+        const activeEl = beatEls[activeIdx];
+        if (activeEl) {
+          const top = activeEl.offsetTop - transcriptList.offsetTop - transcriptList.clientHeight * 0.28;
+          transcriptList.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        }
+      }
+
+      // Word-level karaoke highlight
+      const spans = beatWordSpans[activeIdx];
+      if (spans && spans.length > 0) {
+        const beatDur = Math.max(0.2, beat.end - beat.start);
+        const prog = Math.max(0, Math.min(1, (t - beat.start) / beatDur));
+        const activeWord = Math.min(spans.length - 1, Math.floor(prog * spans.length));
+        for (let w = 0; w < spans.length; w++) {
+          const sp = spans[w];
+          if (t < beat.start) {
+            sp.classList.remove("spoken", "current");
+          } else if (w < activeWord) {
+            sp.classList.add("spoken");
+            sp.classList.remove("current");
+          } else if (w === activeWord && t <= beat.end + 0.15) {
+            sp.classList.add("spoken", "current");
+          } else {
+            sp.classList.remove("spoken", "current");
+          }
+        }
+      }
+    }
+
+    function updatePlayButton() {
+      if (audio.paused) {
+        playIcon.innerHTML = "&#9654;";
+        playLabel.textContent = audio.currentTime > 0.5 && !audio.ended ? "Resume" : "Play Joke";
+      } else {
+        playIcon.innerHTML = "&#10074;&#10074;";
+        playLabel.textContent = "Pause";
+        autoplayBanner.classList.remove("visible");
+        playBtn.classList.remove("needs-click");
+      }
+    }
+
+    function startPlayback() {
+      ensureAudioCtx();
+      return audio.play().then(updatePlayButton).catch(() => {
+        autoplayBanner.classList.add("visible");
+        playBtn.classList.add("needs-click");
+        updatePlayButton();
+      });
+    }
+
+    function seekToBeat(idx, autoPlay = true) {
+      const beat = JOKE_DATA.beats[idx];
+      if (!beat) return;
+      if (idx < 11) victoryPlayed = false;
+      if (idx < 13) punchPlayed = false;
+      audio.currentTime = beat.start;
+      lastBeatIdx = -1;
+      syncUI();
+      if (autoPlay) startPlayback();
+    }
+
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        if (audio.ended) {
+          victoryPlayed = false;
+          punchPlayed = false;
+          audio.currentTime = 0;
+        }
+        startPlayback();
+      } else {
+        audio.pause();
+        updatePlayButton();
+      }
+    });
+
+    bannerPlayBtn.addEventListener("click", startPlayback);
+
+    restartBtn.addEventListener("click", () => {
+      victoryPlayed = false;
+      punchPlayed = false;
+      lastBeatIdx = -1;
+      audio.currentTime = 0;
+      syncUI();
+      startPlayback();
+    });
+
+    speedBtn.addEventListener("click", () => {
+      speedIdx = (speedIdx + 1) % speeds.length;
+      audio.playbackRate = speeds[speedIdx];
+      speedBtn.textContent = `${speeds[speedIdx]}x`;
+    });
+
+    sfxBtn.addEventListener("click", () => {
+      sfxEnabled = !sfxEnabled;
+      sfxBtn.textContent = sfxEnabled ? "SFX: ON" : "SFX: OFF";
+      sfxBtn.classList.toggle("active-toggle", sfxEnabled);
+    });
+
+    scrubberTrack.addEventListener("click", (e) => {
+      const rect = scrubberTrack.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const total = audio.duration && isFinite(audio.duration) ? audio.duration : JOKE_DATA.totalDuration;
+      audio.currentTime = ratio * total;
+      lastBeatIdx = -1;
+      syncUI();
+      if (audio.paused) startPlayback();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        playBtn.click();
+      } else if (e.code === "ArrowRight") {
+        e.preventDefault();
+        seekToBeat(Math.min(JOKE_DATA.beats.length - 1, Math.max(0, lastBeatIdx) + 1), !audio.paused);
+      } else if (e.code === "ArrowLeft") {
+        e.preventDefault();
+        seekToBeat(Math.max(0, lastBeatIdx - 1), !audio.paused);
+      }
+    });
+
+    audio.addEventListener("play", updatePlayButton);
+    audio.addEventListener("pause", updatePlayButton);
+    audio.addEventListener("ended", updatePlayButton);
+    audio.addEventListener("timeupdate", syncUI);
+
+    function animationLoop() {
+      if (!audio.paused) syncUI();
+      requestAnimationFrame(animationLoop);
+    }
+    requestAnimationFrame(animationLoop);
+
+    syncUI();
+    window.addEventListener("load", () => {
+      startPlayback();
+    });
+  </script>
+</body>
+</html>

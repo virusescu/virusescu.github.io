@@ -1,0 +1,13 @@
+{
+  "title": "Peisaj de iarnă",
+  "artist": "Ecaterina Staicu",
+  "color": "color.jpg",
+  "depth": "depth.png",
+  "audio": null,
+  "near": 2.0,
+  "far": 40.0,
+  "eyeOffset": 0.12,
+  "sway": 0.035,
+  "startLon": 0,
+  "text": { "lon": 180, "lat": 12, "distance": 9, "width": 7 }
+}

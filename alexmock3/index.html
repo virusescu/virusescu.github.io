@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Musical Tigers Live Redesign</title>
+<meta name="description" content="Concept de redesign pentru Musical Tigers: lecții de pian cu Alexandru Ciobanu Al Rufei, în București și online.">
+<style>
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;src:url("fonts/fraunces-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;src:url("fonts/fraunces-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Fraunces";font-style:italic;font-weight:100 900;font-display:swap;src:url("fonts/fraunces-latin-ext-italic.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Fraunces";font-style:italic;font-weight:100 900;font-display:swap;src:url("fonts/fraunces-latin-italic.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 700;font-stretch:75% 100%;font-display:swap;src:url("fonts/instrument-sans-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 700;font-stretch:75% 100%;font-display:swap;src:url("fonts/instrument-sans-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  /* A recital hall after the house lights go down: one lit instrument, tiger's-eye amber on stage black,
+     type set like a concert programme. The hero is a full-bleed keyboard with light rising from the
+     struck keys; everything after it stays quiet. Single dark theme by choice. */
+  --ink:#0A0806;      /* stage black */
+  --coal:#15110D;     /* raised surface */
+  --ivory:#F3ECDD;    /* keys and primary text */
+  --felt:#AEA18E;     /* secondary text */
+  --tiger:#F28C28;    /* the roar */
+  --ember:#A8401A;    /* accent on ivory, deep glow */
+  --hair:rgba(243,236,221,.13);
+  --hair-strong:rgba(243,236,221,.26);
+  --display:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --body:"Instrument Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --gutter:clamp(20px,5vw,72px);
+  --maxw:1320px;
+  --edge:max(var(--gutter),calc((100% - var(--maxw)) / 2 + var(--gutter)));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--ivory);font-family:var(--body);font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+@supports (overflow:clip){body{overflow-x:clip}}
+body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.4;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 .95  0 0 0 0 .85  .12 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+svg,canvas{max-width:100%}
+a{color:inherit}
+p,figure,blockquote,dl,dd{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:300;font-optical-sizing:auto;font-variant-numeric:lining-nums;letter-spacing:-.018em;line-height:1.04;text-wrap:balance}
+h1 em,h2 em,h3 em{font-style:italic;font-weight:400;color:var(--tiger)}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--tiger);outline-offset:3px;border-radius:2px}
+[id]{scroll-margin-top:84px}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:70;background:var(--ivory);color:var(--ink);padding:10px 14px;border-radius:3px;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+.eyebrow{font:600 .75rem/1.35 var(--body);font-stretch:88%;letter-spacing:.22em;text-transform:uppercase;color:var(--tiger)}
+.muted{color:var(--felt)}
+.ext{flex:none}
+
+/* buttons press like keys */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.7em;min-height:52px;padding:0 1.6rem;border:1px solid transparent;border-radius:3px;font:600 .8125rem/1 var(--body);font-stretch:92%;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;transition:transform .08s,background-color .2s,color .2s,border-color .2s}
+.btn:active{transform:translateY(2px)}
+.btn--solid{background:var(--tiger);color:var(--ink)}
+.btn--solid:hover{background:var(--ivory)}
+.btn--ghost{background:rgba(10,8,6,.55);border-color:var(--hair-strong);color:var(--ivory)}
+.btn--ghost:hover{border-color:var(--tiger);color:var(--tiger)}
+.btn--ink{background:var(--ink);color:var(--ivory)}
+.btn--ink:hover{background:var(--ember)}
+.btn--sm{min-height:40px;padding:0 1.05rem;font-size:.75rem}
+.link{display:inline-flex;align-items:center;gap:.55em;font:600 .8125rem/1.2 var(--body);font-stretch:92%;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--tiger);transition:color .2s}
+.link:hover{color:var(--tiger)}
+
+/* concept note + header */
+.concept{padding:8px var(--gutter);text-align:center;font:500 .75rem/1.4 var(--body);letter-spacing:.05em;color:var(--felt);background:var(--coal);border-bottom:1px solid var(--hair)}
+.concept a{color:var(--ivory);text-underline-offset:3px}
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px var(--gutter);background:rgba(10,8,6,.78);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid var(--hair)}
+.brand{display:inline-flex;align-items:center;gap:11px;min-height:44px;min-width:0;text-decoration:none}
+.brand__name{font:400 1.0625rem/1 var(--display);letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
+.nav{display:flex;align-items:center;gap:clamp(16px,2.2vw,34px)}
+.nav a:not(.btn){font:500 .8125rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--felt);padding:14px 0;transition:color .2s}
+.nav a:not(.btn):hover{color:var(--ivory)}
+.nav__cta{display:none}
+.top__tools{display:flex;align-items:center;gap:10px;flex:none}
+.lang{display:inline-flex;border:1px solid var(--hair-strong);border-radius:3px;overflow:hidden}
+.lang button{appearance:none;border:0;background:transparent;color:var(--felt);font:600 .75rem/1 var(--body);letter-spacing:.12em;min-width:42px;min-height:44px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ivory);color:var(--ink)}
+.menu-btn{display:none;appearance:none;width:44px;height:44px;border:1px solid var(--hair-strong);border-radius:3px;background:transparent;color:var(--ivory);align-items:center;justify-content:center;cursor:pointer}
+@media (max-width:1080px){
+  .nav{display:none}
+  .top__cta{display:none}
+  .menu-btn{display:inline-flex}
+  .top.is-open .nav{display:flex;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;padding:6px var(--gutter) 24px;background:var(--ink);border-bottom:1px solid var(--hair);max-height:calc(100vh - 70px);overflow-y:auto}
+  .top.is-open .nav a:not(.btn){font:300 1.75rem/1.2 var(--display);letter-spacing:-.01em;text-transform:none;color:var(--ivory);padding:13px 0;border-bottom:1px solid var(--hair)}
+  .top.is-open .nav__cta{display:inline-flex;margin-top:20px}
+}
+@media (max-width:420px){.brand__name{font-size:.875rem;letter-spacing:.13em}.brand{gap:9px}}
+@media (max-width:380px){.brand__name{font-size:.75rem;letter-spacing:.1em}}
+
+/* hero: the instrument */
+.hero{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "grand" "playing";overflow:hidden;background:radial-gradient(130% 62% at 32% 100%,rgba(168,64,26,.30) 0%,rgba(168,64,26,.07) 42%,transparent 72%),var(--ink)}
+.hero__roll{position:absolute;left:0;top:0;width:100%;z-index:0;pointer-events:none}
+.hero__glow{position:absolute;left:0;right:0;top:0;z-index:0;pointer-events:none;background:radial-gradient(60% 46% at 34% 100%,rgba(242,140,40,.5),transparent 72%);opacity:calc(.08 + var(--energy,0) * .5)}
+.hero__copy{grid-area:copy;position:relative;z-index:1;display:flex;flex-direction:column;gap:clamp(18px,2.2vw,28px);padding:clamp(34px,6vw,92px) var(--gutter) clamp(104px,13vw,156px)}
+.hero h1{font-size:clamp(2.6rem,1.2rem + 6vw,6.5rem);max-width:9.4em}
+.roar{display:inline-block;text-shadow:0 0 calc(var(--roar,0) * 44px) rgba(242,140,40,.85);filter:brightness(calc(1 + var(--roar,0) * .22))}
+.hero__sub{max-width:34em;color:var(--felt);font-size:clamp(1.0625rem,1rem + .35vw,1.25rem);line-height:1.5}
+.hero__sub strong{color:var(--ivory);font-weight:600}
+.hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.playing{grid-area:playing;position:relative;z-index:1;display:grid;gap:14px;padding:24px var(--gutter) 30px;background:var(--coal);border-bottom:1px solid var(--hair)}
+.playing__piece{display:flex;flex-direction:column;gap:3px;font-family:var(--display);font-weight:300;font-size:1.3125rem;line-height:1.22}
+.playing__piece em{color:var(--felt);font-size:1.0625rem;font-style:italic}
+.listen{justify-self:start;display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 1.4rem 0 1.1rem;border:1px solid var(--tiger);border-radius:3px;background:rgba(10,8,6,.55);color:var(--tiger);font:600 .8125rem/1 var(--body);font-stretch:92%;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background-color .2s,color .2s,transform .08s}
+.listen:active{transform:translateY(2px)}
+.listen[aria-pressed="true"]{background:var(--tiger);color:var(--ink)}
+.listen__icon{width:18px;height:18px;flex:none}
+.listen .i-stop{display:none}
+.listen[aria-pressed="true"] .i-play{display:none}
+.listen[aria-pressed="true"] .i-stop{display:block}
+.tempo{display:grid;gap:2px}
+.tempo__row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tempo label{font:600 .75rem/1.3 var(--body);font-stretch:88%;letter-spacing:.2em;text-transform:uppercase;color:var(--felt)}
+.tempo output{display:inline-flex;align-items:baseline;gap:.4em;font-family:var(--display);font-style:italic;font-size:1.0625rem;font-variant-numeric:lining-nums tabular-nums}
+.tempo output svg{align-self:center}
+.tempo input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;margin:0;background:transparent;cursor:pointer}
+.tempo input[type=range]::-webkit-slider-runnable-track{height:2px;background:linear-gradient(90deg,var(--tiger) var(--fill,15%),var(--hair-strong) var(--fill,15%))}
+.tempo input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-10px;border:0;border-radius:50%;background:var(--ivory);box-shadow:0 0 0 6px rgba(242,140,40,.2)}
+.tempo input[type=range]::-moz-range-track{height:2px;background:var(--hair-strong)}
+.tempo input[type=range]::-moz-range-progress{height:2px;background:var(--tiger)}
+.tempo input[type=range]::-moz-range-thumb{width:22px;height:22px;border:0;border-radius:50%;background:var(--ivory);box-shadow:0 0 0 6px rgba(242,140,40,.2)}
+.playing__hint{font-size:.9375rem;color:var(--felt)}
+.playing__mute{font-size:.875rem;color:var(--felt)}
+
+.grand{grid-area:grand;position:relative;z-index:2}
+.fallboard{position:relative;height:clamp(30px,4.6vw,56px);display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(180deg,#0E0B08 0%,#1D1712 52%,#080605 100%);border-top:1px solid var(--hair-strong)}
+.fallboard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(242,140,40,.34));opacity:calc(.25 + var(--energy,0) * .75);pointer-events:none}
+.fallboard span{position:relative;font:400 clamp(.625rem,1.15vw,.9375rem)/1 var(--display);letter-spacing:.44em;text-indent:.44em;text-transform:uppercase;color:#D9B886}
+.felt-strip{height:4px;background:linear-gradient(90deg,var(--ember),var(--tiger) 34%,var(--ember) 70%,#6E2A12)}
+.keys{position:relative;display:flex;height:clamp(104px,14vw,178px);background:#050403;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;cursor:pointer}
+.wk{position:relative;flex:1 1 0;min-width:0;border-radius:0 0 3px 3px;background:linear-gradient(180deg,#C9BFAC 0,#F3ECDD 9%,#F8F2E6 68%,#E2D8C5 100%);box-shadow:inset -1px 0 0 rgba(10,8,6,.6),inset 0 -6px 7px rgba(10,8,6,.2);transition:transform .08s}
+.bk{position:absolute;top:0;z-index:2;height:62%;border-radius:0 0 3px 3px;background:linear-gradient(180deg,#241C16 0,#0B0907 74%,#2B221B 100%);box-shadow:0 3px 5px rgba(0,0,0,.7),inset 0 -3px 2px rgba(243,236,221,.09),inset 1px 0 0 rgba(243,236,221,.06);transform:translateX(-50%);transition:transform .08s}
+.wk::after,.bk::after{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .55s ease-out;pointer-events:none}
+.wk::after{background:linear-gradient(180deg,#F28C28 0,#F9C98A 22%,#FDE9C8 70%,#F3A44C 100%);box-shadow:0 0 26px 2px rgba(242,140,40,.75)}
+.bk::after{background:linear-gradient(180deg,#7C3311 0,#F28C28 100%);box-shadow:0 0 18px 2px rgba(242,140,40,.8)}
+.wk.on{transform:translateY(2px);z-index:1}
+.bk.on{transform:translateX(-50%) translateY(2px)}
+.wk.on::after,.bk.on::after{opacity:1;transition-duration:.03s}
+@media (min-width:1024px){
+  .hero{grid-template-columns:minmax(0,1fr) minmax(280px,348px);grid-template-areas:"copy playing" "grand grand";column-gap:clamp(24px,3vw,56px)}
+  .hero__copy{padding-left:var(--edge);padding-right:0}
+  .playing{align-self:end;background:transparent;border:0;padding:0 var(--edge) 64px 0}
+}
+
+/* facts */
+.facts{background:var(--coal);border-bottom:1px solid var(--hair)}
+.facts__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.fact{display:flex;flex-direction:column;gap:12px;padding:clamp(26px,4vw,48px) clamp(12px,2.4vw,32px) clamp(26px,4vw,48px) 0}
+.fact:nth-child(even){padding-left:clamp(16px,2.4vw,32px);border-left:1px solid var(--hair)}
+.fact:nth-child(n+3){border-top:1px solid var(--hair)}
+.fact b{font:200 clamp(3.4rem,2rem + 5.4vw,6.25rem)/.86 var(--display);font-variant-numeric:lining-nums;letter-spacing:-.035em;color:var(--tiger)}
+.fact span{max-width:22ch;font-size:.9375rem;line-height:1.45;color:var(--felt)}
+@media (min-width:880px){
+  .facts__grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .fact:nth-child(n){padding-left:clamp(16px,2.4vw,32px);border-left:1px solid var(--hair);border-top:0}
+  .fact:first-child{padding-left:0;border-left:0}
+}
+
+/* sections */
+.section{padding-block:clamp(76px,10vw,152px)}
+.section--coal{background:var(--coal);border-block:1px solid var(--hair)}
+.head{display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(36px,5vw,72px)}
+.head h2,.h2{font-size:clamp(2.15rem,1.2rem + 3.6vw,4.6rem)}
+.head p:not(.eyebrow){max-width:38em;color:var(--felt)}
+
+/* lesson zero */
+.zero{display:grid;gap:clamp(30px,5vw,72px)}
+.zero__intro{display:flex;flex-direction:column;gap:18px}
+.zero__intro p:not(.eyebrow){color:var(--felt);max-width:30em}
+.zero__stage{position:relative;display:flex;flex-direction:column;gap:clamp(16px,2.4vw,26px);padding:clamp(16px,3vw,36px);border:1px solid var(--hair-strong);border-radius:6px;background:radial-gradient(90% 70% at 50% 108%,rgba(168,64,26,.34),transparent 70%),var(--coal)}
+.staff{display:grid;gap:6px}
+.staff svg{display:block;width:100%;height:auto;overflow:visible}
+.staff .lines{fill:none;stroke:var(--ivory);stroke-opacity:.3;stroke-width:1}
+.staff .clef{fill:none;stroke:var(--ivory);stroke-opacity:.9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.staff .clef-dot{fill:var(--ivory);fill-opacity:.9}
+.staff .meter text{font:700 27px var(--display);font-variant-numeric:lining-nums;fill:var(--ivory);fill-opacity:.9}
+.staff .bar{fill:none;stroke:var(--ivory);stroke-opacity:.5;stroke-width:1}
+.staff .bar--end{stroke-width:4;stroke-opacity:.9}
+.staff .n{color:#948876;transition:color .25s}
+.staff .n.done{color:var(--tiger)}
+.staff .n.cur{color:var(--ivory)}
+.staff .n.play{color:#FFD9A8}
+.n__head,.n__dot{fill:currentColor}
+.n__open{fill:none;stroke:currentColor;stroke-width:1.9}
+.n__stem{fill:none;stroke:currentColor;stroke-width:1.5}
+.n__flag{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.n__ledger{stroke:currentColor;stroke-width:1.1}
+.n__halo{fill:var(--tiger);opacity:0;transition:opacity .25s}
+.n.cur .n__halo{opacity:.26}
+.n.play .n__halo{opacity:.4}
+.n__name{font:600 9.5px var(--body);letter-spacing:.07em;text-transform:uppercase;fill:currentColor}
+.kb{position:relative;display:flex;width:100%;max-width:600px;height:clamp(172px,44vw,248px);margin-inline:auto;background:#050403;border-top:4px solid var(--ember);border-radius:0 0 5px 5px;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.kb button{appearance:none;-webkit-appearance:none;border:0;margin:0;padding:0;cursor:pointer}
+.kb .wk{border-radius:0 0 5px 5px}
+.kb .bk{height:60%}
+.wk__name{position:absolute;left:0;right:0;bottom:12px;z-index:1;font:600 .75rem/1 var(--body);letter-spacing:.05em;text-align:center;color:#55493C;pointer-events:none}
+.key__hint{position:absolute;left:0;right:0;z-index:1;display:none;font:600 .625rem/1 var(--body);letter-spacing:.06em;text-align:center;pointer-events:none}
+.wk .key__hint{bottom:34px;color:#8A7D6C}
+.bk .key__hint{bottom:10px;color:#948876}
+@media (hover:hover) and (pointer:fine){.key__hint{display:block}.zero__keysnote{display:block!important}}
+.kb .wk.next{background:linear-gradient(180deg,#D9C6A4 0,#F7E3C0 10%,#FBEAD0 68%,#EDCB98 100%)}
+.kb .next::before{content:"";position:absolute;left:50%;z-index:1;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--ember);animation:ping 1.5s cubic-bezier(.2,.6,.3,1) infinite}
+.kb .wk.next::before{bottom:58px}
+.kb .bk.next::before{bottom:30px;background:var(--tiger)}
+.kb .nudge::before{animation:nudge .35s ease-out}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(242,140,40,.7)}100%{box-shadow:0 0 0 16px rgba(242,140,40,0)}}
+@keyframes nudge{0%{transform:scale(1)}40%{transform:scale(1.9)}100%{transform:scale(1)}}
+.zero__bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px}
+.zero__progress{font:600 .75rem/1.3 var(--body);font-stretch:88%;letter-spacing:.2em;text-transform:uppercase;color:var(--felt);font-variant-numeric:tabular-nums}
+.zero__actions{display:flex;flex-wrap:wrap;gap:8px}
+.rec{display:grid;gap:10px;padding-top:clamp(14px,2vw,20px);border-top:1px solid var(--hair)}
+.rec__row{display:flex;flex-wrap:wrap;gap:8px}
+.rec .btn:disabled{opacity:.4;cursor:default}
+.rec .btn:focus-within{outline:2px solid var(--tiger);outline-offset:3px}
+.rec__dot{width:10px;height:10px;border-radius:50%;background:#E5484D;flex:none}
+#rec-toggle[aria-pressed="true"]{border-color:#E5484D;color:#FF8A8E}
+#rec-toggle[aria-pressed="true"] .rec__dot{animation:eq 1s ease-in-out infinite;height:10px}
+.rec__status{min-height:1.4em;font-size:.875rem;color:var(--felt)}
+.zero__keysnote{display:none;font-size:.875rem;color:var(--felt)}
+.zero__keysnote kbd{font:600 .75rem/1 var(--body);letter-spacing:.14em;color:var(--ivory)}
+.zero__done{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding-top:clamp(16px,2.4vw,26px);border-top:1px solid var(--hair-strong)}
+.zero__done h3{font-size:clamp(1.9rem,1.3rem + 2.4vw,3.2rem)}
+.zero__done p{color:var(--felt);max-width:32em}
+.zero__stage.is-done{border-color:var(--tiger);box-shadow:0 0 80px -20px rgba(242,140,40,.55)}
+@media (min-width:1000px){.zero{grid-template-columns:minmax(0,4fr) minmax(0,7fr);align-items:center}}
+
+/* about */
+.about{display:grid;gap:clamp(30px,5vw,88px)}
+.about__lead{display:flex;flex-direction:column;gap:20px}
+.lede{font-family:var(--display);font-style:italic;font-weight:300;font-size:clamp(1.4rem,1.1rem + 1.2vw,2.05rem);line-height:1.28;text-wrap:balance}
+.about__body{display:flex;flex-direction:column;gap:18px;color:var(--felt)}
+.about__body p:first-child{color:var(--ivory)}
+.roles{font:600 .75rem/1.6 var(--body);font-stretch:88%;letter-spacing:.2em;text-transform:uppercase;color:var(--ivory)}
+.about__links{display:flex;flex-wrap:wrap;gap:6px 30px;margin-top:6px}
+@media (min-width:960px){.about{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}}
+.stages{display:grid;gap:16px;margin-top:clamp(52px,7vw,104px);padding-block:clamp(26px,3.6vw,46px);border-block:1px solid var(--hair)}
+.stages ul{display:flex;flex-wrap:wrap;gap:.25em 1.15em;font:300 clamp(1.55rem,1rem + 2.4vw,3.1rem)/1.16 var(--display);letter-spacing:-.015em}
+.stages li{display:inline-flex;align-items:center;gap:.5em}
+.stages li::before{content:"";width:.44em;height:2px;background:var(--tiger);flex:none}
+.path{display:grid;margin-top:clamp(44px,6vw,88px)}
+.path__item{display:flex;flex-direction:column;gap:9px;padding:26px 0 30px;border-top:1px solid var(--hair-strong)}
+.path__years{font:600 .8125rem/1.3 var(--body);letter-spacing:.16em;text-transform:uppercase;font-variant-numeric:tabular-nums;color:var(--tiger)}
+.path__item h3{font-size:1.5625rem;line-height:1.16}
+.path__where{font:600 .75rem/1.5 var(--body);font-stretch:88%;letter-spacing:.18em;text-transform:uppercase}
+.path__item p:last-child{font-size:.9375rem;color:var(--felt)}
+@media (min-width:900px){.path{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(24px,3vw,52px)}}
+.creed{display:grid;gap:22px;max-width:1040px;margin-top:clamp(48px,7vw,104px)}
+.creed blockquote{font:italic 300 clamp(1.65rem,1.05rem + 2.5vw,3.3rem)/1.2 var(--display);letter-spacing:-.012em;text-wrap:balance}
+.creed p{max-width:38em;color:var(--felt)}
+
+/* lessons */
+.pillars{display:grid}
+.pillar{display:flex;flex-direction:column;gap:12px;padding:26px 0 34px;border-top:1px solid var(--hair-strong)}
+.pillar__n{font:italic 300 1.75rem/1 var(--display);color:var(--tiger)}
+.pillar h3{font-size:clamp(1.6rem,1.4rem + .7vw,1.95rem);line-height:1.12}
+.pillar__kicker{font:600 .75rem/1.5 var(--body);font-stretch:88%;letter-spacing:.18em;text-transform:uppercase}
+.pillar p:last-child{color:var(--felt);font-size:1rem}
+@media (min-width:900px){.pillars{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(24px,3vw,52px)}}
+.scope{display:grid;gap:26px 64px;margin-top:clamp(30px,4vw,56px)}
+.scope h3{font:600 .75rem/1.35 var(--body);font-stretch:88%;letter-spacing:.22em;text-transform:uppercase;color:var(--felt);margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chips li{padding:9px 16px;border:1px solid var(--hair-strong);border-radius:999px;font-size:.9375rem;line-height:1.2}
+.formats{display:grid;gap:10px}
+.formats li{display:flex;align-items:center;gap:12px}
+.formats li::before{content:"";width:18px;height:2px;background:var(--tiger);flex:none}
+@media (min-width:900px){.scope{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}}
+
+/* the ticket: the one ivory object on the page */
+.ticket{position:relative;display:grid;margin-top:clamp(56px,8vw,112px);border-radius:5px;background:var(--ivory);color:var(--ink);box-shadow:0 40px 90px -40px rgba(242,140,40,.42)}
+.ticket__main{display:flex;flex-direction:column;gap:16px;padding:clamp(24px,4vw,56px)}
+.ticket .eyebrow{color:var(--ember)}
+.ticket h3{font-size:clamp(2.5rem,1.6rem + 4vw,5rem);letter-spacing:-.025em}
+.ticket__tag{font:italic 300 clamp(1.15rem,1rem + .7vw,1.6rem)/1.3 var(--display);color:#4A4035}
+.ticket__rows{display:grid;gap:12px;margin:10px 0 12px;max-width:560px}
+.ticket__rows div{display:flex;align-items:baseline;gap:12px}
+.ticket__rows dt{font:600 .75rem/1.3 var(--body);font-stretch:88%;letter-spacing:.2em;text-transform:uppercase;color:#4A4035}
+.ticket__rows div::after{content:"";order:1;flex:1;border-bottom:1.5px dotted rgba(10,8,6,.4);transform:translateY(-4px)}
+.ticket__rows dd{order:2;font:400 1.3125rem/1.2 var(--display);font-variant-numeric:lining-nums;text-align:right}
+.ticket__main .btn{align-self:flex-start}
+.ticket__stub{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:clamp(24px,4vw,44px);border-top:2px dashed rgba(10,8,6,.34)}
+.ticket__stub::before,.ticket__stub::after{content:"";position:absolute;top:-14px;width:26px;height:26px;border-radius:50%;background:var(--ink)}
+.ticket__stub::before{left:-13px}
+.ticket__stub::after{right:-13px}
+.ticket__off{font:300 1.25rem/1 var(--display);color:var(--ember)}
+.ticket__off strong{display:block;font-weight:300;font-size:clamp(3.6rem,2.6rem + 4vw,5.6rem);line-height:.9;letter-spacing:-.04em;font-variant-numeric:lining-nums}
+.ticket__terms{font-size:.9375rem;line-height:1.45;color:#4A4035;max-width:26em}
+.ticket__code{font:700 clamp(1rem,.9rem + .5vw,1.1875rem)/1 var(--body);font-stretch:80%;letter-spacing:.14em;padding:13px 14px;border:1.5px solid var(--ink);border-radius:3px;-webkit-user-select:all;user-select:all;max-width:100%;overflow-wrap:anywhere}
+.ticket__copy{appearance:none;min-height:44px;padding:0;border:0;border-bottom:1px solid var(--ember);background:transparent;color:var(--ember);font:600 .75rem/1 var(--body);font-stretch:92%;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.ticket__keys{align-self:stretch;height:16px;margin-top:auto;background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 6px,var(--ink) 6px 7px,transparent 7px 12px,var(--ink) 12px 16px,transparent 16px 19px);opacity:.8}
+@media (min-width:860px){
+  .ticket{grid-template-columns:minmax(0,1fr) minmax(280px,32%)}
+  .ticket__stub{border-top:0;border-left:2px dashed rgba(10,8,6,.34)}
+  .ticket__stub::before,.ticket__stub::after{left:-14px;right:auto}
+  .ticket__stub::before{top:-13px}
+  .ticket__stub::after{top:auto;bottom:-13px}
+}
+
+/* recital */
+.recital{display:grid;gap:clamp(36px,5vw,88px)}
+.recital__copy{display:flex;flex-direction:column;gap:20px}
+.recital__copy>p:not(.eyebrow){color:var(--felt);max-width:34em}
+.programme{margin-top:10px;border-bottom:1px solid var(--hair)}
+.programme li{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:2px 8px;padding:16px 0;border-top:1px solid var(--hair)}
+.programme i{grid-row:span 2;font:italic 300 1.25rem/1.3 var(--display);color:var(--tiger)}
+.programme b{font:600 .75rem/1.5 var(--body);font-stretch:88%;letter-spacing:.18em;text-transform:uppercase;color:var(--felt)}
+.programme span{font:300 clamp(1.25rem,1.1rem + .6vw,1.6rem)/1.2 var(--display)}
+.recital__links{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.strings{width:min(100%,360px);justify-self:center;height:auto}
+@media (min-width:960px){.recital{grid-template-columns:minmax(0,6fr) minmax(0,4fr);align-items:center}}
+.composer{display:grid;gap:22px clamp(30px,5vw,88px);margin-top:clamp(56px,8vw,120px);padding-top:clamp(36px,5vw,64px);border-top:1px solid var(--hair)}
+.composer h3{font-size:clamp(1.85rem,1.3rem + 2vw,3rem);margin-top:14px}
+.composer__body{display:flex;flex-direction:column;gap:20px;color:var(--felt)}
+.platforms{display:flex;flex-wrap:wrap;gap:10px}
+.platforms a{display:inline-flex;align-items:center;gap:.6em;min-height:46px;padding:0 18px;border:1px solid var(--hair-strong);border-radius:3px;color:var(--ivory);font:600 .75rem/1 var(--body);font-stretch:92%;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:border-color .2s,color .2s}
+.platforms a:hover{border-color:var(--tiger);color:var(--tiger)}
+@media (min-width:960px){.composer{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:end}}
+
+/* voices */
+.voices{columns:2 400px;column-gap:clamp(36px,5vw,84px)}
+.voice{break-inside:avoid;display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(34px,4vw,56px);padding-top:24px;border-top:1px solid var(--hair-strong)}
+.voice blockquote{display:flex;flex-direction:column;gap:.8em;color:#DDD4C3}
+.voice--lead blockquote{font:300 clamp(1.25rem,1.1rem + .7vw,1.6rem)/1.36 var(--display);color:var(--ivory)}
+.voice figcaption{display:flex;align-items:center;gap:12px;font:600 .75rem/1.3 var(--body);font-stretch:88%;letter-spacing:.2em;text-transform:uppercase}
+.voice figcaption::before{content:"";width:22px;height:2px;background:var(--tiger)}
+.voices__note{font-size:.875rem;color:var(--felt)}
+
+/* extras */
+.extras{display:grid;gap:clamp(34px,4vw,60px)}
+.extra{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding-top:24px;border-top:1px solid var(--hair-strong)}
+.extra h3{font-size:clamp(1.6rem,1.4rem + .7vw,2rem)}
+.extra>p:not(.eyebrow){color:var(--felt);font-size:1rem}
+.points{align-self:stretch;display:grid;gap:8px}
+.points div{display:flex;align-items:baseline;gap:10px;font-size:.9375rem}
+.points dt{color:var(--felt)}
+.points div::after{content:"";order:1;flex:1;border-bottom:1px dotted var(--hair-strong);transform:translateY(-4px)}
+.points dd{order:2;font:400 1.125rem/1.2 var(--display);font-variant-numeric:lining-nums tabular-nums}
+.posts{align-self:stretch;display:grid}
+.posts a{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:13px 0;border-bottom:1px solid var(--hair);font:300 1.125rem/1.3 var(--display);text-decoration:none;transition:color .2s}
+.posts a:hover{color:var(--tiger)}
+@media (min-width:900px){.extras{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* contact */
+.contact{display:grid;gap:clamp(40px,6vw,104px)}
+.contact__lead{display:flex;flex-direction:column;gap:20px}
+.contact__lead h2{font-size:clamp(2.6rem,1.4rem + 5vw,5.6rem)}
+.contact__lead>p:not(.eyebrow){color:var(--felt);max-width:28em}
+.reach{display:grid;gap:18px;margin-top:10px}
+.reach div{display:grid;gap:3px}
+.reach dt{font:600 .6875rem/1.3 var(--body);font-stretch:88%;letter-spacing:.22em;text-transform:uppercase;color:var(--felt)}
+.reach dd{font-size:1.0625rem;overflow-wrap:anywhere}
+.reach a{text-decoration:none;border-bottom:1px solid var(--hair-strong)}
+.reach a:hover{color:var(--tiger);border-color:var(--tiger)}
+.social{display:flex;flex-wrap:wrap;gap:4px 22px;margin-top:8px}
+.social a{font:600 .75rem/1 var(--body);font-stretch:92%;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--felt);padding:14px 0;transition:color .2s}
+.social a:hover{color:var(--tiger)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:26px 30px;align-content:start}
+.field{display:flex;flex-direction:column;gap:6px;font:600 .6875rem/1.3 var(--body);font-stretch:88%;letter-spacing:.22em;text-transform:uppercase;color:var(--felt)}
+.field--wide{grid-column:1/-1}
+.field input,.field textarea{min-height:48px;padding:10px 0;border:0;border-bottom:1px solid var(--hair-strong);border-radius:0;background:transparent;color:var(--ivory);font:400 1.0625rem/1.4 var(--body);letter-spacing:0;text-transform:none;transition:border-color .2s}
+.field textarea{min-height:120px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:0;border-color:var(--tiger);box-shadow:0 1px 0 var(--tiger)}
+.form__foot{grid-column:1/-1;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.form__note{font-size:.875rem;color:var(--felt)}
+.form__ready{grid-column:1/-1;display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:22px;border:1px solid var(--tiger);border-radius:5px}
+.form__ready p{overflow-wrap:anywhere}
+.form__ready div{display:flex;flex-wrap:wrap;gap:10px}
+@media (min-width:960px){.contact{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}}
+
+/* footer + floating sound chip */
+.foot{background:var(--coal);border-top:1px solid var(--hair)}
+.foot__in{display:flex;flex-direction:column;gap:26px;padding-block:44px 40px}
+.foot__row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 30px}
+.foot__links{display:flex;flex-wrap:wrap;gap:4px 24px;font-size:.875rem}
+.foot__links a{color:var(--felt);text-decoration:none;padding:10px 0}
+.foot__links a:hover{color:var(--ivory)}
+.foot__small{font-size:.8125rem;color:var(--felt)}
+.foot__small a{color:var(--ivory)}
+.mini{position:fixed;left:16px;bottom:16px;z-index:45;display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 16px 0 12px;border:1px solid var(--tiger);border-radius:999px;background:rgba(10,8,6,.9);color:var(--tiger);font:600 .6875rem/1 var(--body);font-stretch:92%;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.eq{display:inline-flex;align-items:flex-end;gap:2px;width:16px;height:14px}
+.eq i{flex:1;background:currentColor;height:30%;animation:eq 1s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.35s}
+.eq i:nth-child(3){animation-delay:-.7s}
+@keyframes eq{0%,100%{height:25%}50%{height:100%}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#continut" data-i18n="skip">Sari la conținut</a>
+<p class="concept"><span data-i18n="concept">Concept de redesign. Site-ul oficial este</span> <a href="https://www.musicaltigers.com">musicaltigers.com</a></p>
+
+<header class="top" id="top">
+  <a class="brand" href="#scena" aria-label="Musical Tigers">
+    <svg viewBox="0 0 32 32" width="28" height="28" fill="none" aria-hidden="true"><defs><clipPath id="mark-clip"><path d="M4 29V9C4 5 7 3 11 3C15 3 17.5 5.5 18.5 10C19.5 15 21 18 25 21C27.5 23 28 25 28 27V29Z"/></clipPath></defs><g clip-path="url(#mark-clip)" stroke="#F28C28" stroke-width="2.3"><path d="M7.5 0V32M12.5 0V32M17.5 0V32M22.5 0V32M27 0V32"/></g></svg>
+    <span class="brand__name">Musical Tigers</span>
+  </a>
+  <nav class="nav" id="nav" aria-label="Secțiuni">
+    <a href="#lectia-zero" data-i18n="nav.zero">Lecția zero</a>
+    <a href="#despre" data-i18n="nav.about">Despre</a>
+    <a href="#lectii" data-i18n="nav.lessons">Lecții</a>
+    <a href="#recital">Recital</a>
+    <a href="#elevi" data-i18n="nav.students">Elevi</a>
+    <a href="#contact">Contact</a>
+    <a class="btn btn--solid nav__cta" href="https://www.musicaltigers.com/book-online" data-i18n="cta.book">Rezervă o lecție</a>
+  </nav>
+  <div class="top__tools">
+    <div class="lang" role="group" aria-label="Limbă / Language">
+      <button type="button" data-lang="ro" aria-pressed="true">RO</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn--solid btn--sm top__cta" href="https://www.musicaltigers.com/book-online" data-i18n="cta.short">Rezervă</a>
+    <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="Meniu">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="continut">
+
+<section class="hero" id="scena" aria-labelledby="hero-title">
+  <div class="hero__glow" id="glow" aria-hidden="true"></div>
+  <canvas class="hero__roll" id="roll" aria-hidden="true"></canvas>
+  <div class="hero__copy">
+    <p class="eyebrow" data-i18n="hero.eyebrow">Profesor de pian · București și online</p>
+    <h1 id="hero-title" data-i18n="hero.title">„Lecții de pian pentru acel <em class="roar">răget</em> din inima ta!”</h1>
+    <p class="hero__sub" data-i18n="hero.sub"><strong>Alexandru Ciobanu Al Rufei</strong>, pianist concertist, compozitor și profesor de pian. Peste 25 de ani pe scenă, peste 15 ani de predare.</p>
+    <div class="hero__cta">
+      <a class="btn btn--solid" href="https://www.musicaltigers.com/book-online" data-i18n="cta.book">Rezervă o lecție</a>
+      <a class="btn btn--ghost" href="#lectia-zero" data-i18n="hero.cta2">Cântă primele 15 note</a>
+    </div>
+  </div>
+  <aside class="playing" aria-labelledby="playing-label">
+    <p class="eyebrow" id="playing-label" data-i18n="playing.eyebrow">Pe scenă acum</p>
+    <p class="playing__piece"><span>Ludwig van Beethoven</span><em data-i18n="playing.piece">Sonata „Quasi una fantasia” op. 27 nr. 2</em></p>
+    <button class="listen" type="button" id="listen" aria-pressed="false">
+      <svg class="listen__icon i-play" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2.5v13l11-6.5z" fill="currentColor"/></svg>
+      <svg class="listen__icon i-stop" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 3h3.5v12H4zM10.5 3H14v12h-3.5z" fill="currentColor"/></svg>
+      <span id="listen-label">Ascultă cu sunet</span>
+    </button>
+    <p class="playing__mute" id="mute-hint" hidden data-i18n="playing.mute">Nu se aude? Verifică modul silențios al telefonului.</p>
+    <div class="tempo">
+      <div class="tempo__row">
+        <label for="tempo" data-i18n="tempo.label">Ritmul tău</label>
+        <output for="tempo" id="tempo-out"><span id="tempo-name">Adagio sostenuto</span><svg viewBox="0 0 10 20" width="8" height="16" aria-hidden="true"><ellipse cx="3.6" cy="16" rx="3.4" ry="2.5" transform="rotate(-22 3.6 16)" fill="currentColor"/><path d="M6.7 15.2V1" stroke="currentColor" stroke-width="1.2"/></svg><span>=</span><span id="tempo-bpm">54</span></output>
+      </div>
+      <input type="range" id="tempo" min="40" max="132" step="1" value="54">
+    </div>
+    <p class="playing__hint" data-i18n="playing.hint">Clapele sunt adevărate. Atinge-le.</p>
+  </aside>
+  <div class="grand" id="grand">
+    <div class="fallboard"><span>Musical Tigers</span></div>
+    <div class="felt-strip"></div>
+    <div class="keys" id="hero-keys" role="group" aria-label="Claviatură de pian. Atinge clapele ca să cânți."></div>
+  </div>
+</section>
+
+<section class="facts" aria-label="Repere">
+  <div class="wrap facts__grid">
+    <p class="fact"><b>5</b><span data-i18n="fact.1">ani avea când a început studiul pianului</span></p>
+    <p class="fact"><b>9</b><span data-i18n="fact.2">ani avea la debutul ca solist cu orchestra, la Ateneul Român</span></p>
+    <p class="fact"><b>25+</b><span data-i18n="fact.3">de ani de experiență, de la scene de concert la spații intime</span></p>
+    <p class="fact"><b>15+</b><span data-i18n="fact.4">de ani de experiență în predare</span></p>
+  </div>
+</section>
+
+<section class="section" id="lectia-zero" aria-labelledby="zero-title">
+  <div class="wrap zero">
+    <div class="zero__intro">
+      <p class="eyebrow" data-i18n="zero.eyebrow">Lecția zero</p>
+      <h2 class="h2" id="zero-title" data-i18n="zero.title">Primele tale 15 note. <em>Chiar acum.</em></h2>
+      <p data-i18n="zero.text">Atinge clapa luminată și urmărește partitura. Fără grabă și fără presiune: greșelile nu se numără.</p>
+    </div>
+    <div class="zero__stage" id="zero-stage">
+      <div class="staff" id="staff" aria-hidden="true"></div>
+      <p class="sr" data-i18n="zero.sr">Melodia: Mi, Mi, Fa, Sol, Sol, Fa, Mi, Re, Do, Do, Re, Mi, Mi, Re, Re.</p>
+      <div class="kb" id="kb" role="group" aria-label="Claviatură de exercițiu, de la Do la Do"></div>
+      <div class="zero__bar">
+        <p class="zero__progress" id="zero-progress" aria-live="polite">Nota 1 din 15</p>
+        <div class="zero__actions">
+          <button class="btn btn--ghost btn--sm" type="button" id="zero-demo" data-i18n="zero.demo">Arată-mi cum sună</button>
+          <button class="btn btn--ghost btn--sm" type="button" id="zero-reset" data-i18n="zero.reset">De la capăt</button>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="rec__row">
+          <button class="btn btn--ghost btn--sm" type="button" id="rec-toggle" aria-pressed="false"><i class="rec__dot" aria-hidden="true"></i><span id="rec-toggle-label">Înregistrează</span></button>
+          <button class="btn btn--ghost btn--sm" type="button" id="rec-play" disabled>Redă</button>
+          <button class="btn btn--ghost btn--sm" type="button" id="rec-save" disabled>Descarcă MIDI</button>
+          <label class="btn btn--ghost btn--sm" for="rec-file" id="rec-load">Încarcă MIDI</label>
+          <input class="sr" type="file" id="rec-file" accept=".mid,.midi,.zip,audio/midi,audio/x-midi,application/zip">
+        </div>
+        <p class="rec__status" id="rec-status" aria-live="polite"></p>
+      </div>
+      <p class="zero__keysnote"><span data-i18n="zero.keys">Poți cânta și de la tastatură:</span> <kbd>A S D F G H J K</kbd></p>
+      <div class="zero__done" id="zero-done" hidden>
+        <h3 data-i18n="zero.done.title">Tocmai ai cântat <em>Beethoven</em>.</h3>
+        <p data-i18n="zero.done.text">„Odă bucuriei”, din Simfonia a IX-a. Restul îl învățăm împreună.</p>
+        <a class="btn btn--solid" href="https://www.musicaltigers.com/book-online" data-i18n="zero.done.cta">Rezervă prima lecție</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--coal" id="despre" aria-labelledby="about-title">
+  <div class="wrap">
+    <div class="about">
+      <div class="about__lead">
+        <p class="eyebrow" data-i18n="about.eyebrow">Despre mine</p>
+        <h2 class="h2" id="about-title" data-i18n="about.title">De ce să fiu <em>profesorul tău?</em></h2>
+        <p class="lede" data-i18n="about.lede">Pentru că nu doar predau — ci mă adaptez și te ghidez!</p>
+      </div>
+      <div class="about__body">
+        <p data-i18n="about.p1">Cu peste 25 de ani de experiență, de la scene vibrante de concert până la spații intime, aduc cu mine o pasiune pentru muzică ce merge mult dincolo de note și tehnică. Scopul meu este să te însoțesc pe propriul tău drum muzical, cu răbdare, un strop de disciplină „old-school” și o dragoste profundă pentru arta pianului.</p>
+        <p class="roles" data-i18n="about.roles">Pianist concertist · compozitor · songwriter · corepetitor de balet</p>
+        <p data-i18n="about.p2">Absolvent al Universității Naționale de Muzică din București, Alexandru a început studiul pianului la cinci ani. La nouă ani debuta ca solist cu orchestra, pe scena Ateneului Român.</p>
+        <p data-i18n="about.p3">A fost distins cu numeroase premii la concursuri naționale și internaționale de pian în România, Italia și Spania și a susținut recitaluri și concerte în întreaga Europă.</p>
+        <p data-i18n="about.p4">În prezent este profesor corepetitor la Liceul de Coregrafie „Floria Capsali” din București și oferă lecții particulare de pian, adaptate obiectivelor, nivelului și parcursului artistic al fiecărui elev.</p>
+        <div class="about__links">
+          <a class="link" href="https://24bd2ca2-c748-4b06-8aee-90e5b552accf.usrfiles.com/ugd/24bd2c_bd51ec0f376c454391a9d870cae01bca.pdf"><span data-i18n="about.cv">Descarcă CV-ul</span><svg class="ext" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+          <a class="link" href="https://www.musicaltigers.com/about-me"><span data-i18n="about.bio">Biografia completă</span><svg class="ext" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="stages">
+      <p class="eyebrow" data-i18n="stages.label">A cântat la</p>
+      <ul>
+        <li data-i18n="stages.1">Ateneul Român</li>
+        <li>J.W. Marriott</li>
+        <li>Grand Hotel Continental</li>
+        <li>Casino Palace</li>
+      </ul>
+    </div>
+
+    <div class="path">
+      <article class="path__item">
+        <p class="path__years">1990–1994</p>
+        <h3 data-i18n="path.1.h">Liceul de Muzică „Dinu Lipatti”</h3>
+        <p class="path__where" data-i18n="path.city">București</p>
+        <p data-i18n="path.1.p">Acolo am construit bazele tehnicii, disciplinei și expresivității care aveau să mă călăuzească de-a lungul carierei.</p>
+      </article>
+      <article class="path__item">
+        <p class="path__years" data-i18n="path.2.y">Din 1998</p>
+        <h3 data-i18n="path.2.h">Liceul de Muzică „George Enescu”</h3>
+        <p class="path__where" data-i18n="path.city">București</p>
+        <p data-i18n="path.2.p">Această perioadă mi-a oferit o bază solidă în interpretare, tehnică și teorie muzicală — de la câștigarea unor premii la concursuri naționale și internaționale până la apariții ca solist alături de orchestre pe scena Ateneului Român.</p>
+      </article>
+      <article class="path__item">
+        <p class="path__years">2002–2007</p>
+        <h3 data-i18n="path.3.h">Universitatea Națională de Muzică București</h3>
+        <p class="path__where" data-i18n="path.3.w">Licență în Arte, Interpretare Pian</p>
+        <p data-i18n="path.3.p">Anii de studiu mi-au oferit nu doar o pregătire clasică solidă, ci și libertatea de a explora improvizația, compoziția și pedagogia.</p>
+      </article>
+    </div>
+
+    <figure class="creed">
+      <blockquote data-i18n="creed.q">„Am învățat să transform studiul în progres, disciplina în creativitate și tehnica în expresie autentică.”</blockquote>
+      <p data-i18n="creed.p">Cea mai valoroasă lecție pe care am descoperit-o este că muzica este o călătorie — o călătorie pe care astăzi o împărtășesc cu drag elevilor mei.</p>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="lectii" aria-labelledby="lessons-title">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow" data-i18n="lessons.eyebrow">Lecții de pian</p>
+      <h2 id="lessons-title" data-i18n="lessons.title">Lecții și <em>workshopuri</em></h2>
+    </div>
+    <div class="pillars">
+      <article class="pillar">
+        <span class="pillar__n" aria-hidden="true">I.</span>
+        <h3 data-i18n="pillar.1.h">Lecții personalizate</h3>
+        <p class="pillar__kicker" data-i18n="pillar.1.k">Educație muzicală personalizată</p>
+        <p data-i18n="pillar.1.p">Scopul meu este simplu: să te inspir să iubești muzica la fel de mult ca mine. Lecțiile sunt adaptate nivelului și stilului tău, ajutându-te să-ți dezvolți tehnica, expresia și încrederea în sine, descoperind în același timp bucuria muzicii.</p>
+      </article>
+      <article class="pillar">
+        <span class="pillar__n" aria-hidden="true">II.</span>
+        <h3 data-i18n="pillar.2.h">Lecții adaptate fiecărui nivel</h3>
+        <p class="pillar__kicker" data-i18n="pillar.2.k">Învață pianul, în stilul tău</p>
+        <p data-i18n="pillar.2.p">Fie că ești la început sau deja avansat, lecțiile mele sunt create să te sprijine la nivelul tău. Cu răbdare și pasiune, ghidez fiecare elev să își dezvolte atât tehnica, cât și expresivitatea artistică — bucurându-se pe deplin de călătoria muzicii.</p>
+      </article>
+      <article class="pillar">
+        <span class="pillar__n" aria-hidden="true">III.</span>
+        <h3 data-i18n="pillar.3.h">Dezvoltare muzicală și artistică</h3>
+        <p class="pillar__kicker" data-i18n="pillar.3.k">Lasă creativitatea să prindă viață</p>
+        <p data-i18n="pillar.3.p">Mai mult decât simpla învățare a notelor, lecțiile mele se concentrează pe dezvoltarea ta muzicală și artistică. Vei dobândi creativitate, încredere și o legătură mai profundă cu muzica — descoperindu-ți propria voce unică la pian.</p>
+      </article>
+    </div>
+    <div class="scope">
+      <div>
+        <h3 data-i18n="scope.h1">Ce lucrăm împreună</h3>
+        <ul class="chips">
+          <li data-i18n="chip.1">Tehnică</li>
+          <li data-i18n="chip.2">Expresie</li>
+          <li data-i18n="chip.3">Citirea partiturii</li>
+          <li data-i18n="chip.4">Teorie muzicală</li>
+          <li data-i18n="chip.5">Armonie</li>
+          <li data-i18n="chip.6">Improvizație</li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-i18n="scope.h2">Cum</h3>
+        <ul class="formats">
+          <li data-i18n="format.1">Unu-la-unu</li>
+          <li data-i18n="format.2">La studio în București sau online</li>
+          <li data-i18n="format.3">Pentru orice vârstă</li>
+          <li data-i18n="format.4">De la începători la avansați</li>
+        </ul>
+      </div>
+    </div>
+
+    <article class="ticket" id="rezerva" aria-labelledby="ticket-title">
+      <div class="ticket__main">
+        <p class="eyebrow" data-i18n="ticket.eyebrow">Rezervă online</p>
+        <h3 id="ticket-title">Note de Fildeș</h3>
+        <p class="ticket__tag" data-i18n="ticket.tag">Unde pasiunea și pianul se unesc</p>
+        <dl class="ticket__rows">
+          <div><dt data-i18n="ticket.k1">Durată</dt><dd data-i18n="ticket.v1">1–2 ore</dd></div>
+          <div><dt>Format</dt><dd data-i18n="ticket.v2">la studio sau online</dd></div>
+          <div><dt data-i18n="ticket.k3">Preț</dt><dd data-i18n="ticket.v3">de la 350 RON</dd></div>
+        </dl>
+        <a class="btn btn--ink" href="https://www.musicaltigers.com/book-online" data-i18n="ticket.cta">Rezervă acum</a>
+      </div>
+      <div class="ticket__stub">
+        <p class="ticket__off"><strong>25%</strong><span data-i18n="ticket.off">reducere</span></p>
+        <p class="ticket__terms" data-i18n="ticket.terms">la lecțiile individuale și la toate planurile de lecții, cu voucherul</p>
+        <code class="ticket__code" id="voucher">PRIETENIIPIANULUI</code>
+        <button class="ticket__copy" type="button" id="copy-voucher" data-i18n="ticket.copy">Copiază codul</button>
+        <div class="ticket__keys" aria-hidden="true"></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section section--coal" id="recital" aria-labelledby="recital-title">
+  <div class="wrap">
+    <div class="recital">
+      <div class="recital__copy">
+        <p class="eyebrow" data-i18n="recital.eyebrow">Recital de pian</p>
+        <h2 class="h2" id="recital-title" data-i18n="recital.title">Trăiește arta captivantă a <em>Musical Tigers</em></h2>
+        <p data-i18n="recital.p">Fiecare recital este o călătorie elegantă și emoționantă, de la Bach, Mozart și Chopin până la tango, vals și lucrările lui Astor Piazzolla. Pentru evenimente ce merită rafinament.</p>
+        <ol class="programme" aria-label="Înregistrări">
+          <li><i aria-hidden="true">1</i><b>Ludwig van Beethoven</b><span data-i18n="prog.1">Sonata „Quasi una fantasia” op. 27 nr. 2</span></li>
+          <li><i aria-hidden="true">2</i><b>Alexandru Ciobanu</b><span>„Le Grand Pirouette”</span></li>
+          <li><i aria-hidden="true">3</i><b data-i18n="prog.3k">Improvizație live</b><span data-i18n="prog.3">cu final pe „Por Una Cabeza”</span></li>
+        </ol>
+        <div class="recital__links">
+          <a class="btn btn--solid" href="https://www.musicaltigers.com/services-4" data-i18n="recital.watch">Vezi înregistrările</a>
+          <a class="btn btn--ghost" href="#contact" data-i18n="recital.ask">Întreabă de un recital</a>
+        </div>
+      </div>
+      <svg class="strings" viewBox="0 0 300 410" fill="none" role="img" aria-label="Pian cu coadă văzut de sus, cu corzile desenate ca dungi de tigru">
+        <defs>
+          <clipPath id="lid"><path d="M10 400V70C10 25 50 10 85 10C125 10 150 35 160 80C172 135 180 190 230 230C270 262 290 290 290 330V400Z"/></clipPath>
+          <linearGradient id="string-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="400"><stop offset="0" stop-color="#F28C28"/><stop offset=".7" stop-color="#F28C28"/><stop offset="1" stop-color="#A8401A"/></linearGradient>
+        </defs>
+        <g clip-path="url(#lid)" stroke="url(#string-fade)" id="strings"></g>
+        <path d="M10 400V70C10 25 50 10 85 10C125 10 150 35 160 80C172 135 180 190 230 230C270 262 290 290 290 330V400Z" stroke="#F3ECDD" stroke-opacity=".5" stroke-width="1.2"/>
+        <path d="M10 388H290" stroke="#F3ECDD" stroke-opacity=".5" stroke-width="1.2"/>
+      </svg>
+    </div>
+
+    <div class="composer">
+      <div>
+        <p class="eyebrow" data-i18n="composer.eyebrow">Compozitor</p>
+        <h3 data-i18n="composer.title">Speranță, reziliență și <em>profunzime emoțională</em></h3>
+      </div>
+      <div class="composer__body">
+        <p data-i18n="composer.p">În compozițiile sale, Alexandru explorează o fuziune distinctă între tradiția clasică, improvizația de jazz și arta modernă a povestirii. Lucrările originale sunt disponibile pe SoundCloud și pe principalele platforme de streaming.</p>
+        <div class="platforms">
+          <a href="https://open.spotify.com/artist/2J9Ftq2dTtrkX2ivtmSXSO">Spotify</a>
+          <a href="https://music.apple.com/ro/artist/alexandru-sorin-ciobanu-al-rufei/1759839385">Apple Music</a>
+          <a href="https://www.youtube.com/@alexandruciobanualrufei">YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="elevi" aria-labelledby="voices-title">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow" data-i18n="voices.eyebrow">Testimoniale ale elevilor</p>
+      <h2 id="voices-title" data-i18n="voices.title">Ce spun <em>elevii</em></h2>
+      <p class="voices__note" id="voices-note" hidden>Translated from Romanian.</p>
+    </div>
+    <div class="voices">
+      <figure class="voice voice--lead">
+        <blockquote data-i18n="voice.1"><p>După mai bine de 10 ani de cântat la pian, încă am momente în care greșesc o gamă simplă sau uit armura… dar Alexandru nu a fugit încă de la lecțiile noastre — ceea ce consider un adevărat semn de dedicare.</p><p>Ce apreciez cu adevărat este că nu există presiune, termene stresante sau grabă, iar eu am libertatea de a învăța în ritmul meu (care uneori este mai degrabă adagio decât allegro). Lecțiile au mereu o energie relaxată, cu mult umor, răbdare și înțelegere.</p><p>Iar chiar dacă nu voi ajunge niciodată să cânt la Carnegie Hall, faptul că învăț alături de el m-a făcut să mă îndrăgostesc cu adevărat de pian.</p></blockquote>
+        <figcaption>Cristina B.</figcaption>
+      </figure>
+      <figure class="voice">
+        <blockquote data-i18n="voice.2"><p>Deși am 43 de ani și nu am studiat serios pianul până acum, anul acesta am decis să-mi urmez pasiunea și să investesc cu adevărat în acest hobby. Cu ajutorul lui Alex Ciobanu, am făcut progrese remarcabile într-un timp scurt: am început să cânt mai încrezător, să citesc partituri și să mă bucur cu adevărat de fiecare lecție. Alex are o abordare calmă, clară și motivațională, care te face să crezi — și să vezi în practică — că nu e niciodată prea târziu să înveți pianul.</p></blockquote>
+        <figcaption>Adrian D.</figcaption>
+      </figure>
+      <figure class="voice">
+        <blockquote data-i18n="voice.3"><p>Alexandru mi-a oferit cele mai bune lecții pe care mi le-aș fi putut dori, lăsându-mă mereu să avansez în propriul meu ritm, ceea ce a făcut ca învățarea să pară naturală, nu forțată. Mi-a plăcut faptul că am putut aduce orice piesă muzicală pe care am dorit să o cânt, iar el m-a sprijinit mereu în exersarea lor.</p></blockquote>
+        <figcaption>Lorenzo H.</figcaption>
+      </figure>
+      <figure class="voice">
+        <blockquote data-i18n="voice.4"><p>Domnul profesor îmi predă lecțiile într-o manieră liberă. A reușit să îmi creeze o stare relaxantă la pian, dar în același timp a făcut și cursurile distractive. Îmbină citirea și respectarea partiturii cu teoria muzicală, armonia și tehnica improvizatorică, ceea ce nu am întâlnit la alți profesori!</p></blockquote>
+        <figcaption>Stefan T.</figcaption>
+      </figure>
+      <figure class="voice">
+        <blockquote data-i18n="voice.5"><p>Aș dori să-i mulțumesc profesorului meu de pian, Alexandru, pentru că m-a învățat să cânt la pian. Îmi este clar că Alexandru iubește pianul și a împărtășit această dragoste cu mine pe parcursul lecțiilor noastre. Îl recomand cu drag oricui dorește să învețe sau să stăpânească arta pianului.</p></blockquote>
+        <figcaption>Toma P.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section--coal" aria-label="Tiger Rewards, Gift Card, Blog">
+  <div class="wrap extras">
+    <article class="extra">
+      <p class="eyebrow" data-i18n="rewards.eyebrow">Program de loialitate</p>
+      <h3>Tiger Rewards</h3>
+      <dl class="points">
+        <div><dt data-i18n="rewards.1">Rezervi o ședință</dt><dd>10</dd></div>
+        <div><dt data-i18n="rewards.2">Comanzi un plan</dt><dd>100</dd></div>
+        <div><dt data-i18n="rewards.3">Te înscrii pe site</dt><dd>50</dd></div>
+        <div><dt data-i18n="rewards.4">Urmărești pe rețelele sociale</dt><dd>25</dd></div>
+      </dl>
+      <p data-i18n="rewards.p">10 Tiger Rewards înseamnă 1 RON reducere. La 500 primești 5% reducere.</p>
+      <a class="link" href="https://www.musicaltigers.com/tiger-rewards"><span data-i18n="rewards.link">Cum funcționează</span><svg class="ext" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    </article>
+    <article class="extra">
+      <p class="eyebrow" data-i18n="gift.eyebrow">Cadou</p>
+      <h3>Gift Card</h3>
+      <p data-i18n="gift.p">Lecții de pian, în dar. Pentru cineva care a spus mereu că ar vrea să învețe.</p>
+      <a class="link" href="https://www.musicaltigers.com/gift-card"><span data-i18n="gift.link">Vezi Gift Card</span><svg class="ext" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    </article>
+    <article class="extra">
+      <p class="eyebrow">Blog</p>
+      <h3 data-i18n="blog.title">Din jurnal</h3>
+      <div class="posts">
+        <a href="https://www.musicaltigers.com/post/de-ce-vrei-sa-inveti-sa-canti-la-pian">De ce vrei să înveți să cânți la pian?</a>
+        <a href="https://www.musicaltigers.com/post/simple-music-theory-lessons-for-beginners-beginner-music-theory-tips-to-get-you-started">Simple Music Theory Lessons for Beginners</a>
+        <a href="https://www.musicaltigers.com/post/bach-sau-astor-piazzolla">E 3 dimineata! Sau...noaptea?!</a>
+      </div>
+      <a class="link" href="https://www.musicaltigers.com/blog"><span data-i18n="blog.link">Toate articolele</span><svg class="ext" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact">
+    <div class="contact__lead">
+      <p class="eyebrow">Contact</p>
+      <h2 id="contact-title" data-i18n="contact.title">Primul pas e <em>o lecție.</em></h2>
+      <p data-i18n="contact.p">La studio în București sau online, la nivelul și în ritmul tău.</p>
+      <dl class="reach">
+        <div><dt data-i18n="reach.phone">Telefon</dt><dd><a href="tel:+40753563165">+40 753 563 165</a></dd></div>
+        <div><dt>E-mail</dt><dd><a href="mailto:alex.ciobanu.alrufei@musicaltigers.com">alex.ciobanu.alrufei@musicaltigers.com</a></dd></div>
+        <div><dt>Studio</dt><dd data-i18n="reach.city">București, România</dd></div>
+      </dl>
+      <nav class="social" aria-label="Social">
+        <a href="https://open.spotify.com/artist/2J9Ftq2dTtrkX2ivtmSXSO">Spotify</a>
+        <a href="https://music.apple.com/ro/artist/alexandru-sorin-ciobanu-al-rufei/1759839385">Apple Music</a>
+        <a href="https://www.youtube.com/@alexandruciobanualrufei">YouTube</a>
+        <a href="https://www.instagram.com/profualexandruciobanu/">Instagram</a>
+        <a href="https://www.facebook.com/profesor.pian">Facebook</a>
+        <a href="https://www.tiktok.com/@profualexandruciobanu">TikTok</a>
+      </nav>
+    </div>
+    <form class="form" id="contact-form">
+      <label class="field"><span data-i18n="form.first">Prenume *</span><input type="text" id="f-first" name="prenume" autocomplete="given-name" required></label>
+      <label class="field"><span data-i18n="form.last">Nume</span><input type="text" id="f-last" name="nume" autocomplete="family-name"></label>
+      <label class="field field--wide"><span>E-mail *</span><input type="email" id="f-email" name="email" autocomplete="email" required></label>
+      <label class="field field--wide"><span data-i18n="form.msg">Mesaj</span><textarea id="f-msg" name="mesaj" rows="4"></textarea></label>
+      <div class="form__foot">
+        <button class="btn btn--solid" type="submit" data-i18n="form.submit">Pregătește e-mailul</button>
+        <p class="form__note" data-i18n="form.note">Formularul nu trimite nimic singur: pregătește un e-mail pe care îl trimiți tu.</p>
+      </div>
+      <div class="form__ready" id="form-ready" hidden tabindex="-1">
+        <p><strong data-i18n="form.ready">Mesajul e pregătit, dar nu a fost trimis.</strong></p>
+        <div>
+          <a class="btn btn--solid btn--sm" id="mail-open" href="mailto:alex.ciobanu.alrufei@musicaltigers.com" data-i18n="form.open">Deschide aplicația de e-mail</a>
+          <button class="btn btn--ghost btn--sm" type="button" id="mail-copy" data-i18n="form.copy">Copiază mesajul</button>
+        </div>
+        <p class="form__note"><span data-i18n="form.or">Sau scrie direct la</span> alex.ciobanu.alrufei@musicaltigers.com</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div class="foot__row">
+      <a class="brand" href="#scena" aria-label="Musical Tigers">
+        <svg viewBox="0 0 32 32" width="26" height="26" fill="none" aria-hidden="true"><g clip-path="url(#mark-clip)" stroke="#F28C28" stroke-width="2.3"><path d="M7.5 0V32M12.5 0V32M17.5 0V32M22.5 0V32M27 0V32"/></g></svg>
+        <span class="brand__name">Musical Tigers</span>
+      </a>
+      <nav class="foot__links" aria-label="Legal">
+        <a href="https://www.musicaltigers.com/blog">Blog</a>
+        <a href="https://www.musicaltigers.com/gift-card">Gift Card</a>
+        <a href="https://www.musicaltigers.com/tiger-rewards">Tiger Rewards</a>
+        <a href="https://www.musicaltigers.com/english-privacy-policy" data-i18n="foot.privacy">Politica de confidențialitate</a>
+        <a href="https://www.musicaltigers.com/accessibility-statement" data-i18n="foot.access">Declarație de accesibilitate</a>
+      </nav>
+    </div>
+    <div class="foot__row foot__small">
+      <span>© 2026 Musical Tigers · <span data-i18n="foot.city">București</span></span>
+      <span><span data-i18n="foot.concept">Propunere de design, nu site-ul oficial. Site-ul oficial:</span> <a href="https://www.musicaltigers.com">musicaltigers.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<button class="mini" type="button" id="mini" hidden><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="mini-label">Oprește sunetul</span></button>
+
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const rand = (a, b) => a + Math.random() * (b - a);
+const isBlack = m => [1, 3, 6, 8, 10].includes(m % 12);
+const reduceMotion = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+/* ---------- language ---------- */
+const EN = {
+  'skip': 'Skip to content',
+  'concept': 'Redesign concept. The official site is',
+  'nav.zero': 'Lesson zero', 'nav.about': 'About', 'nav.lessons': 'Lessons', 'nav.students': 'Students',
+  'cta.book': 'Book a lesson', 'cta.short': 'Book',
+  'hero.eyebrow': 'Piano teacher · Bucharest and online',
+  'hero.title': '“Piano lessons for that <em class="roar">roar</em> in your heart!”',
+  'hero.sub': '<strong>Alexandru Ciobanu Al Rufei</strong>, concert pianist, composer and piano teacher. More than 25 years on stage, more than 15 years of teaching.',
+  'hero.cta2': 'Play your first 15 notes',
+  'playing.eyebrow': 'On stage now',
+  'playing.piece': 'Sonata “Quasi una fantasia”, Op. 27 No. 2',
+  'playing.mute': 'No sound? Check your phone’s silent mode.',
+  'tempo.label': 'Your tempo',
+  'playing.hint': 'The keys are real. Touch them.',
+  'fact.1': 'years old when he began studying the piano',
+  'fact.2': 'years old at his orchestral debut as a soloist, at the Romanian Athenaeum',
+  'fact.3': 'years of experience, from concert stages to intimate venues',
+  'fact.4': 'years of teaching experience',
+  'zero.eyebrow': 'Lesson zero',
+  'zero.title': 'Your first 15 notes. <em>Right now.</em>',
+  'zero.text': 'Tap the glowing key and follow the score. No rush and no pressure: mistakes don’t count.',
+  'zero.sr': 'The melody: E, E, F, G, G, F, E, D, C, C, D, E, E, D, D.',
+  'zero.demo': 'Show me how it sounds', 'zero.reset': 'Start over',
+  'zero.keys': 'You can also play from your keyboard:',
+  'zero.done.title': 'You just played <em>Beethoven</em>.',
+  'zero.done.text': '“Ode to Joy”, from the Ninth Symphony. We’ll learn the rest together.',
+  'zero.done.cta': 'Book your first lesson',
+  'about.eyebrow': 'About me',
+  'about.title': 'Why should I be <em>your teacher?</em>',
+  'about.lede': 'Because I don’t just teach. I adapt, and I guide you!',
+  'about.p1': 'With more than 25 years of experience, from vibrant concert stages to intimate venues, I bring a passion for music that goes far beyond notes and technique. My goal is to walk with you along your own musical path, with patience, a touch of old-school discipline and a deep love for the art of the piano.',
+  'about.roles': 'Concert pianist · composer · songwriter · ballet accompanist',
+  'about.p2': 'A graduate of the National University of Music Bucharest, Alexandru began studying the piano at five. At nine he made his orchestral debut as a soloist on the stage of the Romanian Athenaeum.',
+  'about.p3': 'He has won numerous prizes at national and international piano competitions in Romania, Italy and Spain, and has given recitals and concerts across Europe.',
+  'about.p4': 'He is currently an accompanist teacher at the “Floria Capsali” Choreography High School in Bucharest and gives private piano lessons shaped around each student’s goals, level and artistic path.',
+  'about.cv': 'Download the CV', 'about.bio': 'Full biography',
+  'stages.label': 'He has performed at', 'stages.1': 'Romanian Athenaeum',
+  'path.city': 'Bucharest',
+  'path.1.h': '“Dinu Lipatti” Music High School',
+  'path.1.p': 'That is where I built the foundations of technique, discipline and expressiveness that would guide me throughout my career.',
+  'path.2.y': 'From 1998',
+  'path.2.h': '“George Enescu” Music High School',
+  'path.2.p': 'This period gave me a solid grounding in performance, technique and music theory, from winning prizes at national and international competitions to appearing as a soloist with orchestras on the stage of the Romanian Athenaeum.',
+  'path.3.h': 'National University of Music Bucharest',
+  'path.3.w': 'Bachelor of Arts, Piano Performance',
+  'path.3.p': 'My years of study gave me not only a solid classical training, but also the freedom to explore improvisation, composition and teaching.',
+  'creed.q': '“I learned to turn practice into progress, discipline into creativity and technique into authentic expression.”',
+  'creed.p': 'The most valuable lesson I have discovered is that music is a journey, one I now gladly share with my students.',
+  'lessons.eyebrow': 'Piano lessons',
+  'lessons.title': 'Lessons and <em>workshops</em>',
+  'pillar.1.h': 'Personalised lessons', 'pillar.1.k': 'Music education made personal',
+  'pillar.1.p': 'My goal is simple: to inspire you to love music as much as I do. Lessons are tailored to your level and style, helping you develop technique, expression and self-confidence while discovering the joy of music.',
+  'pillar.2.h': 'Lessons for every level', 'pillar.2.k': 'Learn the piano, your way',
+  'pillar.2.p': 'Whether you are just starting or already advanced, my lessons are designed to support you at your level. With patience and passion, I guide each student to develop both technique and artistic expressiveness, fully enjoying the journey of music.',
+  'pillar.3.h': 'Musical and artistic development', 'pillar.3.k': 'Let creativity come alive',
+  'pillar.3.p': 'More than simply learning notes, my lessons focus on your musical and artistic development. You will gain creativity, confidence and a deeper connection with music, discovering your own unique voice at the piano.',
+  'scope.h1': 'What we work on together', 'scope.h2': 'How',
+  'chip.1': 'Technique', 'chip.2': 'Expression', 'chip.3': 'Reading sheet music', 'chip.4': 'Music theory', 'chip.5': 'Harmony', 'chip.6': 'Improvisation',
+  'format.1': 'One-to-one', 'format.2': 'At the studio in Bucharest or online', 'format.3': 'For any age', 'format.4': 'From beginners to advanced',
+  'ticket.eyebrow': 'Book online', 'ticket.tag': 'Where passion and the piano meet',
+  'ticket.k1': 'Duration', 'ticket.v1': '1–2 hours', 'ticket.v2': 'at the studio or online', 'ticket.k3': 'Price', 'ticket.v3': 'from 350 RON',
+  'ticket.cta': 'Book now', 'ticket.off': 'off',
+  'ticket.terms': 'individual lessons and all lesson plans, with the voucher',
+  'ticket.copy': 'Copy the code',
+  'recital.eyebrow': 'Piano recital',
+  'recital.title': 'Experience the captivating art of <em>Musical Tigers</em>',
+  'recital.p': 'Every recital is an elegant, moving journey, from Bach, Mozart and Chopin to tango, waltz and the works of Astor Piazzolla. For events that deserve refinement.',
+  'prog.1': 'Sonata “Quasi una fantasia”, Op. 27 No. 2',
+  'prog.3k': 'Live improvisation', 'prog.3': 'ending on “Por Una Cabeza”',
+  'recital.watch': 'Watch the recordings', 'recital.ask': 'Ask about a recital',
+  'composer.eyebrow': 'Composer',
+  'composer.title': 'Hope, resilience and <em>emotional depth</em>',
+  'composer.p': 'In his compositions, Alexandru explores a distinctive fusion of classical tradition, jazz improvisation and modern storytelling. His original works are available on SoundCloud and the main streaming platforms.',
+  'voices.eyebrow': 'Student testimonials',
+  'voices.title': 'What <em>students</em> say',
+  'voice.1': '<p>After more than 10 years of playing the piano, I still have moments when I fumble a simple scale or forget the key signature… but Alexandru hasn’t run away from our lessons yet, which I consider a true sign of dedication.</p><p>What I really appreciate is that there is no pressure, no stressful deadlines and no rush, and I have the freedom to learn at my own pace (which is sometimes more adagio than allegro). The lessons always have a relaxed energy, with plenty of humour, patience and understanding.</p><p>And even if I never get to play at Carnegie Hall, learning with him has made me truly fall in love with the piano.</p>',
+  'voice.2': '<p>Although I’m 43 and had never studied the piano seriously, this year I decided to follow my passion and truly invest in this hobby. With Alex Ciobanu’s help I have made remarkable progress in a short time: I have started to play with more confidence, to read sheet music and to truly enjoy every lesson. Alex has a calm, clear and motivating approach that makes you believe, and see in practice, that it is never too late to learn the piano.</p>',
+  'voice.3': '<p>Alexandru gave me the best lessons I could have wished for, always letting me move forward at my own pace, which made learning feel natural, not forced. I loved that I could bring any piece of music I wanted to play, and he always supported me in practising them.</p>',
+  'voice.4': '<p>My teacher gives his lessons in a free manner. He has managed to make me feel relaxed at the piano while also making the classes fun. He combines reading and respecting the score with music theory, harmony and improvisation technique, which I have not found with other teachers!</p>',
+  'voice.5': '<p>I would like to thank my piano teacher, Alexandru, for teaching me to play the piano. It is clear to me that Alexandru loves the piano, and he shared that love with me throughout our lessons. I warmly recommend him to anyone who wants to learn or master the art of the piano.</p>',
+  'rewards.eyebrow': 'Loyalty programme',
+  'rewards.1': 'Book a session', 'rewards.2': 'Order a plan', 'rewards.3': 'Sign up on the site', 'rewards.4': 'Follow on social media',
+  'rewards.p': '10 Tiger Rewards means 1 RON off. At 500 you get 5% off.',
+  'rewards.link': 'How it works',
+  'gift.eyebrow': 'Gift', 'gift.p': 'Piano lessons, as a gift. For someone who has always said they would love to learn.', 'gift.link': 'See the Gift Card',
+  'blog.title': 'From the journal', 'blog.link': 'All articles',
+  'contact.title': 'The first step is <em>one lesson.</em>',
+  'contact.p': 'At the studio in Bucharest or online, at your level and at your own pace.',
+  'reach.phone': 'Phone', 'reach.city': 'Bucharest, Romania',
+  'form.first': 'First name *', 'form.last': 'Last name', 'form.msg': 'Message',
+  'form.submit': 'Prepare the email',
+  'form.note': 'The form sends nothing by itself: it prepares an email that you send.',
+  'form.ready': 'Your message is ready, but it has not been sent.',
+  'form.open': 'Open your email app', 'form.copy': 'Copy the message', 'form.or': 'Or write directly to',
+  'foot.privacy': 'Privacy policy', 'foot.access': 'Accessibility statement', 'foot.city': 'Bucharest',
+  'foot.concept': 'A design proposal, not the official site. The official site:'
+};
+const STR = {
+  ro: {
+    listenOff: 'Ascultă cu sunet', listenOn: 'Oprește sunetul', mini: 'Oprește sunetul',
+    progress: 'Nota {n} din {t}', progressDone: '15 note din 15', progressDemo: 'Ascultă…',
+    copied: 'Cod copiat', copyFail: 'Selectează codul de mai sus', copy: 'Copiază codul',
+    msgCopied: 'Mesaj copiat', msgCopy: 'Copiază mesajul',
+    notes: ['Do', 'Do diez', 'Re', 'Re diez', 'Mi', 'Fa', 'Fa diez', 'Sol', 'Sol diez', 'La', 'La diez', 'Si'],
+    menu: 'Meniu', keys: 'Claviatură de pian. Atinge clapele ca să cânți.', kb: 'Claviatură de exercițiu, de la Do la Do',
+    mailSubject: 'Lecții de pian', mailHello: 'Bună ziua, Alexandru,',
+    rec: 'Înregistrează', recStop: 'Oprește', recPlay: 'Redă', recPlayStop: 'Stop', recSave: 'Descarcă MIDI', recLoad: 'Încarcă MIDI',
+    recOn: 'Înregistrez… cântă la orice clapă.', recDone: 'Înregistrat: {n} note, {s} s.', recEmpty: 'Nu am prins nicio notă.',
+    recSavedZip: 'Salvat ca .zip; fișierul .mid e înăuntru.', recSaved: 'Fișierul .mid a fost oferit spre descărcare.', recDeclined: 'Descărcarea a fost anulată.', recSaveFail: 'Descărcarea nu e disponibilă aici.',
+    recLoaded: 'Încărcat: {f} ({n} note, {s} s). Apasă Redă.', recBad: 'Nu am putut citi fișierul ca MIDI.', recPlaying: 'Redau…'
+  },
+  en: {
+    listenOff: 'Listen with sound', listenOn: 'Turn sound off', mini: 'Turn sound off',
+    progress: 'Note {n} of {t}', progressDone: '15 notes out of 15', progressDemo: 'Listen…',
+    copied: 'Code copied', copyFail: 'Select the code above', copy: 'Copy the code',
+    msgCopied: 'Message copied', msgCopy: 'Copy the message',
+    notes: ['C', 'C sharp', 'D', 'D sharp', 'E', 'F', 'F sharp', 'G', 'G sharp', 'A', 'A sharp', 'B'],
+    menu: 'Menu', keys: 'Piano keyboard. Touch the keys to play.', kb: 'Practice keyboard, from C to C',
+    mailSubject: 'Piano lessons', mailHello: 'Hello Alexandru,',
+    rec: 'Record', recStop: 'Stop', recPlay: 'Play', recPlayStop: 'Stop', recSave: 'Download MIDI', recLoad: 'Load MIDI',
+    recOn: 'Recording… play any key.', recDone: 'Recorded: {n} notes, {s} s.', recEmpty: 'No notes were captured.',
+    recSavedZip: 'Saved as a .zip; the .mid file is inside.', recSaved: 'The .mid file was offered for download.', recDeclined: 'The download was cancelled.', recSaveFail: 'Downloading is not available here.',
+    recLoaded: 'Loaded: {f} ({n} notes, {s} s). Press Play.', recBad: 'Could not read that file as MIDI.', recPlaying: 'Playing…'
+  }
+};
+const RO = {};
+let lang = 'ro';
+const t = k => (STR[lang][k] != null ? STR[lang][k] : STR.ro[k]);
+
+function applyLang(next) {
+  lang = next === 'en' ? 'en' : 'ro';
+  document.documentElement.lang = lang;
+  $$('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (!(k in RO)) RO[k] = el.innerHTML;
+    const html = lang === 'en' ? EN[k] : RO[k];
+    if (html != null) el.innerHTML = html;
+  });
+  $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  $('#voices-note').hidden = lang !== 'en';
+  $('#menu-btn').setAttribute('aria-label', t('menu'));
+  $('#hero-keys').setAttribute('aria-label', t('keys'));
+  $('#kb').setAttribute('aria-label', t('kb'));
+  roarEl = $('.roar');
+  refreshSoundUi();
+  labelLessonKeys();
+  refreshRecUi();
+  renderStaff();
+  lessonRender();
+  try { localStorage.setItem('mt-lang', lang); } catch (e) {}
+}
+
+/* ---------- the piano voice (Web Audio, synthesised) ---------- */
+const Piano = (() => {
+  let ac = null, bus = null, wave = null, noise = null, silentEl = null, lastPlay = -1e9, idle = 0;
+  const live = new Set();
+  function impulse(c, seconds) {
+    const rate = c.sampleRate, len = Math.floor(rate * seconds), buf = c.createBuffer(2, len, rate), pre = rate * 0.012;
+    for (let ch = 0; ch < 2; ch++) {
+      const d = buf.getChannelData(ch); let lp = 0;
+      for (let i = 0; i < len; i++) {
+        const x = i / len, env = Math.pow(1 - x, 2.6) * (i < pre ? i / pre : 1);
+        lp += ((Math.random() * 2 - 1) - lp) * (0.6 - 0.5 * x);
+        d[i] = lp * env;
+      }
+    }
+    return buf;
+  }
+  function mount(c) {
+    ac = c; cache.clear();
+    const comp = c.createDynamicsCompressor();
+    comp.threshold.value = -18; comp.knee.value = 20; comp.ratio.value = 3.5; comp.attack.value = 0.003; comp.release.value = 0.3;
+    const master = c.createGain(); master.gain.value = 0.95;
+    comp.connect(master); master.connect(c.destination);
+    bus = c.createGain(); bus.connect(comp);
+    const hall = c.createConvolver(); hall.buffer = impulse(c, 2.2);
+    const wet = c.createGain(); wet.gain.value = 0.3;
+    bus.connect(hall); hall.connect(wet); wet.connect(comp);
+    const N = 28, re = new Float32Array(N + 1), im = new Float32Array(N + 1);
+    for (let n = 1; n <= N; n++) im[n] = n === 1 ? 1 : 0.85 * Math.pow(n, -1.3) * (0.35 + 0.65 * Math.abs(Math.sin(n * Math.PI / 8.4)));
+    wave = c.createPeriodicWave(re, im);
+    const nlen = Math.floor(c.sampleRate * 0.08);
+    noise = c.createBuffer(1, nlen, c.sampleRate);
+    const nd = noise.getChannelData(0);
+    for (let i = 0; i < nlen; i++) nd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / nlen, 2);
+    return c;
+  }
+  function ensure() {
+    if (ac) return ac;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    try { return mount(new AC({ latencyHint: 'interactive' })); }
+    catch (e) { try { return mount(new AC()); } catch (e2) { return null; } }
+  }
+  function silentWav() {
+    const sr = 8000, n = sr / 2, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+    const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    w(0, 'RIFF'); v.setUint32(4, 36 + n, true); w(8, 'WAVEfmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, sr, true); v.setUint32(28, sr, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true); w(36, 'data'); v.setUint32(40, n, true);
+    new Uint8Array(buf, 44).fill(128);
+    return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+  }
+  // Called from real user gestures: wakes the context; on iOS also keeps a silent track running so the ringer switch does not mute it.
+  function unlock(force) {
+    if (!ac) return;
+    if (ac.state === 'suspended' && ac.resume) ac.resume().catch(() => {});
+    if (!force && performance.now() - lastPlay > 5000) return;
+    const iOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!iOS) return;
+    try {
+      if (!silentEl) { silentEl = new Audio(silentWav()); silentEl.loop = true; silentEl.setAttribute('playsinline', ''); }
+      if (silentEl.paused) { const p = silentEl.play(); if (p && p.catch) p.catch(() => {}); }
+    } catch (e) {}
+  }
+  function rest() { try { if (silentEl) silentEl.pause(); } catch (e) {} }
+  function kill(v, fade) {
+    if (!ac || !live.has(v)) return;
+    const now = ac.currentTime; live.delete(v);
+    try { v.rel.gain.cancelScheduledValues(now); v.rel.gain.setTargetAtTime(0, now, fade || 0.05); v.oscs.forEach(os => os.stop(now + 0.5)); } catch (e) {}
+  }
+  // Additive voice, rendered once per note into a buffer (cheap to replay, so every note can afford all its partials).
+  // FP = measured spectrum of an acoustic piano's C4 played ff, in dB per harmonic. Every note gets the same
+  // N_PART partials; their levels are extrapolated from FP by register, by the soundboard's response at each
+  // partial's real frequency, and by how hard the key is struck. Each partial then decays at its own rate, sits
+  // slightly sharp of an exact multiple (stiff strings), and is carried by two or three barely detuned strings,
+  // which gives the beating and the fast-then-slow decay of a real piano.
+  const FP = [-5, 0, -16, -12, -11, -11, -12, -15, -31, -21, -25, -26, -23, -34, -26, -33, -39, -36];
+  const N_PART = 20, LAYERS = [0.3, 0.5, 0.72, 0.95], cache = new Map();
+  function partialDb(n, f0, fn, vel) {
+    const oct = Math.log2(f0 / 261.63);
+    let db = n <= 18 ? FP[n - 1] : -36 - 2 * (n - 18);
+    db += clamp(-0.7 * oct, -2.5, 1.2) * (n - 1);                                   // bass: flatter spectrum, treble: steeper
+    db -= 10 * Math.log10(1 + Math.pow(110 / fn, 4)) + 10 * Math.log10(1 + Math.pow(fn / 5200, 2)); // soundboard
+    db -= (1 - vel) * 4.2 * clamp(Math.pow(2, oct * 0.5), 0.45, 1.6) * Math.max(0, n - 2);          // soft touch = fewer highs
+    return db;
+  }
+  function render(midi, vel) {
+    const sr = ac.sampleRate, f0 = 440 * Math.pow(2, (midi - 69) / 12);
+    const B = 0.00007 * Math.pow(2, (midi - 40) / 9.5) + 0.00009 * Math.pow(2, (33 - midi) / 8);
+    const tau1 = clamp(4.2 - (midi - 24) * 0.062, 0.3, 4.2);
+    const len = Math.floor(sr * clamp(tau1 * 2.4 + 0.8, 1.2, 6.5)), out = new Float32Array(len);
+    const strings = midi < 40 ? [[0, 1, 1], [1.2, 0.45, 2.6]] : [[0, 1, 1], [0.7, 0.5, 1.7], [-1.1, 0.3, 3.2]]; // cents, level, decay x
+    let sumsq = 0;
+    for (let n = 1; n <= N_PART; n++) {
+      const fn = n * f0 * Math.sqrt(1 + B * n * n); if (fn > 0.45 * sr) break;
+      const a = Math.pow(10, partialDb(n, f0, fn, vel) / 20), tauN = tau1 / (1 + (fn - f0) / 1500);
+      sumsq += a * a;
+      for (let si = 0; si < strings.length; si++) {
+        const st = strings[si], w = 2 * Math.PI * fn * Math.pow(2, st[0] / 1200) / sr, tau = tauN * st[2];
+        const r = Math.exp(-1 / (tau * sr)), A = a * st[1], ph = si ? Math.random() * 6.2832 : 0, m = Math.min(len, Math.ceil(tau * sr * 8));
+        let y0 = A * Math.sin(ph), y1 = A * r * Math.sin(w + ph); const k = 2 * r * Math.cos(w), r2 = r * r;
+        out[0] += y0; out[1] += y1;
+        for (let i = 2; i < m; i++) { const y = k * y1 - r2 * y0; out[i] += y; y0 = y1; y1 = y; }
+      }
+    }
+    const norm = 0.8 / Math.sqrt(sumsq || 1), att = Math.floor(sr * 0.004), fade = Math.floor(len * 0.12);
+    for (let i = 0; i < len; i++) out[i] *= norm * (i < att ? i / att : 1) * (i > len - fade ? (len - i) / fade : 1);
+    const buf = ac.createBuffer(1, len, sr); buf.getChannelData(0).set(out);
+    return buf;
+  }
+  function voice(midi, vel) {
+    let li = 0; for (let i = 1; i < LAYERS.length; i++) if (Math.abs(LAYERS[i] - vel) < Math.abs(LAYERS[li] - vel)) li = i;
+    const key = midi + ':' + li; let buf = cache.get(key);
+    if (buf) { cache.delete(key); cache.set(key, buf); return buf; }
+    buf = render(midi, LAYERS[li]); cache.set(key, buf);
+    if (cache.size > 64) cache.delete(cache.keys().next().value);
+    return buf;
+  }
+  // Damper: lifting the key stops the string shortly after (never sooner than a short staccato).
+  function release(v) {
+    if (!ac || !v || !live.has(v)) return;
+    const t = Math.max(ac.currentTime, v.at + 0.16);
+    try { v.rel.gain.cancelScheduledValues(t); v.rel.gain.setValueAtTime(1, t); v.rel.gain.setTargetAtTime(0, t, 0.07); v.oscs.forEach(os => os.stop(t + 0.6)); } catch (e) {}
+  }
+  function play(midi, o) {
+    const c = ensure(); if (!c) return null;
+    o = o || {};
+    lastPlay = performance.now(); clearTimeout(idle); idle = setTimeout(rest, 25000);
+    const at = Math.max(c.currentTime + 0.004, o.at || 0);
+    const vel = clamp(o.vel == null ? 0.6 : o.vel, 0.05, 1), hold = o.hold == null ? 2.4 : o.hold;
+    const f = 440 * Math.pow(2, (midi - 69) / 12);
+    const src = c.createBufferSource(), amp = c.createGain(), rel = c.createGain();
+    src.buffer = voice(midi, vel);
+    amp.gain.value = 0.3 * vel * Math.pow(2, (60 - midi) / 40);
+    const off = at + hold;
+    rel.gain.setValueAtTime(1, at); rel.gain.setValueAtTime(1, off); rel.gain.setTargetAtTime(0, off, 0.11);
+    src.connect(amp); amp.connect(rel);
+    let tail = rel;
+    if (c.createStereoPanner) { const pan = c.createStereoPanner(); pan.pan.value = clamp((midi - 60) / 44, -0.6, 0.6); rel.connect(pan); tail = pan; }
+    tail.connect(bus);
+    const hit = c.createBufferSource(), bp = c.createBiquadFilter(), hg = c.createGain();
+    hit.buffer = noise; bp.type = 'bandpass'; bp.frequency.value = clamp(f * 2.5, 500, 4200); bp.Q.value = 0.9; hg.gain.value = 0.06 * vel * vel;
+    hit.connect(bp); bp.connect(hg); hg.connect(tail); hit.start(at);
+    src.start(at); src.stop(off + 1);
+    const v = { rel, oscs: [src], at };
+    live.add(v);
+    src.onended = () => { live.delete(v); try { tail.disconnect(); } catch (e) {} };
+    if (live.size > 40) kill(live.values().next().value, 0.08);
+    return v;
+  }
+  return { ensure, mount, unlock, rest, play, kill, release, hush: () => Array.from(live).forEach(v => kill(v, 0.12)), now: () => (ac ? ac.currentTime : 0), ready: () => !!ac };
+})();
+
+/* ---------- stage: keys and the light that rises from them ---------- */
+const hero = $('#scena'), canvas = $('#roll'), g2 = canvas.getContext('2d'), glow = $('#glow');
+const grand = $('#grand'), heroKeys = $('#hero-keys'), kb = $('#kb');
+const heroEls = new Map(), kbEls = new Map(), lit = new Map(), held = new Map();
+const geo = { w: 0, h: 0, dpr: 1, speed: 80, keys: new Map(), mask: null };
+const bars = [], sparks = [], motes = [];
+const KEY_OFFSET = { 1: -0.07, 3: 0.07, 6: -0.1, 8: 0, 10: 0.1 };
+const PAL = {
+  rh: { halo: 'rgba(242,140,40,.10)', mid: 'rgba(242,140,40,.26)', top: 'rgba(196,84,26,.85)', bot: 'rgba(255,196,118,1)' },
+  bass: { halo: 'rgba(214,96,30,.10)', mid: 'rgba(214,96,30,.22)', top: 'rgba(132,48,18,.72)', bot: 'rgba(242,140,40,.95)' },
+  user: { halo: 'rgba(255,226,180,.15)', mid: 'rgba(255,226,180,.36)', top: 'rgba(255,214,150,.92)', bot: 'rgba(255,247,230,1)' }
+};
+let roarEl = $('.roar'), energy = 0, roar = 0, heroVisible = true, pageVisible = !document.hidden, raf = 0, lastFrame = 0, seeding = false;
+
+function buildHeroKeys() {
+  const w = heroKeys.clientWidth || window.innerWidth;
+  const range = w < 560 ? [36, 72] : w < 900 ? [36, 84] : w < 1280 ? [24, 96] : [21, 108];
+  const id = range.join('-');
+  if (heroKeys.dataset.range === id) return false;
+  heroKeys.dataset.range = id;
+  heroKeys.textContent = ''; heroEls.clear();
+  let n = 0; for (let m = range[0]; m <= range[1]; m++) if (!isBlack(m)) n++;
+  const frag = document.createDocumentFragment(); let wi = 0;
+  for (let m = range[0]; m <= range[1]; m++) {
+    const el = document.createElement('div'); el.dataset.midi = m;
+    if (isBlack(m)) { el.className = 'bk'; el.style.left = ((wi + KEY_OFFSET[m % 12]) / n * 100) + '%'; el.style.width = (0.58 / n * 100) + '%'; }
+    else { el.className = 'wk'; wi++; }
+    frag.appendChild(el); heroEls.set(m, el);
+  }
+  heroKeys.appendChild(frag);
+  return true;
+}
+
+function measure() {
+  const hr = hero.getBoundingClientRect(), gr = grand.getBoundingClientRect();
+  geo.w = hr.width; geo.h = Math.max(140, Math.round(gr.top - hr.top));
+  geo.dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(geo.w * geo.dpr); canvas.height = Math.round(geo.h * geo.dpr);
+  canvas.style.height = geo.h + 'px'; glow.style.height = geo.h + 'px';
+  geo.speed = geo.w < 700 ? 62 : 92;
+  geo.keys.clear();
+  heroEls.forEach((el, m) => { const r = el.getBoundingClientRect(); geo.keys.set(m, { x: r.left - hr.left + r.width / 2, w: r.width }); });
+  const H = geo.h, grad = g2.createLinearGradient(0, 0, 0, H);
+  const stops = [[0, 1], [90, 0.86], [230, 0.36], [420, 0.15], [640, 0.05]];
+  grad.addColorStop(0, 'rgba(0,0,0,0)');
+  stops.forEach(st => { const pos = 1 - st[0] / H; if (pos > 0.02) grad.addColorStop(pos, 'rgba(0,0,0,' + st[1] + ')'); });
+  geo.mask = grad;
+  if (!motes.length && !reduceMotion) for (let i = 0; i < 26; i++) motes.push({ x: Math.random(), y: Math.random(), r: rand(0.5, 1.4), v: rand(4, 14), p: rand(0, 6.28) });
+}
+
+function light(m, d) {
+  const n = Math.max(0, (lit.get(m) || 0) + d); lit.set(m, n);
+  const a = heroEls.get(m), b = kbEls.get(m);
+  if (a) a.classList.toggle('on', n > 0);
+  if (b) b.classList.toggle('on', n > 0);
+}
+function flash(m, ms) { light(m, 1); setTimeout(() => light(m, -1), ms); }
+
+function stepBar(b, dt) {
+  if (b.grow > 0) { const g = Math.min(dt, b.grow); b.len += geo.speed * g; b.grow -= g; dt -= g; }
+  if (dt > 0) b.base += geo.speed * dt;
+}
+function spawnBar(m, o) {
+  const k = geo.keys.get(m); if (!k || (reduceMotion && !seeding)) return null;
+  const b = { x: k.x, w: Math.max(3, k.w * (o.kind === 'bass' ? 0.86 : 0.7)), base: 0, len: 0, grow: o.held ? Infinity : o.dur, vel: o.vel, kind: o.kind };
+  if (o.age) stepBar(b, o.age);
+  bars.push(b);
+  if (!seeding && !reduceMotion) for (let i = 0; i < (o.kind === 'rh' ? 2 : 4); i++) sparks.push({ x: k.x + rand(-k.w, k.w) * 0.4, y: geo.h, vx: rand(-14, 14), vy: -rand(40, 120), life: rand(0.7, 1.5), t: 0, r: rand(0.6, 1.6) });
+  return b;
+}
+function stepVisuals(dt) {
+  for (let i = bars.length - 1; i >= 0; i--) { stepBar(bars[i], dt); if (bars[i].base > geo.h + 6) bars.splice(i, 1); }
+  for (let i = sparks.length - 1; i >= 0; i--) { const s = sparks[i]; s.t += dt; s.x += s.vx * dt; s.y += s.vy * dt; s.vy *= 1 - 0.7 * dt; if (s.t >= s.life) sparks.splice(i, 1); }
+  for (const p of motes) { p.y -= p.v * dt / geo.h; p.p += dt; if (p.y < 0) { p.y = 1; p.x = Math.random(); } }
+  energy *= Math.exp(-dt * 1.9); roar *= Math.exp(-dt * 1.25);
+}
+function rr(c, x, y, w, h, r) {
+  c.beginPath();
+  if (c.roundRect) c.roundRect(x, y, w, h, Math.max(0, Math.min(r, w / 2, h / 2))); else c.rect(x, y, w, h);
+}
+function draw() {
+  const c = g2, W = geo.w, H = geo.h;
+  c.setTransform(geo.dpr, 0, 0, geo.dpr, 0, 0);
+  c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1;
+  c.clearRect(0, 0, W, H);
+  c.globalCompositeOperation = 'lighter';
+  for (const p of motes) { c.globalAlpha = 0.16 + 0.14 * Math.sin(p.p); c.fillStyle = '#FFD9A8'; c.beginPath(); c.arc(p.x * W, p.y * H, p.r, 0, 6.2832); c.fill(); }
+  for (const b of bars) {
+    const y1 = H - b.base, y0 = y1 - b.len; if (y1 < 0 || b.len < 0.5) continue;
+    const col = PAL[b.kind], x = b.x - b.w / 2;
+    c.globalAlpha = 0.5 + 0.5 * b.vel;
+    c.fillStyle = col.halo; rr(c, x - 6, y0 - 6, b.w + 12, b.len + 12, 8); c.fill();
+    c.fillStyle = col.mid; rr(c, x - 2, y0 - 2, b.w + 4, b.len + 4, 5); c.fill();
+    const g = c.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, col.top); g.addColorStop(1, col.bot);
+    c.fillStyle = g; rr(c, x, y0, b.w, b.len, 3); c.fill();
+    if (b.grow > 0) {
+      const rg = c.createRadialGradient(b.x, H, 0, b.x, H, 26);
+      rg.addColorStop(0, 'rgba(255,214,150,.75)'); rg.addColorStop(1, 'rgba(255,214,150,0)');
+      c.fillStyle = rg; c.fillRect(b.x - 26, H - 26, 52, 26);
+    }
+  }
+  for (const s of sparks) { c.globalAlpha = (1 - s.t / s.life) * 0.9; c.fillStyle = '#FFCD8C'; c.beginPath(); c.arc(s.x, s.y, s.r, 0, 6.2832); c.fill(); }
+  c.globalAlpha = 1; c.globalCompositeOperation = 'destination-in';
+  c.fillStyle = geo.mask; c.fillRect(0, 0, W, H);
+  c.globalCompositeOperation = 'source-over';
+}
+function frame(now) {
+  raf = 0;
+  const dt = Math.min(0.05, Math.max(0, (now - lastFrame) / 1000)); lastFrame = now;
+  stepVisuals(dt);
+  hero.style.setProperty('--energy', energy.toFixed(3));
+  if (roarEl) roarEl.style.setProperty('--roar', roar.toFixed(3));
+  draw();
+  if (pageVisible && heroVisible && !reduceMotion) raf = requestAnimationFrame(frame);
+}
+
+/* ---------- on stage: Beethoven, Sonata op. 27 no. 2, bars 1 to 4, looped ---------- */
+const LOOP = 48; // triplet eighths in four bars
+const song = (() => {
+  const ev = [];
+  const regions = [[0, 12], [12, 24], [24, 30], [30, 36], [36, 39], [39, 42], [42, 45], [45, 48]];
+  const regionEnd = s => regions.find(r => s >= r[0] && s < r[1])[1];
+  const G = [56, 61, 64], A = [57, 61, 64], N = [57, 62, 66];
+  const rh = [G, G, G, G, G, G, G, G, A, A, N, N, [56, 60, 66], [56, 61, 64], [56, 61, 63], [54, 60, 63]];
+  rh.forEach((tri, beat) => tri.forEach((m, i) => { const s = beat * 3 + i; ev.push({ s, m, d: 1, h: regionEnd(s) - s + 0.7, v: [0.3, 0.34, 0.4][i], k: 'rh' }); }));
+  [[0, 12, [37, 49]], [12, 12, [35, 47]], [24, 6, [33, 45]], [30, 6, [30, 42]], [36, 6, [32, 44]], [42, 6, [32, 44]]]
+    .forEach(b => b[2].forEach((m, j) => ev.push({ s: b[0], m, d: b[1], h: b[1] + 0.9, v: j ? 0.5 : 0.56, k: 'bass' })));
+  return ev.sort((a, b) => a.s - b.s || a.m - b.m);
+})();
+const tr = { pos: 0, bpm: 54, sound: false, timer: 0, last: 0, vi: 0, vloop: 0, ai: 0, aloop: 0 };
+const stepSec = () => 60 / tr.bpm / 3;
+function cursorAt(p) {
+  const loop = Math.floor(p / LOOP), within = p - loop * LOOP;
+  let i = song.findIndex(e => e.s >= within);
+  return i < 0 ? { i: 0, loop: loop + 1 } : { i, loop };
+}
+function advance(dt) {
+  const ss = stepSec();
+  tr.pos += dt / ss;
+  if (tr.sound && Piano.ready()) {
+    const ahead = tr.pos + 0.16 / ss;
+    for (let guard = 0; guard < 64; guard++) {
+      const e = song[tr.ai], abs = tr.aloop * LOOP + e.s;
+      if (abs > ahead) break;
+      if (abs >= tr.pos - 1) Piano.play(e.m, { at: Piano.now() + Math.max(0, (abs - tr.pos) * ss) + rand(0, 0.008), vel: e.v * rand(0.9, 1.1), hold: e.h * ss + 0.15 });
+      if (++tr.ai >= song.length) { tr.ai = 0; tr.aloop++; }
+    }
+  } else {
+    const c = cursorAt(Math.max(0, tr.pos + 0.16 / ss)); tr.ai = c.i; tr.aloop = c.loop;
+  }
+  for (let guard = 0; guard < 64; guard++) {
+    const e = song[tr.vi], abs = tr.vloop * LOOP + e.s;
+    if (abs > tr.pos) break;
+    const late = (tr.pos - abs) * ss;
+    if (late < 12) {
+      spawnBar(e.m, { dur: e.d * ss * (e.k === 'bass' ? 0.94 : 0.84), vel: e.v + 0.4, kind: e.k, age: late });
+      if (!seeding) {
+        flash(e.m, Math.max(90, e.d * ss * (e.k === 'bass' ? 900 : 760)));
+        energy = Math.min(1, energy + (e.k === 'bass' ? 0.42 : 0.1));
+        if (e.k === 'bass') roar = 1;
+      }
+    }
+    if (++tr.vi >= song.length) { tr.vi = 0; tr.vloop++; }
+  }
+}
+function tick() {
+  const now = performance.now(); const dt = Math.min(0.25, (now - tr.last) / 1000); tr.last = now;
+  advance(dt);
+}
+function restartSong(lead) { tr.pos = -lead; tr.vi = 0; tr.vloop = 0; tr.ai = 0; tr.aloop = 0; }
+function updateRun() {
+  const wantTransport = pageVisible && (tr.sound || (heroVisible && !reduceMotion));
+  if (wantTransport && !tr.timer) { tr.last = performance.now(); tr.timer = setInterval(tick, 30); }
+  else if (!wantTransport && tr.timer) { clearInterval(tr.timer); tr.timer = 0; }
+  if (pageVisible && heroVisible && !reduceMotion && !raf) { lastFrame = performance.now(); raf = requestAnimationFrame(frame); }
+}
+function seed(seconds) {
+  seeding = true;
+  for (let i = 0, n = Math.round(seconds * 30); i < n; i++) { advance(1 / 30); stepVisuals(1 / 30); }
+  seeding = false; energy = 0.5; roar = 0;
+}
+
+const listenBtn = $('#listen'), mini = $('#mini');
+function refreshSoundUi() {
+  listenBtn.setAttribute('aria-pressed', String(tr.sound));
+  $('#listen-label').textContent = tr.sound ? t('listenOn') : t('listenOff');
+  $('#mini-label').textContent = t('mini');
+  mini.hidden = !tr.sound;
+  $('#mute-hint').hidden = !tr.sound;
+}
+function setSound(on) {
+  if (on === tr.sound) return;
+  tr.sound = on;
+  if (on) { Piano.ensure(); Piano.unlock(true); restartSong(1.5); }
+  else { Piano.hush(); Piano.rest(); }
+  refreshSoundUi(); updateRun();
+}
+listenBtn.addEventListener('click', () => setSound(!tr.sound));
+mini.addEventListener('click', () => setSound(false));
+
+/* tempo: "learn at your own pace", made literal */
+const tempo = $('#tempo');
+function tempoName(b) { return b < 50 ? 'Largo' : b < 60 ? 'Adagio sostenuto' : b < 72 ? 'Adagio' : b < 92 ? 'Andante' : b < 112 ? 'Moderato' : 'Allegro'; }
+function setTempo(b) {
+  tr.bpm = clamp(+b || 54, 40, 132);
+  $('#tempo-name').textContent = tempoName(tr.bpm);
+  $('#tempo-bpm').textContent = tr.bpm;
+  tempo.style.setProperty('--fill', ((tr.bpm - 40) / 92 * 100).toFixed(1) + '%');
+  tempo.setAttribute('aria-valuetext', tempoName(tr.bpm) + ', ' + tr.bpm);
+}
+tempo.addEventListener('input', () => setTempo(tempo.value));
+
+/* ---------- playing by hand ---------- */
+function noteOn(id, m, src) {
+  if (held.has(id)) noteOff(id);
+  if (src !== 'hero' && tr.sound) setSound(false);
+  const voice = Piano.play(m, { vel: 0.74, hold: 6 });
+  light(m, 1);
+  const bar = heroVisible ? spawnBar(m, { held: true, vel: 1, kind: 'user' }) : null;
+  held.set(id, { m, bar, voice });
+  if (rec.on) rec.ev.push({ t: performance.now(), m, on: 1 });
+  energy = Math.min(1, energy + 0.2);
+  if (src !== 'hero') lessonInput(m);
+}
+function noteOff(id) {
+  const h = held.get(id); if (!h) return;
+  held.delete(id); light(h.m, -1); Piano.release(h.voice);
+  if (rec.on) rec.ev.push({ t: performance.now(), m: h.m, on: 0 });
+  if (h.bar) h.bar.grow = Math.max(0, (16 - h.bar.len) / geo.speed);
+}
+function bindKeyboard(host, src) {
+  const keyAt = (x, y) => { const el = document.elementFromPoint(x, y); const k = el && el.closest ? el.closest('[data-midi]') : null; return k && host.contains(k) ? +k.dataset.midi : null; };
+  host.addEventListener('pointerdown', e => {
+    if (e.button) return;
+    const k = e.target.closest ? e.target.closest('[data-midi]') : null; if (!k) return;
+    e.preventDefault();
+    try { host.setPointerCapture(e.pointerId); } catch (err) {}
+    noteOn('p' + e.pointerId, +k.dataset.midi, src);
+  });
+  host.addEventListener('pointermove', e => {
+    const id = 'p' + e.pointerId, h = held.get(id); if (!h) return;
+    const m = keyAt(e.clientX, e.clientY);
+    if (m == null || m === h.m) return;
+    noteOff(id); noteOn(id, m, src);
+  });
+  const end = e => noteOff('p' + e.pointerId);
+  host.addEventListener('pointerup', end); host.addEventListener('pointercancel', end); host.addEventListener('lostpointercapture', end);
+  host.addEventListener('contextmenu', e => e.preventDefault());
+}
+['pointerup', 'touchend', 'click', 'keydown'].forEach(type => document.addEventListener(type, () => Piano.unlock(), { passive: true }));
+
+const KEYMAP = { a: 60, w: 61, s: 62, e: 63, d: 64, f: 65, t: 66, g: 67, y: 68, h: 69, u: 70, j: 71, k: 72 };
+const HINT = {}; Object.keys(KEYMAP).forEach(k => { HINT[KEYMAP[k]] = k.toUpperCase(); });
+document.addEventListener('keydown', e => {
+  if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
+  const el = e.target, tag = el && el.tagName ? el.tagName : '';
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (el && el.isContentEditable)) return;
+  if (e.key === 'Escape') { closeMenu(); return; }
+  const m = KEYMAP[(e.key || '').toLowerCase()]; if (m == null) return;
+  noteOn('k' + m, m, 'keys');
+});
+document.addEventListener('keyup', e => { const m = KEYMAP[(e.key || '').toLowerCase()]; if (m != null) noteOff('k' + m); });
+
+/* ---------- lesson zero: Ode to Joy, first phrase ---------- */
+const ODE = [64, 64, 65, 67, 67, 65, 64, 62, 60, 60, 62, 64, 64, 62, 62];
+const ODE_BEATS = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5, 0.5, 2];
+const CLEF = 'M14 66C13.9 65.1 12.6 61.7 13.4 60.4C14.2 59.1 17 57.8 18.6 58C20.2 58.2 22.2 59.8 23 61.4C23.8 63 24.2 65.6 23.6 67.4C23 69.2 21.3 71.5 19.6 72.4C17.9 73.3 15.4 73.5 13.4 73C11.4 72.5 8.7 71.2 7.4 69.4C6.1 67.6 5.3 65 5.4 62.4C5.5 59.8 6.6 56.7 8 54C9.4 51.3 11.8 48.9 13.6 46.4C15.4 43.9 17.5 41.5 19 39C20.5 36.5 21.8 34 22.4 31.4C23 28.8 22.9 25.6 22.4 23.6C21.9 21.6 20.5 19.5 19.4 19.2C18.3 18.9 16.8 20 16 21.6C15.2 23.2 14.7 25.9 14.6 29C14.5 32.1 15.1 35.5 15.6 40C16.1 44.5 16.9 50.7 17.6 56C18.3 61.3 19.1 67.7 19.6 72C20.1 76.3 20.9 79.4 20.6 82C20.3 84.6 18.9 86.6 17.6 87.4C16.3 88.2 13.7 87.7 12.6 87C11.5 86.3 11.3 84 11 83.4';
+const NOTE_Y = { 60: 84, 62: 79, 64: 74, 65: 69, 67: 64 };
+const SOLFEGE = { ro: ['Do', '', 'Re', '', 'Mi', 'Fa', '', 'Sol', '', 'La', '', 'Si'], en: ['C', '', 'D', '', 'E', 'F', '', 'G', '', 'A', '', 'B'] };
+const lesson = { i: 0, done: false, playing: -1, voices: [], timers: [] };
+const zeroStage = $('#zero-stage'), staff = $('#staff');
+let staffMode = '';
+
+function buildLessonKeys() {
+  kb.textContent = ''; kbEls.clear();
+  const n = 8; let wi = 0;
+  for (let m = 60; m <= 72; m++) {
+    const b = document.createElement('button'); b.type = 'button'; b.tabIndex = -1; b.dataset.midi = m;
+    if (isBlack(m)) { b.className = 'bk'; b.style.left = ((wi + KEY_OFFSET[m % 12]) / n * 100) + '%'; b.style.width = (0.6 / n * 100) + '%'; }
+    else { b.className = 'wk'; const s = document.createElement('span'); s.className = 'wk__name'; b.appendChild(s); wi++; }
+    const hint = document.createElement('i'); hint.className = 'key__hint'; hint.textContent = HINT[m] || ''; hint.setAttribute('aria-hidden', 'true'); b.appendChild(hint);
+    kb.appendChild(b); kbEls.set(m, b);
+  }
+}
+function labelLessonKeys() {
+  kbEls.forEach((el, m) => {
+    el.setAttribute('aria-label', t('notes')[m % 12]);
+    const s = el.querySelector('.wk__name'); if (s) s.textContent = SOLFEGE[lang][m % 12];
+  });
+}
+function staffSVG(a, b, first, last, W) {
+  const factor = i => (i === 12 ? 1.3 : i === 13 ? 0.9 : 1);
+  let units = 0, breaks = 0;
+  for (let i = a; i < b; i++) { units += factor(i); if ((i + 1) % 4 === 0 && i + 1 < b) breaks++; }
+  const x0 = first ? 86 : 60, gap = (W - x0 - breaks * 8 - 4) / units;
+  let x = x0, body = '';
+  for (let i = a; i < b; i++) {
+    const m = ODE[i], y = NOTE_Y[m];
+    body += '<g class="n" data-i="' + i + '" transform="translate(' + x.toFixed(1) + ' ' + y + ')"><circle class="n__halo" r="12.5"/>' +
+      (m === 60 ? '<path class="n__ledger" d="M-10.5 0H10.5"/>' : '') +
+      (i === 14 ? '<ellipse class="n__open" rx="5.6" ry="3.9" transform="rotate(-22)"/>' : '<ellipse class="n__head" rx="6.2" ry="4.5" transform="rotate(-22)"/>') +
+      '<path class="n__stem" d="M5.7 -1.8V-32"/>' +
+      (i === 12 ? '<circle class="n__dot" cx="11.2" cy="-5" r="1.7"/>' : '') +
+      (i === 13 ? '<path class="n__flag" d="M5.7 -32c1 7 9 9.5 6.6 20"/>' : '') +
+      '<text class="n__name" y="' + (109 - y) + '" text-anchor="middle">' + SOLFEGE[lang][m % 12] + '</text></g>';
+    x += gap * factor(i);
+    if ((i + 1) % 4 === 0 && i + 1 < b) { body += '<path class="bar" d="M' + (x - gap * 0.42).toFixed(1) + ' 34V74"/>'; x += 8; }
+  }
+  const end = last ? '<path class="bar" d="M' + (W - 8) + ' 34V74"/><path class="bar bar--end" d="M' + (W - 2) + ' 34V74"/>' : '<path class="bar" d="M' + (W - 0.5) + ' 34V74"/>';
+  return '<svg viewBox="0 0 ' + W + ' 116" focusable="false"><path class="lines" d="M0 34H' + W + 'M0 44H' + W + 'M0 54H' + W + 'M0 64H' + W + 'M0 74H' + W + '"/><path class="clef" d="' + CLEF + '"/><circle class="clef-dot" cx="11.6" cy="84" r="2.3"/>' +
+    (first ? '<g class="meter" text-anchor="middle"><text x="48" y="53.6">4</text><text x="48" y="73.6">4</text></g>' : '') + body + end + '</svg>';
+}
+function renderStaff() {
+  const narrow = (staff.clientWidth || 600) < 600;
+  staffMode = narrow ? 'two' : 'one';
+  staff.innerHTML = narrow ? staffSVG(0, 8, true, false, 372) + staffSVG(8, 15, false, true, 372) : staffSVG(0, 15, true, true, 680);
+}
+function lessonRender() {
+  kbEls.forEach((el, m) => el.classList.toggle('next', !lesson.done && lesson.playing < 0 && m === ODE[lesson.i]));
+  $$('.n', staff).forEach(g => {
+    const i = +g.dataset.i;
+    g.classList.toggle('done', lesson.done || i < lesson.i);
+    g.classList.toggle('cur', !lesson.done && lesson.playing < 0 && i === lesson.i);
+    g.classList.toggle('play', i === lesson.playing);
+  });
+  $('#zero-progress').textContent = lesson.playing >= 0 ? t('progressDemo') : lesson.done ? t('progressDone') : t('progress').replace('{n}', lesson.i + 1).replace('{t}', ODE.length);
+  $('#zero-done').hidden = !lesson.done;
+  zeroStage.classList.toggle('is-done', lesson.done);
+}
+function lessonInput(m) {
+  if (lesson.done || lesson.playing >= 0) return;
+  if (m === ODE[lesson.i]) {
+    lesson.i++;
+    if (lesson.i >= ODE.length) { lesson.done = true; lessonRender(); lesson.timers.push(setTimeout(() => playOde(true), 700)); }
+    else lessonRender();
+  } else {
+    const el = kbEls.get(ODE[lesson.i]);
+    if (el) { el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge'); }
+  }
+}
+function stopOde() {
+  lesson.timers.forEach(clearTimeout); lesson.timers = [];
+  lesson.voices.forEach(v => v && Piano.kill(v, 0.06)); lesson.voices = [];
+  lesson.playing = -1;
+}
+function playOde(withChords) {
+  stopOde();
+  if (tr.sound) setSound(false);
+  if (!Piano.ensure()) return;
+  Piano.unlock(true);
+  const beat = 60 / 108, t0 = Piano.now() + 0.08; let at = 0;
+  ODE.forEach((m, i) => {
+    const d = ODE_BEATS[i] * beat, when = at;
+    lesson.voices.push(Piano.play(m, { at: t0 + when, vel: 0.72, hold: d + 0.08 }));
+    lesson.timers.push(setTimeout(() => { lesson.playing = i; flash(m, d * 820); lessonRender(); }, (when + 0.08) * 1000));
+    at += d;
+  });
+  if (withChords) [[0, [48, 52, 55]], [4, [47, 50, 55]], [8, [48, 52, 55]], [12, [43, 50, 55]]].forEach(c => c[1].forEach(m => lesson.voices.push(Piano.play(m, { at: t0 + c[0] * beat, vel: 0.36, hold: 4 * beat }))));
+  lesson.timers.push(setTimeout(() => { lesson.playing = -1; lesson.voices = []; lessonRender(); }, (at + 0.3) * 1000));
+}
+$('#zero-demo').addEventListener('click', () => playOde(false));
+$('#zero-reset').addEventListener('click', () => { stopOde(); lesson.i = 0; lesson.done = false; lessonRender(); });
+
+/* ---------- small things ---------- */
+(() => { // piano strings as tiger stripes: long in the bass, short in the treble, because that is the shape of the instrument
+  const g = $('#strings'); let s = '';
+  for (let i = 0; i < 36; i++) { const x = (20 + i * 7.6).toFixed(1); s += '<line x1="' + x + '" y1="0" x2="' + x + '" y2="388" stroke-width="' + (2.6 - i * 0.05).toFixed(2) + '" opacity="' + (i % 3 === 0 ? 1 : i % 3 === 1 ? 0.6 : 0.34) + '"/>'; }
+  g.innerHTML = s;
+})();
+
+const copyBtn = $('#copy-voucher');
+copyBtn.addEventListener('click', async () => {
+  let ok = false;
+  try { await navigator.clipboard.writeText('PRIETENIIPIANULUI'); ok = true; } catch (e) {}
+  if (!ok) { try { const r = document.createRange(); r.selectNodeContents($('#voucher')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); } catch (e) {} }
+  copyBtn.textContent = ok ? t('copied') : t('copyFail');
+  setTimeout(() => { copyBtn.textContent = t('copy'); }, 2600);
+});
+
+const form = $('#contact-form'), ready = $('#form-ready'), MAIL = 'alex.ciobanu.alrufei@musicaltigers.com';
+let mailBody = '';
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const first = $('#f-first').value.trim(), last = $('#f-last').value.trim(), email = $('#f-email').value.trim(), msg = $('#f-msg').value.trim();
+  const name = (first + ' ' + last).trim();
+  mailBody = t('mailHello') + '\n\n' + (msg ? msg + '\n\n' : '') + name + '\n' + email;
+  $('#mail-open').href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(t('mailSubject') + ': ' + name) + '&body=' + encodeURIComponent(mailBody);
+  ready.hidden = false;
+  try { ready.focus({ preventScroll: true }); ready.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' }); } catch (err) {}
+});
+$('#mail-copy').addEventListener('click', async () => {
+  const b = $('#mail-copy'); let ok = false;
+  try { await navigator.clipboard.writeText(mailBody); ok = true; } catch (e) {}
+  if (ok) { b.textContent = t('msgCopied'); setTimeout(() => { b.textContent = t('msgCopy'); }, 2600); }
+});
+
+const top = $('#top'), menuBtn = $('#menu-btn');
+function closeMenu() { top.classList.remove('is-open'); menuBtn.setAttribute('aria-expanded', 'false'); }
+menuBtn.addEventListener('click', () => { const open = !top.classList.contains('is-open'); top.classList.toggle('is-open', open); menuBtn.setAttribute('aria-expanded', String(open)); });
+$('#nav').addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+$$('.lang button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+/* ---------- record to MIDI, load a MIDI ---------- */
+const rec = { on: false, ev: [], notes: null, status: '', timer: 0, playing: false, flashes: [] };
+const recToggle = $('#rec-toggle'), recPlayBtn = $('#rec-play'), recSaveBtn = $('#rec-save'), recFile = $('#rec-file'), recStatus = $('#rec-status');
+const dlReady = (window.claude && window.claude.use) ? Promise.resolve(window.claude.use('downloads')).catch(() => null) : Promise.resolve(null);
+function recSay(key, vars) { let m = key ? t(key) : ''; if (vars) Object.keys(vars).forEach(k => { m = m.replace('{' + k + '}', vars[k]); }); rec.status = [key, vars]; recStatus.textContent = m; }
+function refreshRecUi() {
+  $('#rec-toggle-label').textContent = rec.on ? t('recStop') : t('rec');
+  recToggle.setAttribute('aria-pressed', String(rec.on));
+  recPlayBtn.textContent = rec.playing ? t('recPlayStop') : t('recPlay');
+  recSaveBtn.textContent = t('recSave'); $('#rec-load').textContent = t('recLoad');
+  recPlayBtn.disabled = !rec.notes || rec.on; recSaveBtn.disabled = !rec.notes || rec.on;
+  if (rec.status) recSay(rec.status[0], rec.status[1]);
+}
+function notesLength(notes) { return notes.reduce((mx, n) => Math.max(mx, n.t + n.dur), 0); }
+function recStop() {
+  rec.on = false;
+  const now = performance.now(), open = new Map(), notes = [];
+  rec.ev.forEach(e => {
+    if (e.on) { if (!open.has(e.m)) open.set(e.m, e.t); }
+    else if (open.has(e.m)) { const t0 = open.get(e.m); open.delete(e.m); notes.push({ t: t0, m: e.m, dur: Math.max(0.05, (e.t - t0) / 1000), vel: 0.74 }); }
+  });
+  open.forEach((t0, m) => notes.push({ t: t0, m, dur: Math.max(0.05, (now - t0) / 1000), vel: 0.74 }));
+  if (!notes.length) { recSay('recEmpty'); refreshRecUi(); return; }
+  notes.sort((a, b) => a.t - b.t);
+  const first = notes[0].t; notes.forEach(n => { n.t = (n.t - first) / 1000; });
+  rec.notes = notes;
+  recSay('recDone', { n: notes.length, s: notesLength(notes).toFixed(1) });
+  refreshRecUi();
+}
+recToggle.addEventListener('click', () => {
+  if (rec.on) { recStop(); return; }
+  stopPlayback(); if (tr.sound) setSound(false);
+  rec.on = true; rec.ev = []; recSay('recOn'); refreshRecUi();
+});
+function stopPlayback() {
+  if (!rec.playing) return;
+  clearInterval(rec.timer); rec.flashes.forEach(clearTimeout); rec.flashes = [];
+  Piano.hush(); rec.playing = false; refreshRecUi();
+}
+function startPlayback() {
+  if (!rec.notes || !Piano.ensure()) return;
+  stopOde(); if (tr.sound) setSound(false);
+  Piano.unlock(true);
+  const notes = rec.notes, t0 = Piano.now() + 0.15, total = notesLength(notes); let i = 0;
+  rec.playing = true; recSay('recPlaying'); refreshRecUi();
+  rec.timer = setInterval(() => {
+    const ahead = Piano.now() - t0 + 0.3;
+    while (i < notes.length && notes[i].t <= ahead) {
+      const n = notes[i++];
+      Piano.play(n.m, { at: t0 + n.t, vel: n.vel, hold: Math.max(0.08, n.dur) });
+      rec.flashes.push(setTimeout(() => flash(n.m, Math.max(90, Math.min(n.dur, 4) * 900)), Math.max(0, (t0 + n.t - Piano.now()) * 1000)));
+    }
+    if (i >= notes.length && Piano.now() - t0 > total + 0.4) { clearInterval(rec.timer); rec.flashes = []; rec.playing = false; recSay(''); rec.status = ''; refreshRecUi(); }
+  }, 50);
+}
+recPlayBtn.addEventListener('click', () => { if (rec.playing) { stopPlayback(); recSay(''); rec.status = ''; } else startPlayback(); });
+
+// Standard MIDI file, format 0, 480 ticks per quarter at 120 bpm (so 0.96 ticks per millisecond).
+function toMidi(notes) {
+  const ev = [];
+  notes.forEach(n => { const v = clamp(Math.round(n.vel * 127), 1, 127); ev.push({ k: Math.round(n.t * 960), b: [0x90, n.m, v] }); ev.push({ k: Math.round((n.t + n.dur) * 960), b: [0x80, n.m, 0] }); });
+  ev.sort((a, b) => a.k - b.k || a.b[0] - b.b[0]);
+  const trk = [0, 0xFF, 0x51, 3, 0x07, 0xA1, 0x20, 0, 0xC0, 0]; let last = 0;
+  const vlq = v => { const o = [v & 127]; while ((v >>= 7)) o.unshift((v & 127) | 128); return o; };
+  ev.forEach(e => { trk.push(...vlq(e.k - last), ...e.b); last = e.k; });
+  trk.push(0, 0xFF, 0x2F, 0);
+  const n = trk.length;
+  return new Uint8Array([0x4D, 0x54, 0x68, 0x64, 0, 0, 0, 6, 0, 0, 0, 1, 0x01, 0xE0, 0x4D, 0x54, 0x72, 0x6B, (n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255, ...trk]);
+}
+function fromMidi(d) {
+  const dv = new DataView(d.buffer, d.byteOffset, d.byteLength);
+  if (dv.getUint32(0) !== 0x4D546864) throw new Error('not midi');
+  const ntr = dv.getUint16(10), div = dv.getUint16(12); if (div & 0x8000) throw new Error('smpte');
+  let p = 8 + dv.getUint32(4); const evs = [];
+  for (let tr = 0; tr < ntr && p + 8 <= d.length; tr++) {
+    const len = dv.getUint32(p + 4), isTrk = dv.getUint32(p) === 0x4D54726B; let q = p + 8; const end = Math.min(d.length, q + len); p = end;
+    if (!isTrk) continue;
+    let tick = 0, st = 0;
+    const vlq = () => { let v = 0, b; do { b = d[q++]; v = (v << 7) | (b & 127); } while (b & 128 && q < end); return v; };
+    while (q < end) {
+      tick += vlq(); let b = d[q];
+      if (b === 0xFF) { const type = d[q + 1]; q += 2; const l = vlq(); if (type === 0x51 && l === 3) evs.push({ k: tick, o: 0, tempo: (d[q] << 16) | (d[q + 1] << 8) | d[q + 2] }); q += l; continue; }
+      if (b === 0xF0 || b === 0xF7) { q++; const l = vlq(); q += l; continue; }
+      if (b & 0x80) { st = b; q++; }
+      const hi = st & 0xF0, ch = st & 15, a = d[q++], c = (hi === 0xC0 || hi === 0xD0) ? 0 : d[q++];
+      if (ch === 9) continue; // drums
+      if (hi === 0x90 && c > 0) evs.push({ k: tick, o: 2, on: 1, m: a, v: c, ch });
+      else if (hi === 0x80 || hi === 0x90) evs.push({ k: tick, o: 1, on: 0, m: a, ch });
+      else if (hi === 0xB0 && a === 64) evs.push({ k: tick, o: 1, ped: c >= 64, ch });
+    }
+  }
+  evs.sort((a, b) => a.k - b.k || a.o - b.o);
+  let us = 500000, lastK = 0, sec = 0; const open = new Map(), sus = new Map(), ped = {}, notes = [];
+  const close = (key, at) => { const n = open.get(key) || sus.get(key); if (!n) return; open.delete(key); sus.delete(key); n.dur = Math.max(0.05, at - n.t); notes.push(n); };
+  evs.forEach(e => {
+    sec += (e.k - lastK) * us / div / 1e6; lastK = e.k;
+    if (e.tempo) { us = e.tempo; return; }
+    if (e.ped != null) { ped[e.ch] = e.ped; if (!e.ped) Array.from(sus.keys()).filter(k => k % 16 === e.ch).forEach(k => close(k, sec)); return; }
+    const key = e.m * 16 + e.ch;
+    if (e.on) { close(key, sec); open.set(key, { t: sec, m: e.m, dur: 0, vel: clamp(e.v / 127, 0.1, 1) }); }
+    else if (open.has(key)) { if (ped[e.ch]) { sus.set(key, open.get(key)); open.delete(key); } else close(key, sec); }
+  });
+  Array.from(open.keys()).concat(Array.from(sus.keys())).forEach(k => close(k, sec));
+  notes.sort((a, b) => a.t - b.t);
+  if (!notes.length) throw new Error('empty');
+  const first = notes[0].t; notes.forEach(n => { n.t -= first; n.dur = Math.min(n.dur, 12); });
+  return notes.slice(0, 20000);
+}
+// The viewer's save dialog has no .mid in its list, so there the file travels inside a plain (uncompressed) .zip.
+function crc32(d) { let c, crc = ~0; for (let i = 0; i < d.length; i++) { c = (crc ^ d[i]) & 255; for (let k = 0; k < 8; k++) c = c & 1 ? (c >>> 1) ^ 0xEDB88320 : c >>> 1; crc = (crc >>> 8) ^ c; } return ~crc >>> 0; }
+function zipOne(name, data) {
+  const nm = new TextEncoder().encode(name), n = data.length, out = new Uint8Array(30 + nm.length + n + 46 + nm.length + 22), v = new DataView(out.buffer), crc = crc32(data);
+  let o = 0;
+  v.setUint32(o, 0x04034b50, true); v.setUint16(o + 4, 20, true); v.setUint32(o + 14, crc, true); v.setUint32(o + 18, n, true); v.setUint32(o + 22, n, true); v.setUint16(o + 26, nm.length, true);
+  out.set(nm, 30); out.set(data, 30 + nm.length); o = 30 + nm.length + n;
+  const cd = o;
+  v.setUint32(o, 0x02014b50, true); v.setUint16(o + 4, 20, true); v.setUint16(o + 6, 20, true); v.setUint32(o + 16, crc, true); v.setUint32(o + 20, n, true); v.setUint32(o + 24, n, true); v.setUint16(o + 28, nm.length, true);
+  out.set(nm, o + 46); o += 46 + nm.length;
+  v.setUint32(o, 0x06054b50, true); v.setUint16(o + 8, 1, true); v.setUint16(o + 10, 1, true); v.setUint32(o + 12, o - cd, true); v.setUint32(o + 16, cd, true);
+  return out;
+}
+function unzipFirst(d) {
+  const v = new DataView(d.buffer, d.byteOffset, d.byteLength);
+  if (v.getUint16(8, true) !== 0) throw new Error('compressed zip');
+  const start = 30 + v.getUint16(26, true) + v.getUint16(28, true);
+  return d.subarray(start, start + v.getUint32(18, true));
+}
+recSaveBtn.addEventListener('click', async () => {
+  if (!rec.notes) return;
+  const bytes = toMidi(rec.notes), dl = await dlReady;
+  if (dl) {
+    try { await dl.save({ filename: 'musical-tigers.zip', data: zipOne('musical-tigers.mid', bytes) }); recSay('recSavedZip'); }
+    catch (e) { recSay(e && e.code === 'declined' ? 'recDeclined' : 'recSaveFail'); }
+    return;
+  }
+  try {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes], { type: 'audio/midi' })); a.download = 'musical-tigers.mid';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); recSay('recSaved');
+  } catch (e) { recSay('recSaveFail'); }
+});
+recFile.addEventListener('change', async () => {
+  const f = recFile.files && recFile.files[0]; if (!f) return;
+  try {
+    let d = new Uint8Array(await f.arrayBuffer());
+    if (d[0] === 0x50 && d[1] === 0x4B) d = unzipFirst(d);
+    stopPlayback(); if (rec.on) recStop();
+    rec.notes = fromMidi(d);
+    recSay('recLoaded', { f: f.name, n: rec.notes.length, s: notesLength(rec.notes).toFixed(1) });
+  } catch (e) { recSay('recBad'); }
+  recFile.value = ''; refreshRecUi();
+});
+
+/* ---------- start ---------- */
+buildHeroKeys(); buildLessonKeys();
+bindKeyboard(heroKeys, 'hero'); bindKeyboard(kb, 'lesson');
+setTempo(54);
+let saved = 'ro'; try { saved = localStorage.getItem('mt-lang') || 'ro'; } catch (e) {}
+applyLang(saved);
+measure();
+seed(9);
+draw();
+hero.style.setProperty('--energy', '0.5');
+
+let resizeTimer = 0, lastW = window.innerWidth;
+function relayout() {
+  const rebuilt = buildHeroKeys();
+  if (rebuilt || Math.abs(window.innerWidth - lastW) > 1) { bars.length = 0; sparks.length = 0; }
+  lastW = window.innerWidth;
+  measure();
+  if (((staff.clientWidth || 600) < 600 ? 'two' : 'one') !== staffMode) { renderStaff(); lessonRender(); }
+  if (reduceMotion || !raf) { if (!bars.length) seed(9); draw(); }
+}
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(relayout, 140); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); if (!raf) draw(); });
+if ('ResizeObserver' in window) { let h0 = 0; new ResizeObserver(() => { const h = Math.round(grand.getBoundingClientRect().top - hero.getBoundingClientRect().top); if (Math.abs(h - h0) > 2) { h0 = h; measure(); if (!raf) draw(); } }).observe(hero); }
+if ('IntersectionObserver' in window) new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; updateRun(); }, { threshold: 0.02 }).observe(hero);
+document.addEventListener('visibilitychange', () => { pageVisible = !document.hidden; if (!pageVisible) Piano.rest(); else if (tr.sound) Piano.unlock(true); updateRun(); });
+updateRun();
+window.__mt = { Piano, song, LOOP, toMidi, fromMidi, zipOne, unzipFirst };
+})();
+</script>
+</body>
+</html>

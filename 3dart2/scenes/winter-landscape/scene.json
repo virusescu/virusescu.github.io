@@ -1,0 +1,10 @@
+{
+  "title": "Peisaj de iarnă",
+  "artist": "Ecaterina Staicu",
+  "splat": "world-lod.rad",
+  "audio": null,
+  "startLon": 0,
+  "moveRadius": 1.0,
+  "sway": 0.03,
+  "text": { "lon": 180, "lat": 14, "distance": 14, "width": 9 }
+}

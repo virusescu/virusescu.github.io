@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <link rel="stylesheet" href="/school/math/lesson.css">
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false})"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraph.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraphcore.js" crossorigin="anonymous"></script>
+
+  <title>Mulțimi: notații, relații, operații | Mulțimi. Numere naturale | Clasa a VI-a</title>
+  <meta name="description" content="∈, ⊂, reuniune, intersecție, diferență; Venn rapid.">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a href="/" class="brand" title="Înapoi la site-ul principal">
+        <span class="logo-icon"><svg viewBox="0 0 40 40" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="20,34 6,9 34,9" fill="rgba(0, 255, 133, 0.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><span class="brand-title">virusescu</span><span class="brand-sub">Matematică</span></span>
+      </a>
+      <a href="/" class="home-link">⌂ Site principal</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Navigare"><a href="/school/">Școală</a><span>/</span><a href="/school/math/">Matematică</a><span>/</span><a href="/school/math/clasa-6/">Clasa a VI-a</a><span>/</span><a href="/school/math/clasa-6/#multimi-numere-naturale">Mulțimi. Numere naturale</a><span>/</span><span aria-current="page">Mulțimi: notații, relații, operații</span></nav>
+    <section class="hero">
+<h1>Mulțimi: notații, relații, operații</h1>
+      <p>∈, ⊂, reuniune, intersecție, diferență; Venn rapid.</p>
+    </section>
+    <article class="lesson">
+<h2 class="section-title">Introducere</h2>
+<div class="box">
+  <p>Mulțimile organizează obiecte sau numere după o regulă clară. Notațiile \(\in\), \(\subset\), \(\cup\), \(\cap\) apar în toată matematica — merită învățate bine de la început.</p>
+</div>
+
+<h2 class="section-title">Lecția</h2>
+<div class="box def">
+  <h3>Notații esențiale</h3>
+  <p>Mulțime: \(A=\{1,2,3\}\). Apartenență: \(2\in A\), \(5\notin A\). Incluziune: \(B\subseteq A\) (orice element din \(B\) e și în \(A\)). Vidă: \(\emptyset\). Cardinal (finite): \(|A|\) sau \(\mathrm{card}(A)\).</p>
+</div>
+<div class="formulas">
+  <p>Reuniune: \(A\cup B = \{x\mid x\in A \text{ sau } x\in B\}\)</p>
+  <p>Intersecție: \(A\cap B = \{x\mid x\in A \text{ și } x\in B\}\)</p>
+  <p>Diferență: \(A\setminus B = \{x\mid x\in A \text{ și } x\notin B\}\)</p>
+  <p>\(\mathbb{N}=\{0,1,2,\ldots\}\) — mulțime infinită</p>
+</div>
+<div class="box ex">
+  <h3>Exemplu 1 — operații</h3>
+  <ol class="steps">
+    <li>\(A=\{1,2,3\}\), \(B=\{2,3,4\}\).</li>
+    <li>\(A\cup B=\{1,2,3,4\}\), \(A\cap B=\{2,3\}\), \(A\setminus B=\{1\}\), \(B\setminus A=\{4\}\).</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 2 — incluziune și cardinal</h3>
+  <ol class="steps">
+    <li>\(|A|=3\); \(\{1,2\}\subseteq A\); \(\{1,2,3,4\}\not\subseteq A\).</li>
+    <li>\(A\subseteq A\) mereu; \(\emptyset\subseteq A\) mereu.</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 3 — finite / infinite</h3>
+  <ol class="steps">
+    <li>\(\{2,4,6,8\}\) e finită, cardinal 4.</li>
+    <li>\(\mathbb{N}\) e infinită — nu are cardinal finit.</li>
+  </ol>
+</div>
+
+<div class="fig"><div id="venn1" class="jxgbox"></div><p class="cap">Diagrama Venn A ∩ B (zonă colorată).</p></div>
+
+<div class="box def">
+  <h3>Recapitulare</h3>
+  <ul>
+    <li>\(\in\), \(\subseteq\), \(\emptyset\), \(|A|\); operații \(\cup\), \(\cap\), \(\setminus\).</li>
+    <li>Finite vs infinite; \(\mathbb{N}\) e infinită.</li>
+  </ul>
+</div>
+    <div class="lesson-nav">
+      <a class="back" href="/school/math/clasa-6/#multimi-numere-naturale">← Cuprins capitol</a>
+      <a href="/school/math/clasa-6/algebra/multimi-numere-naturale/descompunere-cmmdc-cmmmc/">Descompunere, c.m.m.d.c., c.m.m.m.c. →</a>
+    </div>
+    </article>
+  </main>
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>&copy; 2026 virusescu &bull; Școală</span>
+      <span><a href="/school/">Școală</a> &bull; <a href="/school/math/">Matematică</a> &bull; <a href="/">Site principal</a></span>
+    </div>
+  </footer>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!window.JXG) return;
+  const b=JXG.JSXGraph.initBoard('venn1',{boundingbox:[-3,3,5,-3],axis:false,showNavigation:false,showCopyright:false});
+  b.create('ellipse',[[-0.3,0],[1.4,0],[0.5,1.3]],{strokeColor:'#00ff85',fillColor:'#00ff85',fillOpacity:0.12});
+  b.create('ellipse',[[1.8,0],[3.5,0],[2.6,1.3]],{strokeColor:'#38bdf8',fillColor:'#38bdf8',fillOpacity:0.12});
+  b.create('ellipse',[[0.9,0],[2.3,0],[1.6,0.9]],{strokeColor:'#ffd166',fillColor:'#ffd166',fillOpacity:0.35});
+  b.create('text',[-1.2,2.2],'A',{fontSize:18,color:'#00ff85'});
+  b.create('text',[3.2,2.2],'B',{fontSize:18,color:'#38bdf8'});
+  b.create('text',[1.2,-0.1],'A ∩ B',{fontSize:14,color:'#ffd166'});
+});
+</script>
+</body>
+</html>

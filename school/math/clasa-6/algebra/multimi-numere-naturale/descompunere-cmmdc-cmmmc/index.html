@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <link rel="stylesheet" href="/school/math/lesson.css">
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false})"></script>
+
+  <title>Descompunere, c.m.m.d.c., c.m.m.m.c. | Mulțimi. Numere naturale | Clasa a VI-a</title>
+  <meta name="description" content="Factori primi; GCD/LCM; numere prime între ele.">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a href="/" class="brand" title="Înapoi la site-ul principal">
+        <span class="logo-icon"><svg viewBox="0 0 40 40" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="20,34 6,9 34,9" fill="rgba(0, 255, 133, 0.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><span class="brand-title">virusescu</span><span class="brand-sub">Matematică</span></span>
+      </a>
+      <a href="/" class="home-link">⌂ Site principal</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Navigare"><a href="/school/">Școală</a><span>/</span><a href="/school/math/">Matematică</a><span>/</span><a href="/school/math/clasa-6/">Clasa a VI-a</a><span>/</span><a href="/school/math/clasa-6/#multimi-numere-naturale">Mulțimi. Numere naturale</a><span>/</span><span aria-current="page">Descompunere, c.m.m.d.c., c.m.m.m.c.</span></nav>
+    <section class="hero">
+<h1>Descompunere, c.m.m.d.c., c.m.m.m.c.</h1>
+      <p>Factori primi; GCD/LCM; numere prime între ele.</p>
+    </section>
+    <article class="lesson">
+<h2 class="section-title">Introducere</h2>
+<div class="box">
+  <p>Descompunerea în factori primi e „cartea de identitate” a unui număr. Din ea citești rapid c.m.m.d.c. și c.m.m.m.c. — esențiale la fracții și la multe probleme de olimpiadă.</p>
+</div>
+
+<h2 class="section-title">Lecția</h2>
+<div class="box def">
+  <h3>Descompunere</h3>
+  <p>Orice \(n&gt;1\) se scrie unic (până la ordinea factorilor) ca produs de puteri de numere prime: \(n=p_1^{a_1}\cdots p_k^{a_k}\).</p>
+</div>
+<div class="formulas">
+  <p>c.m.m.d.c.: pentru fiecare prim, iei exponentul <strong>minim</strong>.</p>
+  <p>c.m.m.m.c.: pentru fiecare prim, iei exponentul <strong>maxim</strong>.</p>
+  <p>\((a,b)=1\) ↔ prime între ele (c.m.m.d.c. = 1).</p>
+  <p>\((a,b)\cdot [a,b] = a\cdot b\) (verificare utilă).</p>
+</div>
+<div class="box ex">
+  <h3>Exemplu 1</h3>
+  <ol class="steps">
+    <li>\(84=2^2\cdot 3\cdot 7\), \(90=2\cdot 3^2\cdot 5\).</li>
+    <li>c.m.m.d.c. = \(2^{\min(2,1)}\cdot 3^{\min(1,2)}=2\cdot 3=6\).</li>
+    <li>c.m.m.m.c. = \(2^2\cdot 3^2\cdot 5\cdot 7=1260\).</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 2 — prime între ele</h3>
+  <ol class="steps">
+    <li>\(8=2^3\) și \(15=3\cdot 5\): niciun prim comun → \((8,15)=1\).</li>
+    <li>Verificare: \(6\cdot 1260=7560\) și \(84\cdot 90=7560\).</li>
+  </ol>
+</div>
+<div class="box ex">
+  <h3>Exemplu 3</h3>
+  <ol class="steps">
+    <li>\((12,18)=6\), \([12,18]=36\); \(6\cdot 36=216=12\cdot 18\).</li>
+  </ol>
+</div>
+<div class="box def">
+  <h3>Recapitulare</h3>
+  <ul>
+    <li>Descompunere unică în prime; c.m.m.d.c. = mini, c.m.m.m.c. = maxi.</li>
+    <li>\((a,b)\cdot[a,b]=a\cdot b\); \((a,b)=1\) ↔ prime între ele.</li>
+  </ul>
+</div>
+    <div class="lesson-nav">
+      <a class="back" href="/school/math/clasa-6/algebra/multimi-numere-naturale/multimi/">← Mulțimi: notații, relații, operații</a>
+      <a href="/school/math/clasa-6/algebra/multimi-numere-naturale/proprietati-divizibilitate/">Proprietăți ale divizibilității în ℕ →</a>
+    </div>
+    </article>
+  </main>
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>&copy; 2026 virusescu &bull; Școală</span>
+      <span><a href="/school/">Școală</a> &bull; <a href="/school/math/">Matematică</a> &bull; <a href="/">Site principal</a></span>
+    </div>
+  </footer>
+
+</body>
+</html>

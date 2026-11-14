@@ -1,0 +1,11 @@
+/* ==========================================================================
+   virusescu.github.io — Starter Course Theme Overrides
+   Copy this folder (_template/) to scaffold any new tutorial deck.
+   ========================================================================== */
+
+:root {
+  /* Neon green brand default */
+  --theme-accent: #00ff85;
+  --theme-accent-glow: rgba(0, 255, 133, 0.25);
+  --theme-badge: #00ff85;
+}
