@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>escu.party | Homelab docs</title>
+  <meta name="description" content="How the escu.party homelab is wired: domains, DNS, Caddy, HTTPS and how to add new sites.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <style>
+    :root {
+      --bg: #0a0d14;
+      --card: rgba(18, 24, 38, .72);
+      --border: rgba(255, 255, 255, .08);
+      --green: #00ff85;
+      --glow: rgba(0, 255, 133, .25);
+      --pink: #ff2fd6;
+      --cyan: #2fe6ff;
+      --amber: #ffc94f;
+      --text: #f3f4f6;
+      --muted: #94a3b8;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: "SF Mono", "Fira Code", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(0, 255, 133, .08), transparent 45%),
+        radial-gradient(circle at 90% 30%, rgba(255, 47, 214, .06), transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(47, 230, 255, .05), transparent 50%);
+      background-attachment: fixed;
+      color: var(--text); font: 16px/1.65 var(--sans);
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code, pre { font-family: var(--mono); font-size: .88em; }
+    code { background: rgba(255,255,255,.06); padding: .1em .4em; border-radius: 4px; }
+    pre {
+      background: #05070c; border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.1rem; overflow-x: auto; margin: .9rem 0; line-height: 1.55;
+    }
+    pre code { background: none; padding: 0; }
+    .c { color: #64748b; }          /* comment */
+    .k { color: var(--green); }     /* keyword / site name */
+    .s { color: var(--amber); }     /* string / value */
+
+    .layout { display: grid; grid-template-columns: 230px 1fr; gap: 3rem; max-width: 1150px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    nav.toc { position: sticky; top: 2rem; align-self: start; font-size: .9rem; }
+    nav.toc .brand { display: flex; align-items: center; gap: .6rem; margin-bottom: 1.4rem; color: var(--text); font-weight: 800; letter-spacing: -.02em; font-size: 1.1rem; }
+    nav.toc ol { list-style: none; border-left: 1px solid var(--border); }
+    nav.toc li a { display: block; padding: .3rem 0 .3rem 1rem; color: var(--muted); margin-left: -1px; border-left: 2px solid transparent; }
+    nav.toc li a:hover, nav.toc li a.active { color: var(--green); border-left-color: var(--green); text-decoration: none; }
+
+    header.hero { margin-bottom: 3rem; }
+    .eyebrow { color: var(--green); font: 600 .78rem/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900; letter-spacing: -.04em; line-height: 1.05; margin: .6rem 0 1rem;
+      background: linear-gradient(100deg, #fff 30%, var(--green) 55%, var(--cyan) 75%, var(--pink));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { color: var(--muted); font-size: 1.12rem; max-width: 60ch; }
+
+    section { margin-bottom: 3.5rem; }
+    h2 { font-size: 1.6rem; letter-spacing: -.02em; margin-bottom: 1rem; display: flex; align-items: center; gap: .7rem; }
+    h2 .n { font: 700 .8rem/1 var(--mono); color: var(--bg); background: var(--green); border-radius: 6px; padding: .35rem .5rem; box-shadow: 0 0 18px var(--glow); }
+    h3 { font-size: 1.1rem; margin: 1.6rem 0 .5rem; }
+    p, ul, ol.steps { margin: .6rem 0; }
+    ul, ol.steps { padding-left: 1.3rem; }
+    li { margin: .25rem 0; }
+    li::marker { color: var(--green); }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.2rem 1.4rem; backdrop-filter: blur(8px); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .site { position: relative; overflow: hidden; }
+    .site::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--accent, var(--green)); }
+    .site .host { font: 700 1rem var(--mono); color: var(--accent, var(--green)); }
+    .site .what { margin: .3rem 0 .6rem; }
+    .tag { display: inline-block; font: 600 .72rem/1 var(--mono); padding: .3rem .5rem; border-radius: 999px; border: 1px solid currentColor; margin-right: .3rem; }
+    .tag.open { color: var(--green); } .tag.lock { color: var(--amber); } .tag.home { color: var(--cyan); }
+
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+    th, td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* Request flow diagram */
+    .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: .5rem; margin: 1.2rem 0; }
+    .hop { flex: 1 1 140px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: .9rem; text-align: center; position: relative; }
+    .hop b { display: block; font-size: .95rem; }
+    .hop small { color: var(--muted); font-size: .8rem; line-height: 1.4; display: block; margin-top: .3rem; }
+    .hop .ico { font-size: 1.5rem; display: block; margin-bottom: .2rem; }
+    .arrow { align-self: center; color: var(--green); font-weight: 900; animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .3; transform: translateX(3px); } }
+
+    .callout { border-left: 3px solid var(--amber); background: rgba(255, 201, 79, .06); padding: .9rem 1.1rem; border-radius: 0 10px 10px 0; margin: 1rem 0; }
+    .callout.tip { border-color: var(--green); background: rgba(0, 255, 133, .05); }
+    .callout strong:first-child { color: var(--amber); }
+    .callout.tip strong:first-child { color: var(--green); }
+
+    details { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: .9rem 1.2rem; margin: .7rem 0; }
+    details summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; gap: .6rem; align-items: baseline; }
+    details summary::before { content: "+"; color: var(--green); font: 700 1rem var(--mono); transition: transform .2s; }
+    details[open] summary::before { transform: rotate(45deg); }
+    details > *:not(summary) { margin-top: .6rem; }
+
+    footer { color: var(--muted); font-size: .85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 4rem; }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; gap: 1rem; }
+      nav.toc { position: static; }
+      nav.toc ol { display: flex; flex-wrap: wrap; gap: .3rem; border: 0; }
+      nav.toc li a { border: 1px solid var(--border); border-radius: 999px; padding: .25rem .7rem; margin: 0; }
+      .arrow { transform: rotate(90deg); flex-basis: 100%; text-align: center; animation: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <nav class="toc" aria-label="Contents">
+    <a class="brand" href="../">
+      <svg viewBox="0 0 40 40" width="24" height="24" fill="none"><polygon points="20,34 6,9 34,9" fill="rgba(0,255,133,.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      escu docs
+    </a>
+    <ol>
+      <li><a href="#sites">What lives where</a></li>
+      <li><a href="#flow">How a request travels</a></li>
+      <li><a href="#dns">DNS (Cloudflare)</a></li>
+      <li><a href="#router">Router</a></li>
+      <li><a href="#caddy">Caddy, the front door</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#new-site">Add a new subdomain</a></li>
+      <li><a href="#update">Update the sites</a></li>
+      <li><a href="#gotchas">Gotchas we hit</a></li>
+      <li><a href="#cheats">Cheat sheet</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="eyebrow">Homelab · documentation</div>
+      <h1>escu.party</h1>
+      <p class="lead">
+        How one old desktop in a closet serves several HTTPS websites to the whole internet:
+        domains, DNS, the router, Caddy, passwords, and how to add the next thing.
+      </p>
+    </header>
+
+    <!-- 1 -->
+    <section id="sites">
+      <h2><span class="n">01</span> What lives where</h2>
+      <p>Every site below is served by the same machine, through the same web server (Caddy). Caddy looks at the <em>name</em> you typed and picks the right site.</p>
+      <div class="grid">
+        <div class="card site" style="--accent: var(--pink)">
+          <div class="host">escu.party</div>
+          <p class="what">The disco landing page. The older homelab page lives at <code>/web/</code>.</p>
+          <span class="tag open">public</span>
+        </div>
+        <div class="card site">
+          <div class="host">virus.escu.party</div>
+          <p class="what">This repo (virusescu.github.io), served straight from a git clone on the server.</p>
+          <span class="tag open">public</span>
+        </div>
+        <div class="card site" style="--accent: var(--amber)">
+          <div class="host">stockwatch.escu.party</div>
+          <p class="what">StockWatch, the stock watchlist + AI news app. Installable as a phone app.</p>
+          <span class="tag lock">password</span>
+        </div>
+        <div class="card site" style="--accent: var(--cyan)">
+          <div class="host">*.go.ro name</div>
+          <p class="what">The ISP's free dynamic-DNS name. Shows a "serverescu" splash page and is what every escu.party name points at.</p>
+          <span class="tag open">public</span>
+        </div>
+        <div class="card site" style="--accent: var(--cyan)">
+          <div class="host">LAN IP / Tailscale</div>
+          <p class="what">Plain HTTP on the home network (and via Tailscale) goes straight to StockWatch, no password.</p>
+          <span class="tag home">home only</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section id="flow">
+      <h2><span class="n">02</span> How a request travels</h2>
+      <p>What happens when someone opens <code>https://stockwatch.escu.party</code>:</p>
+      <div class="flow">
+        <div class="hop"><span class="ico">📱</span><b>Browser</b><small>"Where is stockwatch.escu.party?"</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">☁️</span><b>Cloudflare DNS</b><small>Wildcard <code>*</code> record says: same as the .go.ro name</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">🛡️</span><b>Cloudflare proxy</b><small>Orange cloud: hides the home IP, forwards to it</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">📡</span><b>Home router</b><small>Ports 80 + 443 forwarded to the server</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">🚪</span><b>Caddy</b><small>Picks the site by name, asks for the password, adds HTTPS</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">📈</span><b>App</b><small>StockWatch container, never exposed directly</small></div>
+      </div>
+      <p>Static sites stop at Caddy, which reads the files from disk. Apps sit behind Caddy on a private Docker network and have no ports of their own.</p>
+    </section>
+
+    <!-- 3 -->
+    <section id="dns">
+      <h2><span class="n">03</span> DNS (Cloudflare)</h2>
+      <p>The domain was bought at Cloudflare, so Cloudflare is who the internet asks about it. Only <strong>two records</strong> exist, set once and never touched again:</p>
+      <table>
+        <tr><th>Type</th><th>Name</th><th>Target</th><th>Meaning</th></tr>
+        <tr><td><code>CNAME</code></td><td><code>@</code></td><td>the <code>.go.ro</code> name</td><td>escu.party itself</td></tr>
+        <tr><td><code>CNAME</code></td><td><code>*</code></td><td>the <code>.go.ro</code> name</td><td>every subdomain, existing or future</td></tr>
+      </table>
+      <div class="callout tip"><strong>Why point at the .go.ro name instead of an IP?</strong> The home IP can change. The ISP's dynamic DNS name always follows it, so escu.party follows too, with no update scripts.</div>
+      <p><strong>Proxy status:</strong> currently orange (proxied). Cloudflare stands in front, which hides the home IP. Set <em>SSL/TLS → Full (strict)</em> so Cloudflare talks HTTPS to the server and checks its certificate. If streaming in an app ever stutters, switch that one record to grey (DNS only).</p>
+    </section>
+
+    <!-- 4 -->
+    <section id="router">
+      <h2><span class="n">04</span> Router</h2>
+      <ul>
+        <li><strong>Port forwarding:</strong> TCP <code>80</code> and <code>443</code> → the server's LAN IP. Nothing else is forwarded.</li>
+        <li><strong>80</strong> is needed so Let's Encrypt can verify the domain and so <code>http://</code> can redirect to <code>https://</code>.</li>
+        <li><strong>NAT loopback</strong> works on this router, so the public names also work from inside the house.</li>
+        <li>The server needs a fixed LAN IP (DHCP reservation) or the forward breaks.</li>
+      </ul>
+    </section>
+
+    <!-- 5 -->
+    <section id="caddy">
+      <h2><span class="n">05</span> Caddy, the front door</h2>
+      <p>Caddy runs in Docker (<code>caddy:2-alpine</code>) and is the only thing that listens for web traffic. Config: <code>~/homelab/web/Caddyfile</code>. Folders are mounted read-only into the container.</p>
+      <h3>Automatic HTTPS</h3>
+      <p>Writing a site as a bare domain name is all it takes. Caddy gets a free Let's Encrypt certificate, renews it before it expires, and redirects HTTP to HTTPS.</p>
+<pre><code><span class="c"># a public static site</span>
+<span class="k">escu.party</span> {
+	root * <span class="s">/escu.party</span>
+	file_server
+}
+
+<span class="c"># an app behind a password</span>
+<span class="k">stockwatch.escu.party</span> {
+	basic_auth @locked {
+		<span class="s">user  $2a$14$…bcrypt-hash…</span>
+	}
+	reverse_proxy <span class="s">stockwatch:8000</span>
+}
+
+<span class="c"># plain HTTP for the home network only; everyone else is dropped</span>
+<span class="k">:80</span> {
+	@home client_ip private_ranges
+	handle @home { import routes }
+	handle       { abort }
+}</code></pre>
+      <h3>The container setup</h3>
+      <ul>
+        <li>Read-only filesystem, all Linux capabilities dropped except binding to low ports, 128 MB memory cap.</li>
+        <li>Certificates live in a Docker volume (<code>caddy_data</code>), so restarts don't re-request them.</li>
+        <li>Apps join the <code>homelab-web</code> Docker network and are reached by container name. They publish no ports.</li>
+      </ul>
+    </section>
+
+    <!-- 6 -->
+    <section id="security">
+      <h2><span class="n">06</span> Security</h2>
+      <ul>
+        <li><strong>Password on StockWatch</strong>: browser login prompt (HTTP Basic Auth over HTTPS). Only the bcrypt hash is in the config.</li>
+        <li><strong>Install files are exempt</strong>: <code>manifest.json</code> and the icons skip the password, otherwise "Install app" breaks (see gotchas). They contain nothing private.</li>
+        <li><strong>Bare public IP is blocked</strong>: requests that don't use a known name and don't come from the home network get the connection dropped.</li>
+        <li><strong>Hidden files</strong>: <code>.git</code>, dot-files and agent folders are never served from virus.escu.party.</li>
+        <li><strong>SSH</strong> is only allowed from the LAN (ufw). Remote admin goes through Tailscale, never the open internet.</li>
+        <li><strong>API keys</strong> for apps live in <code>.env</code> files that are never committed.</li>
+      </ul>
+      <div class="callout"><strong>Docker skips the firewall.</strong> Published Docker ports are opened by Docker's own rules, which run before ufw. A "deny" in ufw does <em>not</em> protect a published container port. That's why apps publish nothing and Caddy does the filtering.</div>
+    </section>
+
+    <!-- 7 -->
+    <section id="new-site">
+      <h2><span class="n">07</span> Add a new subdomain</h2>
+      <p>Thanks to the wildcard, <strong>nothing changes in Cloudflare</strong>. Everything happens on the server:</p>
+      <ol class="steps">
+        <li>Put the files in a folder (or start the app container on the <code>homelab-web</code> network).</li>
+        <li>For a folder, mount it in <code>~/homelab/web/compose.yaml</code>: <code>- ../myfolder:/myfolder:ro</code></li>
+        <li>Add a block to the Caddyfile:
+<pre><code><span class="k">newthing.escu.party</span> {
+	root * <span class="s">/myfolder</span>
+	file_server
+}</code></pre>
+        </li>
+        <li>Check and apply:
+<pre><code>cd ~/homelab/web
+sudo docker run --rm -v $PWD/Caddyfile:/etc/caddy/Caddyfile:ro caddy:2-alpine \
+  caddy validate --config /etc/caddy/Caddyfile
+sudo docker compose up -d          <span class="c"># picks up new mounts</span>
+sudo docker compose restart web    <span class="c"># picks up Caddyfile changes</span></code></pre>
+        </li>
+        <li>Wait ~30 s for the certificate, then open <code>https://newthing.escu.party</code>.</li>
+      </ol>
+    </section>
+
+    <!-- 8 -->
+    <section id="update">
+      <h2><span class="n">08</span> Update the sites</h2>
+      <table>
+        <tr><th>Site</th><th>How</th><th>Restart?</th></tr>
+        <tr><td>virus.escu.party</td><td><code>cd ~/homelab/virusescu.github.io && git pull</code></td><td>No, live instantly</td></tr>
+        <tr><td>escu.party, /web, splash pages</td><td>Edit the HTML file</td><td>No</td></tr>
+        <tr><td>StockWatch</td><td><code>git pull</code> in <code>web/stock</code>, then <code>sudo docker compose up -d --build</code></td><td>Rebuild</td></tr>
+        <tr><td>Caddy itself</td><td><code>sudo docker compose pull && sudo docker compose up -d</code> in <code>web/</code></td><td>Yes</td></tr>
+      </table>
+      <div class="callout tip"><strong>Never edit inside a git clone you only pull into.</strong> Local edits collide with the next pull. Make changes on GitHub (or your PC), push, then pull on the server.</div>
+    </section>
+
+    <!-- 9 -->
+    <section id="gotchas">
+      <h2><span class="n">09</span> Gotchas we hit</h2>
+
+      <details open>
+        <summary>HTTPS on the LAN IP "just hangs"</summary>
+        <p>Nothing listened on 443 for the IP, and the firewall silently drops instead of refusing, so the browser waits forever. Browsers also try HTTPS first, which made plain HTTP feel slow. Certificates are issued for names, not private IPs, so the fix is a real domain.</p>
+      </details>
+
+      <details>
+        <summary>The domain pointed at an old IP</summary>
+        <p>Let's Encrypt reported "Timeout during connect". The DNS record held a stale IP. Always compare <code>dig +short name</code> with the real public IP first.</p>
+      </details>
+
+      <details>
+        <summary>A fresh domain "doesn't exist" for a while</summary>
+        <p>Visiting a name before its record existed made the router's DNS cache the answer "no such name" (up to 30 min, sometimes longer). <code>nslookup name 1.1.1.1</code> proves the record is fine. Fix: wait, reboot the router, or run <code>ipconfig /flushdns</code>. Testing on mobile data skips the router.</p>
+      </details>
+
+      <details>
+        <summary>Caddy ran the "block outsiders" rule last</summary>
+        <p>Caddy sorts directives into a fixed order. <code>abort</code> (and even a <code>route</code> block) ended up <em>after</em> <code>handle</code>, so outsiders still reached the app. Fix: make the choice with mutually exclusive <code>handle @home { … }</code> / <code>handle { abort }</code> blocks. Always test the deny path, not just the allow path.</p>
+      </details>
+
+      <details>
+        <summary>Config change ignored after <code>caddy reload</code></summary>
+        <p>The Caddyfile is bind-mounted as a single file. Tools like <code>sed -i</code> write a <em>new</em> file, and the container keeps seeing the old one. Restart the container after such edits.</p>
+      </details>
+
+      <details>
+        <summary>"Install app" stopped working behind the password</summary>
+        <p>Browsers fetch <code>manifest.json</code> and icons <strong>without</strong> sending the login, got a 401, and decided the site wasn't installable. Fix: exempt just those files from <code>basic_auth</code>.</p>
+      </details>
+
+      <details>
+        <summary><code>git pull</code> refused: "Not possible to fast-forward"</summary>
+        <p>The GitHub history had been squashed, so local and remote no longer shared commits. After checking that GitHub had everything, the clone was reset to <code>origin/main</code> with a backup branch kept.</p>
+      </details>
+    </section>
+
+    <!-- 10 -->
+    <section id="cheats">
+      <h2><span class="n">10</span> Cheat sheet</h2>
+<pre><code><span class="c"># where things are</span>
+~/homelab/web/Caddyfile        <span class="c"># all routing, HTTPS, passwords</span>
+~/homelab/web/compose.yaml     <span class="c"># Caddy container + folder mounts</span>
+~/homelab/web/escu.party/      <span class="c"># disco page</span>
+~/homelab/web/stock/           <span class="c"># StockWatch app</span>
+~/homelab/virusescu.github.io/ <span class="c"># virus.escu.party</span>
+
+<span class="c"># Caddy logs (look for "certificate obtained" or errors)</span>
+cd ~/homelab/web && sudo docker compose logs --tail 50 web
+
+<span class="c"># new password hash for basic_auth</span>
+sudo docker run --rm caddy:2-alpine caddy hash-password --plaintext 'NEW-PASSWORD'
+
+<span class="c"># what does the world think this name is?</span>
+dig +short stockwatch.escu.party @1.1.1.1
+
+<span class="c"># test a site through Cloudflare, bypassing a stale local DNS cache</span>
+curl -I --resolve escu.party:443:&lt;cloudflare-ip&gt; https://escu.party/</code></pre>
+    </section>
+
+    <footer>
+      Written 17 Nov 2026 after one long night of wiring things up. Served from the homelab at
+      <a href="https://virus.escu.party/escu/">virus.escu.party/escu/</a> and from GitHub Pages.
+    </footer>
+  </main>
+</div>
+
+<script>
+  // Highlight the section you're reading in the side menu.
+  const links = [...document.querySelectorAll('nav.toc li a')];
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting) {
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  document.querySelectorAll('main section').forEach(s => io.observe(s));
+</script>
+</body>
+</html>
