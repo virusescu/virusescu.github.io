@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockWatch | Free-Server Migration Plan</title>
+  <meta name="description" content="Feasibility audit, architecture options, Kokoro TTS solutions, risks, and phased migration plan for moving StockWatch off the homelab server.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><polygon points='20,36 4,8 36,8' fill='%2300ff85'/></svg>">
+  <style>
+    :root {
+      --bg: #0a0d14;
+      --surface: #0f1522;
+      --card: rgba(18, 24, 38, .78);
+      --border: rgba(255, 255, 255, .09);
+      --green: #00ff85;
+      --glow: rgba(0, 255, 133, .25);
+      --pink: #ff2fd6;
+      --cyan: #2fe6ff;
+      --amber: #ffc94f;
+      --red: #ff5c7a;
+      --text: #f3f4f6;
+      --muted: #94a3b8;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: "SF Mono", "Fira Code", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 12% 0%, rgba(0, 255, 133, .09), transparent 45%),
+        radial-gradient(circle at 92% 22%, rgba(255, 47, 214, .06), transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(47, 230, 255, .06), transparent 50%);
+      background-attachment: fixed;
+      color: var(--text);
+      font: 16px/1.65 var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code, pre { font-family: var(--mono); font-size: .86em; }
+    code { background: rgba(255, 255, 255, .07); padding: .12em .42em; border-radius: 5px; color: #e2e8f0; }
+    pre {
+      background: #05070c; border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.1rem; overflow-x: auto; margin: .9rem 0; line-height: 1.55;
+    }
+    pre code { background: none; padding: 0; }
+    .c { color: #64748b; }
+    .k { color: var(--green); }
+    .s { color: var(--amber); }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 2.8rem;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    nav.toc { position: sticky; top: 2rem; align-self: start; font-size: .88rem; }
+    nav.toc .brand {
+      display: flex; align-items: center; gap: .6rem; margin-bottom: 1.3rem;
+      color: var(--text); font-weight: 800; letter-spacing: -.02em; font-size: 1.05rem;
+    }
+    nav.toc ol { list-style: none; border-left: 1px solid var(--border); }
+    nav.toc li a {
+      display: block; padding: .34rem 0 .34rem 1rem; color: var(--muted);
+      margin-left: -1px; border-left: 2px solid transparent; transition: color .15s, border-color .15s;
+    }
+    nav.toc li a:hover, nav.toc li a.active {
+      color: var(--green); border-left-color: var(--green); text-decoration: none;
+    }
+    .toc-meta {
+      margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      color: var(--muted); font: 500 .78rem/1.5 var(--mono);
+    }
+
+    header.hero { margin-bottom: 2.6rem; }
+    .eyebrow { color: var(--green); font: 600 .78rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    h1 {
+      font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 900; letter-spacing: -.04em; line-height: 1.06; margin: .6rem 0 1rem;
+      background: linear-gradient(100deg, #fff 28%, var(--green) 58%, var(--cyan) 80%, var(--pink));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { color: var(--muted); font-size: 1.08rem; max-width: 65ch; }
+
+    section { margin-bottom: 3.4rem; scroll-margin-top: 1.5rem; }
+    h2 {
+      font-size: 1.52rem; letter-spacing: -.02em; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .7rem;
+    }
+    h2 .n {
+      font: 700 .78rem/1 var(--mono); color: var(--bg); background: var(--green);
+      border-radius: 6px; padding: .36rem .52rem; box-shadow: 0 0 18px var(--glow); flex: none;
+    }
+    h3 { font-size: 1.08rem; margin: 1.5rem 0 .5rem; color: #fff; }
+    p, ul, ol.steps { margin: .6rem 0; }
+    ul, ol.steps { padding-left: 1.35rem; }
+    li { margin: .32rem 0; }
+    li::marker { color: var(--green); }
+
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.2rem 1.4rem; backdrop-filter: blur(8px);
+    }
+    .verdict-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+    .verdict-card { position: relative; overflow: hidden; }
+    .verdict-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--accent, var(--green)); }
+    .verdict-label {
+      display: inline-flex; align-items: center; gap: .45rem;
+      font: 700 .76rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em;
+      padding: .32rem .6rem; border-radius: 999px; margin-bottom: .7rem;
+    }
+    .verdict-label.no { color: var(--red); background: rgba(255, 92, 122, .12); border: 1px solid rgba(255, 92, 122, .35); }
+    .verdict-label.yes { color: var(--green); background: rgba(0, 255, 133, .1); border: 1px solid rgba(0, 255, 133, .35); }
+    .verdict-label.warn { color: var(--amber); background: rgba(255, 201, 79, .1); border: 1px solid rgba(255, 201, 79, .35); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: .85rem; margin: 1.1rem 0; }
+    .kpi {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: .95rem 1.05rem;
+    }
+    .kpi .val { font: 800 1.45rem/1.15 var(--mono); color: var(--cyan); }
+    .kpi .lbl { font-size: .82rem; color: var(--muted); margin-top: .25rem; }
+    .kpi.warn .val { color: var(--amber); }
+    .kpi.good .val { color: var(--green); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .site { position: relative; overflow: hidden; }
+    .site::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--accent, var(--green)); }
+    .site .host { font: 700 1rem var(--mono); color: var(--accent, var(--green)); margin-bottom: .35rem; }
+
+    .tag {
+      display: inline-block; font: 600 .7rem/1 var(--mono); padding: .26rem .52rem;
+      border-radius: 999px; border: 1px solid currentColor; margin-right: .3rem; margin-top: .3rem;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .tag.open, .tag.low { color: var(--green); }
+    .tag.lock, .tag.med, .tag.high { color: var(--amber); }
+    .tag.home { color: var(--cyan); }
+    .tag.crit { color: var(--red); background: rgba(255, 92, 122, .12); }
+
+    .table-wrap {
+      overflow-x: auto; margin: 1rem 0; background: var(--card);
+      border: 1px solid var(--border); border-radius: 12px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; min-width: 620px; }
+    th, td { text-align: left; padding: .68rem .85rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th {
+      color: var(--muted); font: 700 .74rem/1.2 var(--mono); text-transform: uppercase;
+      letter-spacing: .08em; background: rgba(255, 255, 255, .02);
+    }
+    tr:last-child td { border-bottom: 0; }
+
+    .flow-title { font: 700 .8rem/1 var(--mono); color: var(--cyan); text-transform: uppercase; letter-spacing: .09em; margin: 1.2rem 0 .4rem; }
+    .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: .5rem; margin: .6rem 0 1.2rem; }
+    .hop {
+      flex: 1 1 135px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: .85rem .75rem; text-align: center;
+    }
+    .hop b { display: block; font-size: .9rem; color: #fff; }
+    .hop small { color: var(--muted); font-size: .78rem; line-height: 1.38; display: block; margin-top: .28rem; }
+    .hop .ico { font-size: 1.35rem; display: block; margin-bottom: .2rem; }
+    .hop.highlight { border-color: rgba(0, 255, 133, .38); box-shadow: inset 0 0 18px rgba(0, 255, 133, .06); }
+    .arrow { align-self: center; color: var(--green); font-weight: 900; animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .35; transform: translateX(3px); } }
+
+    .callout {
+      border-left: 3px solid var(--amber); background: rgba(255, 201, 79, .06);
+      padding: .9rem 1.1rem; border-radius: 0 10px 10px 0; margin: 1rem 0;
+    }
+    .callout.tip { border-color: var(--green); background: rgba(0, 255, 133, .05); }
+    .callout.danger { border-color: var(--red); background: rgba(255, 92, 122, .07); }
+    .callout strong:first-child { color: var(--amber); }
+    .callout.tip strong:first-child { color: var(--green); }
+    .callout.danger strong:first-child { color: var(--red); }
+
+    .pros-cons { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: .9rem; margin-top: .8rem; }
+    .pc-box { background: rgba(5, 7, 12, .55); border: 1px solid var(--border); border-radius: 10px; padding: .9rem 1rem; }
+    .pc-box h4 { font: 700 .8rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .5rem; }
+    .pc-box.pros h4 { color: var(--green); }
+    .pc-box.cons h4 { color: var(--red); }
+
+    details {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: .9rem 1.15rem; margin: .7rem 0;
+    }
+    details summary {
+      cursor: pointer; font-weight: 700; list-style: none;
+      display: flex; flex-wrap: wrap; gap: .55rem; align-items: center;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before { content: "+"; color: var(--green); font: 700 1.05rem var(--mono); transition: transform .2s; }
+    details[open] summary::before { transform: rotate(45deg); }
+    details > *:not(summary) { margin-top: .65rem; }
+
+    .phase-card { margin: .9rem 0; border-left: 3px solid var(--cyan); }
+    .phase-head { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .45rem; }
+    .phase-head b { font-size: 1.02rem; color: #fff; }
+    .checklist li { list-style: none; position: relative; padding-left: 1.4rem; margin: .35rem 0; }
+    .checklist { padding-left: 0; }
+    .checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--green); font-family: var(--mono); }
+
+    footer {
+      color: var(--muted); font-size: .85rem; border-top: 1px solid var(--border);
+      padding-top: 1.4rem; margin-top: 3.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: .8rem;
+    }
+
+    @media (max-width: 880px) {
+      .layout { grid-template-columns: 1fr; gap: 1.2rem; padding: 1.4rem 1rem 4rem; }
+      nav.toc { position: static; }
+      nav.toc ol { display: flex; flex-wrap: wrap; gap: .35rem; border: 0; }
+      nav.toc li a { border: 1px solid var(--border); border-radius: 999px; padding: .26rem .72rem; margin: 0; font-size: .82rem; }
+      .toc-meta { display: none; }
+      .arrow { transform: rotate(90deg); flex-basis: 100%; text-align: center; animation: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <nav class="toc" aria-label="Contents">
+    <a class="brand" href="../escu/">
+      <svg viewBox="0 0 40 40" width="24" height="24" fill="none"><polygon points="20,34 6,9 34,9" fill="rgba(0,255,133,.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      stockwatch migration
+    </a>
+    <ol>
+      <li><a href="#verdict">1. Feasibility Verdict</a></li>
+      <li><a href="#footprint">2. Measured Footprint</a></li>
+      <li><a href="#audit">3. Stack Audit</a></li>
+      <li><a href="#options">4. Architecture Options</a></li>
+      <li><a href="#kokoro">5. Solving Kokoro TTS</a></li>
+      <li><a href="#problems">6. Problems &amp; Traps</a></li>
+      <li><a href="#roadmap">7. Phased Roadmap</a></li>
+    </ol>
+    <div class="toc-meta">
+      StockWatch v2.1.3<br>
+      Audit date: Nov 22, 2026<br>
+      No hacks · Clean cloud paths
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="eyebrow">StockWatch · Cloud Migration Plan</div>
+      <h1>Moving StockWatch off the Homelab</h1>
+      <p class="lead">
+        An honest engineering plan for migrating StockWatch to free or ultra-cheap cloud infrastructure
+        (comparing against the <code>muschiul.escu.party</code> Cloudflare + Supabase + Google OAuth pattern)
+        — without hacks, ToS abuse, or losing Kokoro voice &amp; Telegram alerts.
+      </p>
+    </header>
+
+    <!-- 1. FEASIBILITY VERDICT -->
+    <section id="verdict">
+      <h2><span class="n">01</span> Feasibility Verdict (Without Hacking)</h2>
+
+      <div class="verdict-grid">
+        <div class="card verdict-card" style="--accent: var(--red)">
+          <span class="verdict-label no">1:1 Exact Copy → NOT FEASIBLE</span>
+          <h3>Identical <code>muschiul.escu.party</code> Stack</h3>
+          <p>
+            You <strong>cannot</strong> drop StockWatch directly onto Cloudflare Workers Free + Supabase Free + Google OAuth as-is.
+            StockWatch is <strong>10,799 lines of Python</strong>, ships a <strong>3.24 GB Docker image</strong> (PyTorch + Kokoro + spaCy + ffmpeg), spikes <strong>+1 GB RAM</strong> during voice synthesis, runs a continuous 1s/15m worker daemon, and pulls 2y bars with <code>yfinance</code> (blocked on cloud IPs). Cloudflare Workers Free allows <strong>10 ms CPU</strong> and <strong>128 MB RAM</strong>.
+          </p>
+        </div>
+
+        <div class="card verdict-card" style="--accent: var(--green)">
+          <span class="verdict-label yes">Adapted / Hybrid → FEASIBLE AT $0</span>
+          <h3>Legitimate Free &amp; Near-$0 Paths</h3>
+          <p>
+            Yes — cleanly and legitimately, in three ways:
+            <strong>Path B ($0 Hybrid)</strong> keeps React/Auth/DB on Cloudflare + Supabase + Google GIS while moving slim Python to Cloud Run/Koyeb and replacing/offloading Kokoro;
+            <strong>Path C1 ($0 Oracle ARM)</strong> keeps Docker intact on an Ampere VM (if you handle June 2026 capacity/PAYG rules);
+            or <strong>Path C2 (~€5.49–5.99/mo Hetzner CX23)</strong>, which costs <em>less than closet desktop electricity</em>.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <strong>Power Bill Sanity Check:</strong> Running an older 4-core <code>i5-2500K</code> desktop 24/7 (~45–65 W idle/light load = ~394–570 kWh/year) costs roughly <strong>€70–€140/year</strong> in electricity — more than a <strong>Hetzner CX23 VPS (€5.49–€5.99/mo ≈ €66–72/year)</strong> with NVMe SSD and zero residential outage risk.
+      </div>
+    </section>
+
+    <!-- 2. MEASURED FOOTPRINT -->
+    <section id="footprint">
+      <h2><span class="n">02</span> Current StockWatch Footprint (Measured)</h2>
+      <p>Measured directly on the live StockWatch v2.1.3 homelab stack before designing the target topology:</p>
+
+      <div class="kpi-grid">
+        <div class="kpi warn">
+          <div class="val">3.24 GB</div>
+          <div class="lbl"><code>stockwatch:latest</code> image (PyTorch CPU + Kokoro + spaCy + ffmpeg + pg17 client)</div>
+        </div>
+        <div class="kpi">
+          <div class="val">336 MB</div>
+          <div class="lbl"><code>/data</code> volume (313 MB Kokoro HF weights · 13 MB MP3s · 8.2 MB backups)</div>
+        </div>
+        <div class="kpi good">
+          <div class="val">12 MB</div>
+          <div class="lbl">Live Postgres 17 DB (20+ tables, 9,133 price bars, 19 stocks, 3 users)</div>
+        </div>
+        <div class="kpi warn">
+          <div class="val">~1.4–2.4 GB</div>
+          <div class="lbl">RAM: ~376 MiB idle → +1 GB per process when Kokoro loads</div>
+        </div>
+        <div class="kpi">
+          <div class="val">10,799 LOC</div>
+          <div class="lbl">29 Python backend modules, 18 FastAPI routers, React 19 + Vite SPA</div>
+        </div>
+        <div class="kpi">
+          <div class="val">~20 ch/s</div>
+          <div class="lbl">Kokoro CPU speed (~60s per morning briefing; ~45s per 60s Clash)</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Key Insight:</strong> Your actual state is tiny — <strong>12 MB of database rows + 13 MB of MP3s</strong>. Over 95% of the "few gigs" problem is bundling PyTorch + Kokoro + spaCy inside the Docker image.
+      </div>
+    </section>
+
+    <!-- 3. COMPONENT COMPATIBILITY AUDIT -->
+    <section id="audit">
+      <h2><span class="n">03</span> Component Audit vs. <code>muschiul.escu.party</code> Stack</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Current Homelab</th>
+              <th><code>muschiul</code> Stack Fit</th>
+              <th>Required Adaptation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>React 19 SPA</strong></td>
+              <td>Built into FastAPI (<code>spa.py</code>) behind Caddy</td>
+              <td><span class="tag open">Direct Fit</span></td>
+              <td>Host static <code>./dist</code> free on Cloudflare Workers <code>ASSETS</code>.</td>
+            </tr>
+            <tr>
+              <td><strong>Postgres 17 DB</strong></td>
+              <td>Local container, 12 MB, Alembic <code>0001..0010</code></td>
+              <td><span class="tag lock">Fits 500 MB</span></td>
+              <td>Takes <strong>Slot 2 of 2</strong> free Supabase projects; pauses after 7d idle SQL; swap advisory locks or use Session Pooler (5432).</td>
+            </tr>
+            <tr>
+              <td><strong>Google OAuth + Auth</strong></td>
+              <td>Argon2id + invite links + 30d <code>sw_session</code> cookies</td>
+              <td><span class="tag open">Clean Fit</span></td>
+              <td>Reuse Google GIS + SHA-256 nonce → <code>signInWithIdToken</code>; gate registration on StockWatch invite allowlist.</td>
+            </tr>
+            <tr>
+              <td><strong>FastAPI (10.8k LOC)</strong></td>
+              <td>Python 3.12, 18 routers, <code>pandas</code>, SQLAlchemy</td>
+              <td><span class="tag crit">Blocked on Workers</span></td>
+              <td>Keep Python on <strong>Cloud Run / Koyeb / VPS</strong>; never rewrite 10.8k LOC to TS unless forced.</td>
+            </tr>
+            <tr>
+              <td><strong>Worker &amp; Cron Loops</strong></td>
+              <td><code>worker.py</code> 1s/15m loops + NYSE scheduler</td>
+              <td><span class="tag lock">Needs Split</span></td>
+              <td>Convert loops to authenticated <code>/api/internal/cron/*</code> HTTP routes pinged by Cloudflare Cron Triggers.</td>
+            </tr>
+            <tr>
+              <td><strong>Finnhub + <code>yfinance</code></strong></td>
+              <td>Finnhub REST + Yahoo 2y bulk + <code>^TNX</code></td>
+              <td><span class="tag crit">Cloud IP Blocked</span></td>
+              <td>Yahoo 429/403s datacenter IPs; swap <code>yfinance</code> for <strong>Massive (Polygon)</strong> or <strong>Tiingo</strong> + <strong>FRED <code>DGS10</code></strong>.</td>
+            </tr>
+            <tr>
+              <td><strong>Kokoro TTS + ffmpeg</strong></td>
+              <td>PyTorch <code>kokoro==0.9.4</code> + 313 MB HF model</td>
+              <td><span class="tag crit">3.24 GB / 1 GB RAM</span></td>
+              <td>Switch to <strong><code>kokoro-onnx</code></strong> on Cloud Run (2 GiB)/Modal/VPS, or replace with Cloud TTS / Workers AI.</td>
+            </tr>
+            <tr>
+              <td><strong><code>/data/audio</code> MP3s</strong></td>
+              <td>Local bind mount (13 MB) served by FastAPI</td>
+              <td><span class="tag lock">Ephemeral Risk</span></td>
+              <td>Store MP3s in <strong>Cloudflare R2</strong> (10 GB free, $0 egress) or Supabase Storage (1 GB free) via signed URLs.</td>
+            </tr>
+            <tr>
+              <td><strong>Telegram Bot</strong></td>
+              <td><code>getUpdates</code> long-poller in worker</td>
+              <td><span class="tag lock">Needs Webhook</span></td>
+              <td>Switch to <code>setWebhook</code> with <code>X-Telegram-Bot-Api-Secret-Token</code> + async task dispatch for slow AI/TTS.</td>
+            </tr>
+            <tr>
+              <td><strong>Planned 2-Host Clash</strong></td>
+              <td><code>07-clash-and-telegram-bot.md</code> (Bull vs. Bear)</td>
+              <td><span class="tag home">Supported</span></td>
+              <td><code>kokoro-onnx</code> handles 2 voices at zero extra RAM; Gemini TTS also supports native multi-speaker.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flow-title">Current Homelab Topology</div>
+      <div class="flow">
+        <div class="hop"><span class="ico">🌐</span><b>Cloudflare Proxy</b><small>DNS + hides home IP</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">🚪</span><b>Router + Caddy</b><small>Ports 80/443 on LAN</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">⚡</span><b>FastAPI Web (3.24 GB)</b><small>SPA + API + on-demand TTS</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">⚙️</span><b>Worker + Kokoro</b><small>Polls DB, Telegram, TTS</small></div>
+        <div class="arrow">→</div>
+        <div class="hop"><span class="ico">🗄️</span><b>Postgres 17 + Disk</b><small>12 MB DB + 336 MB data</small></div>
+      </div>
+
+      <div class="flow-title">Recommended $0 Serverless Hybrid Topology (Path B)</div>
+      <div class="flow">
+        <div class="hop highlight"><span class="ico">☁️</span><b>CF Assets + Cron</b><small>React SPA + 15m triggers</small></div>
+        <div class="arrow">→</div>
+        <div class="hop highlight"><span class="ico">🔐</span><b>Google GIS + Supabase</b><small>Auth + 500 MB Postgres (Slot 2/2)</small></div>
+        <div class="arrow">→</div>
+        <div class="hop highlight"><span class="ico">🐍</span><b>Slim FastAPI (~280 MB)</b><small>Cloud Run / Koyeb + TG Webhook</small></div>
+        <div class="arrow">→</div>
+        <div class="hop highlight"><span class="ico">🎙️</span><b>TTS Offload</b><small>kokoro-onnx (Cloud Run/Modal) or Cloud TTS</small></div>
+        <div class="arrow">→</div>
+        <div class="hop highlight"><span class="ico">🪣</span><b>Cloudflare R2</b><small>10 GB MP3s + pg_dump backups</small></div>
+      </div>
+    </section>
+
+    <!-- 4. ARCHITECTURE OPTIONS -->
+    <section id="options">
+      <h2><span class="n">04</span> Architecture Options — Pros &amp; Cons</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Option</th>
+              <th>Cost</th>
+              <th>Card Needed?</th>
+              <th>Keeps Python?</th>
+              <th>Keeps Kokoro?</th>
+              <th>Cold Start</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>A: Pure Cloudflare + Supabase Rewrite</strong></td>
+              <td><strong>$0</strong></td>
+              <td>Only for R2</td>
+              <td>No (full TS rewrite)</td>
+              <td>No (Cloud TTS / Workers AI)</td>
+              <td>~20 ms</td>
+              <td>Maximum edge speed if rewriting from scratch</td>
+            </tr>
+            <tr>
+              <td><strong>B: Hybrid Serverless</strong> <em>(Rec. $0)</em></td>
+              <td><strong>$0</strong></td>
+              <td>Yes (Cloud Run / R2 / Modal; Koyeb no card)</td>
+              <td><strong>Yes</strong> (slimmed FastAPI)</td>
+              <td><strong>Yes</strong> (via <code>kokoro-onnx</code>) or Cloud TTS</td>
+              <td>1–5s API; 5–12s TTS</td>
+              <td>$0 cloud without throwing away 10.8k lines of Python</td>
+            </tr>
+            <tr>
+              <td><strong>C1: Oracle Always Free ARM</strong></td>
+              <td><strong>$0</strong></td>
+              <td>Yes (PAYG strongly advised)</td>
+              <td><strong>Yes</strong> (100% Docker)</td>
+              <td><strong>Yes</strong></td>
+              <td>None (24/7)</td>
+              <td>True $0 lift-and-shift if you tolerate OCI quirks</td>
+            </tr>
+            <tr>
+              <td><strong>C2: Hetzner CX23 VPS</strong> <em>(Rec. Overall)</em></td>
+              <td><strong>€5.49–5.99/mo</strong></td>
+              <td>Yes</td>
+              <td><strong>Yes</strong> (100% Docker)</td>
+              <td><strong>Yes</strong> (<code>kokoro-onnx</code>)</td>
+              <td>None (24/7)</td>
+              <td>Zero-drama hosting cheaper than desktop power</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid">
+        <div class="card site" style="--accent: var(--pink)">
+          <div class="host">Option A · Pure CF + Supabase Rewrite</div>
+          <p>Port all 18 FastAPI routers, GARP scoring, and schedulers to TypeScript Cloudflare Workers.</p>
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <h4>Pros</h4>
+              <ul>
+                <li>True $0 edge hosting, identical to <code>muschiul.escu.party</code></li>
+                <li>Near-zero latency, no container images</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <h4>Cons</h4>
+              <ul>
+                <li>Huge multi-week rewrite of 10.8k LOC Python</li>
+                <li>10 ms CPU &amp; 50 subrequest caps break multi-stock harvests &amp; <code>ffmpeg</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card site" style="--accent: var(--green)">
+          <div class="host">Option B · Hybrid Serverless (Rec. $0)</div>
+          <p>CF Static Assets + Supabase Slot 2 + Google GIS + slim Python on Cloud Run/Koyeb + R2 + offloaded/Cloud TTS.</p>
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <h4>Pros</h4>
+              <ul>
+                <li>Reuses ~95% of Python logic, Gemini &amp; usage caps</li>
+                <li>CF Cron handles 15m ticks &amp; stops 7d Supabase pause</li>
+                <li>Fits Cloud Run / R2 / Modal free tiers comfortably</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <h4>Cons</h4>
+              <ul>
+                <li>More moving parts (4–5 cloud services wired together)</li>
+                <li>Needs EOD swap (<code>yfinance</code>), webhook conversion, and R2 audio storage</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card site" style="--accent: var(--amber)">
+          <div class="host">Option C1 · Oracle Always Free ARM</div>
+          <p>Ubuntu ARM64 VM running StockWatch's existing Docker Compose stack.</p>
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <h4>Pros</h4>
+              <ul>
+                <li>True $0 with full Postgres 17, persistent disk &amp; worker</li>
+                <li>12–24 GB RAM handles Kokoro easily</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <h4>Cons</h4>
+              <ul>
+                <li>Free tier halved in June 2026 (2 OCPU / 12 GB)</li>
+                <li>"Out of host capacity" + 7-day idle reclamation unless upgraded to PAYG</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card site" style="--accent: var(--cyan)">
+          <div class="host">Option C2 · Hetzner CX23 (~€6/mo)</div>
+          <p>2 vCPU, 4 GB RAM, 40 GB NVMe, 20 TB traffic in EU — zero sleep, zero quotas.</p>
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <h4>Pros</h4>
+              <ul>
+                <li>Cheaper than closet i5-2500K electricity</li>
+                <li>Zero cold starts, zero 500 MB DB cap, trivial Docker updates</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <h4>Cons</h4>
+              <ul>
+                <li>Costs ~€66–72/year rather than literally $0</li>
+                <li>Still needs <code>yfinance</code> replaced + off-box backups (to R2)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SOLVING KOKORO & 3.24 GB -->
+    <section id="kokoro">
+      <h2><span class="n">05</span> Solving Kokoro TTS &amp; the 3.24 GB Footprint</h2>
+      <p>
+        StockWatch's image is <strong>3.24 GB</strong> mainly because PyTorch + <code>kokoro==0.9.4</code> + <code>spacy</code> pull ~2.5 GB of ML dependencies.
+        Notably, your repo <code>tutorials/_engine/</code> already uses <strong><code>kokoro-onnx</code></strong> — cutting PyTorch out completely is the single highest-leverage fix.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>TTS Strategy</th>
+              <th>Container Size &amp; RAM</th>
+              <th>2026 Free Quota</th>
+              <th>Pros &amp; Tradeoffs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. <code>kokoro-onnx</code> (INT8 / FP32)</strong></td>
+              <td>Image <strong>~650–900 MB</strong><br>RAM <strong>~350–500 MB</strong></td>
+              <td>Free on Cloud Run (2 GiB tier) or Modal ($30/mo credit)</td>
+              <td>Exact Kokoro voices (<code>am_michael</code> + <code>af_heart</code>), 2–3x faster on CPU, zero PyTorch/spaCy bloat.</td>
+            </tr>
+            <tr>
+              <td><strong>2. Cloudflare Workers AI</strong><br>(<code>melotts</code> / <code>aura-1</code>)</td>
+              <td><strong>0 MB</strong> in app</td>
+              <td><strong>10,000 Neurons/day</strong><br>(~536m <code>melotts</code> OR ~7.3k chars <code>aura-1</code>)</td>
+              <td>No Kokoro hosted natively. <code>aura-1</code> sounds natural (~3 briefings/day free); <code>melotts</code> is much higher volume but plainer.</td>
+            </tr>
+            <tr>
+              <td><strong>3. Google Cloud TTS</strong><br>(WaveNet / Neural2)</td>
+              <td><strong>0 MB</strong> in app</td>
+              <td><strong>1M WaveNet</strong> + <strong>4M Standard</strong> chars/month free</td>
+              <td>Massive free quota (~400+ briefings/mo), ultra-reliable REST call; requires GCP billing account.</td>
+            </tr>
+            <tr>
+              <td><strong>4. Gemini Native TTS</strong><br>(<code>2.5 / 3.8 Flash TTS</code>)</td>
+              <td><strong>0 MB</strong> in app</td>
+              <td>Free AI Studio tier (strict RPM, prompt logging) or ~$9–10/1M audio tokens</td>
+              <td>Native multi-speaker dialogue for Bull vs. Bear Clash without stitching; paid audio tokens add up if unthrottled.</td>
+            </tr>
+            <tr>
+              <td><strong>5. Browser <code>kokoro-js</code></strong><br>(WebGPU / WASM Q8)</td>
+              <td><strong>~86 MB</strong> in user browser; <strong>0 MB</strong> server</td>
+              <td><strong>$0 forever</strong></td>
+              <td>Zero server CPU for web playback, <em>but cannot synthesize scheduled morning Telegram MP3s</em>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. POSSIBLE PROBLEMS & TRAPS -->
+    <section id="problems">
+      <h2><span class="n">06</span> Possible Problems, Traps &amp; Mitigations</h2>
+
+      <details open>
+        <summary><span class="tag crit">CRITICAL</span> 1. PyTorch Kokoro OOMs 512 MB Free Tiers &amp; Breaks Serverless Limits</summary>
+        <p><strong>Trap:</strong> Loading <code>KPipeline</code> adds ~1 GB RAM per process (web + worker = ~2 GB+) and takes ~45–90s CPU. Render Free / Koyeb Free (512 MB) crash with OOM; Cloudflare Workers (128 MB / 10 ms) reject it outright.</p>
+        <p><strong>Fix:</strong> Split TTS out of the web API container (~280 MB slim FastAPI) and run <code>kokoro-onnx</code> in a scale-to-zero Cloud Run (2 GiB) / Modal endpoint — or switch to Google Cloud TTS / Workers AI.</p>
+      </details>
+
+      <details open>
+        <summary><span class="tag crit">CRITICAL</span> 2. <code>yfinance</code> Fails with 429 / 403 on Cloud Datacenter IPs</summary>
+        <p><strong>Trap:</strong> <code>YahooHistoryProvider</code> scrapes Yahoo Finance from the server IP. Cloud ASNs (GCP, AWS, Oracle, Cloudflare) are aggressively rate-limited and CAPTCHA/403 blocked.</p>
+        <p><strong>Fix:</strong> Swap <code>backend/providers/yahoo_history.py</code> to an authenticated free REST API: <strong>Massive (formerly Polygon.io) Free</strong> (2y U.S. daily bars, 5 calls/min) or <strong>Tiingo Free</strong> (500 symbols/mo) + <strong>FRED API <code>DGS10</code></strong> for the 10Y yield.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag high">HIGH</span> 3. Supabase Free: 2-Project Ceiling, 7-Day SQL Pause &amp; Zero Backups</summary>
+        <p><strong>Trap:</strong> <code>muschiul.escu.party</code> already occupies Slot 1 of 2 on your free Supabase org. StockWatch takes Slot 2/2. Projects with zero Postgres queries for 7 days auto-pause, and Free plans have no automated snapshots.</p>
+        <p><strong>Fix:</strong> Let your Cloudflare 15-minute Cron hit a DB-touching health check (preventing pauses) and run a free nightly GitHub Actions <code>pg_dump</code> uploaded to Cloudflare R2.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag high">HIGH</span> 4. Advisory Locks (<code>pg_try_advisory_lock</code>) Break on Supabase Pooler + IPv6</summary>
+        <p><strong>Trap:</strong> <code>backend/jobs.py</code> uses session-scoped PostgreSQL advisory locks, which fail on Supabase Transaction Pooler (port 6543), while direct port 5432 is IPv6-only (unreachable from many IPv4 PaaS containers).</p>
+        <p><strong>Fix:</strong> Connect via <strong>Supavisor Session Pooler (port 5432)</strong>, or switch `JobLock` to use the row-based lease logic (`job_state` + `heartbeat_at`) already implemented in `jobs.py`.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag high">HIGH</span> 5. Cloudflare Workers 50-Subrequest &amp; 10 ms CPU Limits</summary>
+        <p><strong>Trap:</strong> Harvesting 20+ tickers makes ~140 Finnhub REST calls plus pandas math — hitting both Cloudflare Free limits instantly.</p>
+        <p><strong>Fix:</strong> Keep Cloudflare Workers strictly as a thin edge/cron scheduler that calls Cloud Run / VPS over HTTPS.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag high">HIGH</span> 6. Telegram <code>getUpdates</code> Poller Never Wakes Sleeping Containers</summary>
+        <p><strong>Trap:</strong> <code>worker.py</code> loops on <code>poll_once()</code>. Scale-to-zero containers sleep between HTTP requests, so Telegram messages sit uncollected.</p>
+        <p><strong>Fix:</strong> Switch to Telegram <code>setWebhook</code> at <code>POST /api/telegram/webhook</code> with <code>X-Telegram-Bot-Api-Secret-Token</code>. Reply within &lt;2s for quick commands and dispatch slow AI/TTS asynchronously.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag med">MEDIUM</span> 7. Ephemeral Container Disks Wipe <code>/data/audio</code> &amp; Models</summary>
+        <p><strong>Trap:</strong> Serverless containers discard local disk writes on every scale-down or deploy.</p>
+        <p><strong>Fix:</strong> Upload generated MP3s to <strong>Cloudflare R2</strong> (10 GB free, $0 egress) or Supabase Storage (1 GB free) and return signed URLs; bake ONNX model weights into the TTS worker image.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag med">MEDIUM</span> 8. Oracle Always Free June 2026 Halving &amp; Idle Reclamation</summary>
+        <p><strong>Trap:</strong> Pure Free Tier Ampere A1 was cut from 4 OCPU / 24 GB to <strong>2 OCPU / 12 GB</strong>, suffers "Out of host capacity", and reclaims VMs under 10% p90 CPU over 7 days.</p>
+        <p><strong>Fix:</strong> Upgrade to <strong>PAYG</strong> (exempts idle reclamation and unlocks capacity while remaining $0 inside free quotas) and set an OCI €1 budget alert.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag med">MEDIUM</span> 9. Card-Backed Free Tiers Need Guardrails Against Billing Spikes</summary>
+        <p><strong>Trap:</strong> Cloud Run, R2, Modal, and OCI PAYG require cards; loops or DDoS could run up usage.</p>
+        <p><strong>Fix:</strong> Cap Cloud Run <code>max-instances=1</code>, add Cloudflare rate limiting, keep <code>usage.py</code> daily user caps &amp; monthly AI budget, and configure budget alarms on Day 1.</p>
+      </details>
+
+      <details>
+        <summary><span class="tag med">MEDIUM</span> 10. Planned Two-Way Bot &amp; 2-Host Clash Integration</summary>
+        <p><strong>Trap:</strong> Planned <code>/clash</code> and <code>/ask</code> commands take 15–45 seconds — longer than Telegram's webhook ack patience, causing duplicate retries.</p>
+        <p><strong>Fix:</strong> Return HTTP 200 to Telegram after sending `"Generating..."` and execute the Gemini + TTS synthesis in an async worker task / Cloud Task.</p>
+      </details>
+    </section>
+
+    <!-- 7. PHASED ROADMAP -->
+    <section id="roadmap">
+      <h2><span class="n">07</span> Step-by-Step Phased Migration Plan</h2>
+      <p>Recommended sequence for <strong>Path B ($0 Hybrid Serverless)</strong> — each phase leaves StockWatch runnable locally until cutover:</p>
+
+      <div class="card phase-card">
+        <div class="phase-head">
+          <b>Phase 0 · Pre-Migration Code Portability</b>
+          <span class="tag home">In web/stock repo</span>
+        </div>
+        <ul class="checklist">
+          <li>Add cloud-safe <code>HistoryProvider</code> (Massive / Tiingo + FRED <code>DGS10</code>) behind <code>STOCKWATCH_HISTORY_PROVIDER</code>.</li>
+          <li>Enable PostgreSQL row-lease locking option in <code>backend/jobs.py</code> alongside advisory locks.</li>
+          <li>Abstract MP3 storage in <code>backend/storage.py</code> (local disk vs. Cloudflare R2 S3-compatible + signed URLs).</li>
+          <li>Add slim <code>Dockerfile.api</code> (~280 MB, no PyTorch/Kokoro/spaCy) so FastAPI runs in &lt;250 MB RAM.</li>
+        </ul>
+      </div>
+
+      <div class="card phase-card">
+        <div class="phase-head">
+          <b>Phase 1 · Supabase Slot #2 &amp; Google GIS OAuth</b>
+          <span class="tag lock">muschiul pattern</span>
+        </div>
+        <ul class="checklist">
+          <li>Create Supabase Free project #2 (EU region) and run <code>alembic upgrade head</code> over Session Pooler (5432).</li>
+          <li>Import homelab data (12 MB <code>pg_dump --data-only</code>) and verify row counts.</li>
+          <li>Wire Google GIS popup → <code>signInWithIdToken</code> + SHA-256 nonce so consent shows <code>stockwatch.escu.party</code>.</li>
+          <li>Keep invite-only security: reject uninvited Google logins unless matched to an existing user or valid 48h invite link.</li>
+        </ul>
+      </div>
+
+      <div class="card phase-card">
+        <div class="phase-head">
+          <b>Phase 2 · Solve Kokoro / TTS &amp; Audio Storage</b>
+          <span class="tag open">Path 2A or 2B</span>
+        </div>
+        <ul class="checklist">
+          <li><strong>Path 2A (Keep Kokoro):</strong> Refactor <code>tts_service.py</code> to <code>kokoro-onnx</code> (using <code>kokoro-v0_19.onnx</code> + <code>voices.bin</code>) on Cloud Run (2 GiB) or Modal ($30/mo credit) with bearer-token auth.</li>
+          <li><strong>Path 2B (Zero ML):</strong> Wire Google Cloud TTS WaveNet (1M chars/mo free) or CF Workers AI (<code>aura-1</code> / <code>melotts</code>).</li>
+          <li>Verify generated MP3s upload to Cloudflare R2 and stream via authenticated signed URLs on iOS/Android.</li>
+        </ul>
+      </div>
+
+      <div class="card phase-card">
+        <div class="phase-head">
+          <b>Phase 3 · Serverless Cron &amp; Telegram Webhook</b>
+          <span class="tag home">Replaces worker.py</span>
+        </div>
+        <ul class="checklist">
+          <li>Add <code>POST /api/telegram/webhook</code> (checking <code>X-Telegram-Bot-Api-Secret-Token</code>) and register <code>setWebhook</code>.</li>
+          <li>Expose <code>POST /api/internal/cron/harvest</code> and <code>/api/internal/cron/tick</code> guarded by <code>CRON_SECRET</code>.</li>
+          <li>Deploy Cloudflare Worker Cron (<code>*/15 * * * *</code>) for briefings, queued alerts, market harvests, and Supabase keep-warm.</li>
+        </ul>
+      </div>
+
+      <div class="card phase-card">
+        <div class="phase-head">
+          <b>Phase 4 · Cutover, Backups &amp; Homelab Shutdown</b>
+          <span class="tag open">Go Live</span>
+        </div>
+        <ul class="checklist">
+          <li>Deploy React <code>dist/</code> to Cloudflare Workers <code>ASSETS</code> bound to <code>stockwatch.escu.party</code> with <code>STOCKWATCH_COOKIE_SECURE=1</code>.</li>
+          <li>Schedule nightly GitHub Actions <code>pg_dump</code> → encrypted archive on Cloudflare R2 (14-day retention).</li>
+          <li>Verify full smoke test: Google login, Finnhub/Massive harvest, Gemini report, R2 MP3 playback, Telegram alert + morning briefing.</li>
+          <li>Retire local <code>stock-*</code> containers and remove the <code>stockwatch.escu.party</code> block from <code>Caddyfile</code>.</li>
+        </ul>
+      </div>
+
+      <h3>Fast-Track Alternative: Path C1 (Oracle ARM) or Path C2 (Hetzner CX23)</h3>
+      <pre><code><span class="c"># If choosing a single Linux VM instead of serverless split:</span>
+1. Swap yfinance -> Massive / Tiingo + FRED DGS10   <span class="c"># required on ALL cloud IPs</span>
+2. Swap PyTorch kokoro -> kokoro-onnx              <span class="c"># drops image 3.24 GB -> &lt;900 MB</span>
+3. docker compose up -d --build && pg_restore      <span class="c"># identical stack, zero rewrite</span>
+4. Nightly encrypted pg_dump -> Cloudflare R2      <span class="c"># 10 GB free off-site safety</span></code></pre>
+    </section>
+
+    <footer>
+      <span>Generated Nov 22, 2026 for StockWatch v2.1.3</span>
+      <span>Repo doc: <code>web/stock/docs/freeservermigrationplan.md</code></span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  const links = [...document.querySelectorAll('nav.toc li a')];
+  const sections = [...document.querySelectorAll('main section')];
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+      }
+    }
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
