@@ -25,6 +25,7 @@
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+    html, body { overflow-x: clip; }
     body {
       background: var(--bg);
       background-image:
@@ -36,15 +37,21 @@
       font: 16px/1.65 var(--sans);
       -webkit-font-smoothing: antialiased;
     }
+    main, section, .card, .kpi, .pc-box, .hop { min-width: 0; }
     a { color: var(--green); text-decoration: none; }
     a:hover { text-decoration: underline; }
+    a, summary { -webkit-tap-highlight-color: rgba(0, 255, 133, .16); }
     code, pre { font-family: var(--mono); font-size: .86em; }
-    code { background: rgba(255, 255, 255, .07); padding: .12em .42em; border-radius: 5px; color: #e2e8f0; }
+    code {
+      background: rgba(255, 255, 255, .07); padding: .12em .42em; border-radius: 5px;
+      color: #e2e8f0; overflow-wrap: anywhere; word-break: break-word;
+    }
     pre {
       background: #05070c; border: 1px solid var(--border); border-radius: 10px;
-      padding: 1rem 1.1rem; overflow-x: auto; margin: .9rem 0; line-height: 1.55;
+      padding: 1rem 1.1rem; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      max-width: 100%; margin: .9rem 0; line-height: 1.55;
     }
-    pre code { background: none; padding: 0; }
+    pre code { background: none; padding: 0; overflow-wrap: normal; word-break: normal; }
     .c { color: #64748b; }
     .k { color: var(--green); }
     .s { color: var(--amber); }
@@ -59,6 +66,8 @@
     }
 
     nav.toc { position: sticky; top: 2rem; align-self: start; font-size: .88rem; }
+    nav.toc .toc-top { display: block; }
+    .top-link { display: none; }
     nav.toc .brand {
       display: flex; align-items: center; gap: .6rem; margin-bottom: 1.3rem;
       color: var(--text); font-weight: 800; letter-spacing: -.02em; font-size: 1.05rem;
@@ -88,12 +97,14 @@
     section { margin-bottom: 3.4rem; scroll-margin-top: 1.5rem; }
     h2 {
       font-size: 1.52rem; letter-spacing: -.02em; margin-bottom: 1rem;
-      display: flex; align-items: center; gap: .7rem;
+      display: flex; align-items: flex-start; gap: .7rem; line-height: 1.25;
     }
     h2 .n {
       font: 700 .78rem/1 var(--mono); color: var(--bg); background: var(--green);
-      border-radius: 6px; padding: .36rem .52rem; box-shadow: 0 0 18px var(--glow); flex: none;
+      border-radius: 6px; padding: .36rem .52rem; box-shadow: 0 0 18px var(--glow);
+      flex: none; margin-top: .2rem;
     }
+    h2 .h2-text { min-width: 0; }
     h3 { font-size: 1.08rem; margin: 1.5rem 0 .5rem; color: #fff; }
     p, ul, ol.steps { margin: .6rem 0; }
     ul, ol.steps { padding-left: 1.35rem; }
@@ -104,19 +115,20 @@
       background: var(--card); border: 1px solid var(--border); border-radius: 14px;
       padding: 1.2rem 1.4rem; backdrop-filter: blur(8px);
     }
-    .verdict-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+    .verdict-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); gap: 1rem; margin: 1.2rem 0; }
     .verdict-card { position: relative; overflow: hidden; }
     .verdict-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--accent, var(--green)); }
     .verdict-label {
-      display: inline-flex; align-items: center; gap: .45rem;
-      font: 700 .76rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em;
+      display: inline-flex; flex-wrap: wrap; align-items: center; gap: .45rem;
+      max-width: 100%; line-height: 1.3;
+      font: 700 .76rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: .08em;
       padding: .32rem .6rem; border-radius: 999px; margin-bottom: .7rem;
     }
     .verdict-label.no { color: var(--red); background: rgba(255, 92, 122, .12); border: 1px solid rgba(255, 92, 122, .35); }
     .verdict-label.yes { color: var(--green); background: rgba(0, 255, 133, .1); border: 1px solid rgba(0, 255, 133, .35); }
     .verdict-label.warn { color: var(--amber); background: rgba(255, 201, 79, .1); border: 1px solid rgba(255, 201, 79, .35); }
 
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: .85rem; margin: 1.1rem 0; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(175px, 100%), 1fr)); gap: .85rem; margin: 1.1rem 0; }
     .kpi {
       background: var(--card); border: 1px solid var(--border); border-radius: 12px;
       padding: .95rem 1.05rem;
@@ -126,7 +138,7 @@
     .kpi.warn .val { color: var(--amber); }
     .kpi.good .val { color: var(--green); }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(255px, 100%), 1fr)); gap: 1rem; margin: 1rem 0; }
     .site { position: relative; overflow: hidden; }
     .site::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--accent, var(--green)); }
     .site .host { font: 700 1rem var(--mono); color: var(--accent, var(--green)); margin-bottom: .35rem; }
@@ -142,7 +154,7 @@
     .tag.crit { color: var(--red); background: rgba(255, 92, 122, .12); }
 
     .table-wrap {
-      overflow-x: auto; margin: 1rem 0; background: var(--card);
+      overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; background: var(--card);
       border: 1px solid var(--border); border-radius: 12px;
     }
     table { width: 100%; border-collapse: collapse; font-size: .92rem; min-width: 620px; }
@@ -176,7 +188,7 @@
     .callout.tip strong:first-child { color: var(--green); }
     .callout.danger strong:first-child { color: var(--red); }
 
-    .pros-cons { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: .9rem; margin-top: .8rem; }
+    .pros-cons { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: .9rem; margin-top: .8rem; }
     .pc-box { background: rgba(5, 7, 12, .55); border: 1px solid var(--border); border-radius: 10px; padding: .9rem 1rem; }
     .pc-box h4 { font: 700 .8rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .5rem; }
     .pc-box.pros h4 { color: var(--green); }
@@ -184,19 +196,28 @@
 
     details {
       background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-      padding: .9rem 1.15rem; margin: .7rem 0;
+      padding: 0; margin: .7rem 0; overflow: hidden;
     }
     details summary {
       cursor: pointer; font-weight: 700; list-style: none;
-      display: flex; flex-wrap: wrap; gap: .55rem; align-items: center;
+      display: grid; grid-template-columns: 1.15rem minmax(0, 1fr); gap: .55rem; align-items: start;
+      padding: .9rem 1.05rem; line-height: 1.45;
     }
     details summary::-webkit-details-marker { display: none; }
-    details summary::before { content: "+"; color: var(--green); font: 700 1.05rem var(--mono); transition: transform .2s; }
+    details summary::before {
+      content: "+"; color: var(--green); font: 700 1.1rem/1.35 var(--mono);
+      transition: transform .2s; text-align: center;
+    }
     details[open] summary::before { transform: rotate(45deg); }
-    details > *:not(summary) { margin-top: .65rem; }
+    details summary .sum-body { min-width: 0; }
+    details summary .tag { margin: 0 .4rem .15rem 0; vertical-align: 1px; }
+    details > :not(summary) { padding: 0 1.05rem; margin: 0 0 .65rem; }
+    details > :nth-child(2) { padding-top: .1rem; }
+    details > :last-child:not(summary) { padding-bottom: .35rem; margin-bottom: .65rem; }
 
     .phase-card { margin: .9rem 0; border-left: 3px solid var(--cyan); }
-    .phase-head { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .45rem; }
+    .phase-head { display: flex; justify-content: space-between; align-items: flex-start; gap: .6rem; flex-wrap: wrap; margin-bottom: .45rem; }
+    .phase-head .tag { margin-top: 0; }
     .phase-head b { font-size: 1.02rem; color: #fff; }
     .checklist li { list-style: none; position: relative; padding-left: 1.4rem; margin: .35rem 0; }
     .checklist { padding-left: 0; }
@@ -208,24 +229,130 @@
     }
 
     @media (max-width: 880px) {
-      .layout { grid-template-columns: 1fr; gap: 1.2rem; padding: 1.4rem 1rem 4rem; }
-      nav.toc { position: static; }
-      nav.toc ol { display: flex; flex-wrap: wrap; gap: .35rem; border: 0; }
-      nav.toc li a { border: 1px solid var(--border); border-radius: 999px; padding: .26rem .72rem; margin: 0; font-size: .82rem; }
+      html { scroll-padding-top: 6.4rem; }
+      section { scroll-margin-top: 6.4rem; }
+      body {
+        background-attachment: scroll;
+        background-repeat: no-repeat;
+        background-image:
+          radial-gradient(420px circle at 12% 0%, rgba(0, 255, 133, .10), transparent 70%),
+          radial-gradient(360px circle at 92% 380px, rgba(255, 47, 214, .06), transparent 70%);
+      }
+      .layout { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; padding: 0 1rem 4rem; }
+      nav.toc {
+        position: sticky; top: 0; z-index: 40;
+        margin: 0 -1rem; padding: .65rem 1rem .6rem;
+        background: rgba(10, 13, 20, .88);
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav.toc .toc-top {
+        display: flex; align-items: center; justify-content: space-between; gap: .6rem;
+        margin-bottom: .5rem;
+      }
+      nav.toc .brand { margin-bottom: 0; font-size: .96rem; }
+      .top-link {
+        display: inline-flex; align-items: center;
+        font: 600 .74rem/1 var(--mono); color: var(--muted);
+        border: 1px solid var(--border); border-radius: 999px;
+        padding: .34rem .62rem; white-space: nowrap;
+      }
+      .top-link:hover { color: var(--green); border-color: rgba(0, 255, 133, .45); text-decoration: none; }
+      nav.toc ol {
+        display: flex; flex-wrap: nowrap; gap: .4rem; border: 0;
+        overflow-x: auto; -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; scroll-snap-type: x proximity; padding-bottom: 2px;
+      }
+      nav.toc ol::-webkit-scrollbar { display: none; }
+      nav.toc li { flex: none; margin: 0; scroll-snap-align: start; }
+      nav.toc li a {
+        display: inline-flex; align-items: center; min-height: 36px; white-space: nowrap;
+        border: 1px solid var(--border); border-radius: 999px;
+        padding: .38rem .78rem; margin: 0; font-size: .82rem;
+        background: rgba(18, 24, 38, .65);
+      }
+      nav.toc li a:hover, nav.toc li a.active {
+        color: var(--green); background: rgba(0, 255, 133, .14); border-color: rgba(0, 255, 133, .55);
+      }
       .toc-meta { display: none; }
-      .arrow { transform: rotate(90deg); flex-basis: 100%; text-align: center; animation: none; }
+      .flow { flex-direction: column; gap: .3rem; }
+      .hop {
+        flex: none; width: 100%; display: grid; grid-template-columns: 2rem minmax(0, 1fr);
+        column-gap: .7rem; align-items: center; text-align: left; padding: .72rem .9rem;
+      }
+      .hop .ico { grid-row: 1 / span 2; margin-bottom: 0; font-size: 1.3rem; text-align: center; }
+      .hop b { grid-column: 2; font-size: .92rem; }
+      .hop small { grid-column: 2; margin-top: .12rem; }
+      .arrow {
+        width: 1.5rem; height: 1.15rem; margin: 0 auto;
+        display: flex; align-items: center; justify-content: center; flex: none;
+        transform: rotate(90deg); animation: none; font-size: .95rem; line-height: 1;
+      }
+    }
+    @media (max-width: 680px) {
+      .table-wrap { background: none; border: 0; border-radius: 0; overflow: visible; }
+      table { min-width: 0; font-size: .9rem; }
+      thead { display: none; }
+      table, tbody, tbody tr, tbody td { display: block; width: 100%; }
+      tbody tr {
+        background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+        padding: .85rem .95rem; margin-bottom: .75rem;
+      }
+      tbody tr:last-child { margin-bottom: 0; }
+      tbody td { padding: .48rem 0; border-bottom: 1px solid rgba(255, 255, 255, .06); }
+      tbody td:first-child {
+        padding-top: 0; padding-bottom: .6rem; margin-bottom: .1rem;
+        font-size: .98rem; color: #fff; border-bottom: 1px solid var(--border);
+      }
+      tbody td:last-child { border-bottom: 0; padding-bottom: 0; }
+      tbody td:not(:first-child)::before {
+        content: attr(data-label); display: block;
+        font: 700 .68rem/1.25 var(--mono); text-transform: uppercase;
+        letter-spacing: .07em; color: var(--muted); margin-bottom: .22rem;
+      }
+      tbody td .tag { margin-top: .1rem; }
+    }
+    @media (max-width: 640px) {
+      body { font-size: 15px; line-height: 1.62; }
+      header.hero { margin-bottom: 2rem; }
+      h1 { font-size: clamp(1.75rem, 7vw, 2.3rem); line-height: 1.1; }
+      .lead { font-size: .97rem; }
+      section { margin-bottom: 2.5rem; }
+      h2 { font-size: 1.24rem; gap: .55rem; margin-bottom: .85rem; }
+      h2 .n { font-size: .72rem; padding: .3rem .45rem; margin-top: .16rem; }
+      h3 { font-size: 1.02rem; }
+      .card { padding: 1rem; border-radius: 12px; }
+      .verdict-grid, .grid, .pros-cons { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+      .kpi { padding: .75rem .8rem; }
+      .kpi .val { font-size: clamp(1.02rem, 4.4vw, 1.3rem); }
+      .kpi .lbl { font-size: .78rem; line-height: 1.4; }
+      .verdict-label { font-size: .7rem; letter-spacing: .05em; }
+      .pc-box { padding: .8rem .85rem; }
+      ul, ol.steps { padding-left: 1.15rem; }
+      .callout { padding: .85rem .95rem; }
+      details summary { padding: .85rem .9rem; font-size: .95rem; }
+      details > :not(summary) { padding: 0 .9rem; }
+      pre { padding: .85rem .9rem; font-size: .78rem; }
+      footer { flex-direction: column; gap: .35rem; margin-top: 2.5rem; padding-top: 1.1rem; font-size: .82rem; }
+    }
+    @media (max-width: 359px) {
+      .kpi-grid { grid-template-columns: 1fr; }
     }
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; scroll-behavior: auto !important; } }
   </style>
 </head>
-<body>
+<body id="top">
 <div class="layout">
 
   <nav class="toc" aria-label="Contents">
-    <a class="brand" href="../escu/">
-      <svg viewBox="0 0 40 40" width="24" height="24" fill="none"><polygon points="20,34 6,9 34,9" fill="rgba(0,255,133,.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      stockwatch migration
-    </a>
+    <div class="toc-top">
+      <a class="brand" href="../escu/">
+        <svg viewBox="0 0 40 40" width="24" height="24" fill="none"><polygon points="20,34 6,9 34,9" fill="rgba(0,255,133,.15)" stroke="#00ff85" stroke-width="2.5" stroke-linejoin="round"/><polyline points="13,15 20,27 27,15" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        stockwatch migration
+      </a>
+      <a class="top-link" href="#top" aria-label="Back to top">Top ↑</a>
+    </div>
     <ol>
       <li><a href="#verdict">1. Feasibility Verdict</a></li>
       <li><a href="#footprint">2. Measured Footprint</a></li>
@@ -255,7 +382,7 @@
 
     <!-- 1. FEASIBILITY VERDICT -->
     <section id="verdict">
-      <h2><span class="n">01</span> Feasibility Verdict (Without Hacking)</h2>
+      <h2><span class="n">01</span> <span class="h2-text">Feasibility Verdict (Without Hacking)</span></h2>
 
       <div class="verdict-grid">
         <div class="card verdict-card" style="--accent: var(--red)">
@@ -286,7 +413,7 @@
 
     <!-- 2. MEASURED FOOTPRINT -->
     <section id="footprint">
-      <h2><span class="n">02</span> Current StockWatch Footprint (Measured)</h2>
+      <h2><span class="n">02</span> <span class="h2-text">Current StockWatch Footprint (Measured)</span></h2>
       <p>Measured directly on the live StockWatch v2.1.3 homelab stack before designing the target topology:</p>
 
       <div class="kpi-grid">
@@ -323,7 +450,7 @@
 
     <!-- 3. COMPONENT COMPATIBILITY AUDIT -->
     <section id="audit">
-      <h2><span class="n">03</span> Component Audit vs. <code>muschiul.escu.party</code> Stack</h2>
+      <h2><span class="n">03</span> <span class="h2-text">Component Audit vs. <code>muschiul.escu.party</code> Stack</span></h2>
 
       <div class="table-wrap">
         <table>
@@ -337,64 +464,64 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>React 19 SPA</strong></td>
-              <td>Built into FastAPI (<code>spa.py</code>) behind Caddy</td>
-              <td><span class="tag open">Direct Fit</span></td>
-              <td>Host static <code>./dist</code> free on Cloudflare Workers <code>ASSETS</code>.</td>
+              <td data-label="Component"><strong>React 19 SPA</strong></td>
+              <td data-label="Current Homelab">Built into FastAPI (<code>spa.py</code>) behind Caddy</td>
+              <td data-label="muschiul Stack Fit"><span class="tag open">Direct Fit</span></td>
+              <td data-label="Required Adaptation">Host static <code>./dist</code> free on Cloudflare Workers <code>ASSETS</code>.</td>
             </tr>
             <tr>
-              <td><strong>Postgres 17 DB</strong></td>
-              <td>Local container, 12 MB, Alembic <code>0001..0010</code></td>
-              <td><span class="tag lock">Fits 500 MB</span></td>
-              <td>Takes <strong>Slot 2 of 2</strong> free Supabase projects; pauses after 7d idle SQL; swap advisory locks or use Session Pooler (5432).</td>
+              <td data-label="Component"><strong>Postgres 17 DB</strong></td>
+              <td data-label="Current Homelab">Local container, 12 MB, Alembic <code>0001..0010</code></td>
+              <td data-label="muschiul Stack Fit"><span class="tag lock">Fits 500 MB</span></td>
+              <td data-label="Required Adaptation">Takes <strong>Slot 2 of 2</strong> free Supabase projects; pauses after 7d idle SQL; swap advisory locks or use Session Pooler (5432).</td>
             </tr>
             <tr>
-              <td><strong>Google OAuth + Auth</strong></td>
-              <td>Argon2id + invite links + 30d <code>sw_session</code> cookies</td>
-              <td><span class="tag open">Clean Fit</span></td>
-              <td>Reuse Google GIS + SHA-256 nonce → <code>signInWithIdToken</code>; gate registration on StockWatch invite allowlist.</td>
+              <td data-label="Component"><strong>Google OAuth + Auth</strong></td>
+              <td data-label="Current Homelab">Argon2id + invite links + 30d <code>sw_session</code> cookies</td>
+              <td data-label="muschiul Stack Fit"><span class="tag open">Clean Fit</span></td>
+              <td data-label="Required Adaptation">Reuse Google GIS + SHA-256 nonce → <code>signInWithIdToken</code>; gate registration on StockWatch invite allowlist.</td>
             </tr>
             <tr>
-              <td><strong>FastAPI (10.8k LOC)</strong></td>
-              <td>Python 3.12, 18 routers, <code>pandas</code>, SQLAlchemy</td>
-              <td><span class="tag crit">Blocked on Workers</span></td>
-              <td>Keep Python on <strong>Cloud Run / Koyeb / VPS</strong>; never rewrite 10.8k LOC to TS unless forced.</td>
+              <td data-label="Component"><strong>FastAPI (10.8k LOC)</strong></td>
+              <td data-label="Current Homelab">Python 3.12, 18 routers, <code>pandas</code>, SQLAlchemy</td>
+              <td data-label="muschiul Stack Fit"><span class="tag crit">Blocked on Workers</span></td>
+              <td data-label="Required Adaptation">Keep Python on <strong>Cloud Run / Koyeb / VPS</strong>; never rewrite 10.8k LOC to TS unless forced.</td>
             </tr>
             <tr>
-              <td><strong>Worker &amp; Cron Loops</strong></td>
-              <td><code>worker.py</code> 1s/15m loops + NYSE scheduler</td>
-              <td><span class="tag lock">Needs Split</span></td>
-              <td>Convert loops to authenticated <code>/api/internal/cron/*</code> HTTP routes pinged by Cloudflare Cron Triggers.</td>
+              <td data-label="Component"><strong>Worker &amp; Cron Loops</strong></td>
+              <td data-label="Current Homelab"><code>worker.py</code> 1s/15m loops + NYSE scheduler</td>
+              <td data-label="muschiul Stack Fit"><span class="tag lock">Needs Split</span></td>
+              <td data-label="Required Adaptation">Convert loops to authenticated <code>/api/internal/cron/*</code> HTTP routes pinged by Cloudflare Cron Triggers.</td>
             </tr>
             <tr>
-              <td><strong>Finnhub + <code>yfinance</code></strong></td>
-              <td>Finnhub REST + Yahoo 2y bulk + <code>^TNX</code></td>
-              <td><span class="tag crit">Cloud IP Blocked</span></td>
-              <td>Yahoo 429/403s datacenter IPs; swap <code>yfinance</code> for <strong>Massive (Polygon)</strong> or <strong>Tiingo</strong> + <strong>FRED <code>DGS10</code></strong>.</td>
+              <td data-label="Component"><strong>Finnhub + <code>yfinance</code></strong></td>
+              <td data-label="Current Homelab">Finnhub REST + Yahoo 2y bulk + <code>^TNX</code></td>
+              <td data-label="muschiul Stack Fit"><span class="tag crit">Cloud IP Blocked</span></td>
+              <td data-label="Required Adaptation">Yahoo 429/403s datacenter IPs; swap <code>yfinance</code> for <strong>Massive (Polygon)</strong> or <strong>Tiingo</strong> + <strong>FRED <code>DGS10</code></strong>.</td>
             </tr>
             <tr>
-              <td><strong>Kokoro TTS + ffmpeg</strong></td>
-              <td>PyTorch <code>kokoro==0.9.4</code> + 313 MB HF model</td>
-              <td><span class="tag crit">3.24 GB / 1 GB RAM</span></td>
-              <td>Switch to <strong><code>kokoro-onnx</code></strong> on Cloud Run (2 GiB)/Modal/VPS, or replace with Cloud TTS / Workers AI.</td>
+              <td data-label="Component"><strong>Kokoro TTS + ffmpeg</strong></td>
+              <td data-label="Current Homelab">PyTorch <code>kokoro==0.9.4</code> + 313 MB HF model</td>
+              <td data-label="muschiul Stack Fit"><span class="tag crit">3.24 GB / 1 GB RAM</span></td>
+              <td data-label="Required Adaptation">Switch to <strong><code>kokoro-onnx</code></strong> on Cloud Run (2 GiB)/Modal/VPS, or replace with Cloud TTS / Workers AI.</td>
             </tr>
             <tr>
-              <td><strong><code>/data/audio</code> MP3s</strong></td>
-              <td>Local bind mount (13 MB) served by FastAPI</td>
-              <td><span class="tag lock">Ephemeral Risk</span></td>
-              <td>Store MP3s in <strong>Cloudflare R2</strong> (10 GB free, $0 egress) or Supabase Storage (1 GB free) via signed URLs.</td>
+              <td data-label="Component"><strong><code>/data/audio</code> MP3s</strong></td>
+              <td data-label="Current Homelab">Local bind mount (13 MB) served by FastAPI</td>
+              <td data-label="muschiul Stack Fit"><span class="tag lock">Ephemeral Risk</span></td>
+              <td data-label="Required Adaptation">Store MP3s in <strong>Cloudflare R2</strong> (10 GB free, $0 egress) or Supabase Storage (1 GB free) via signed URLs.</td>
             </tr>
             <tr>
-              <td><strong>Telegram Bot</strong></td>
-              <td><code>getUpdates</code> long-poller in worker</td>
-              <td><span class="tag lock">Needs Webhook</span></td>
-              <td>Switch to <code>setWebhook</code> with <code>X-Telegram-Bot-Api-Secret-Token</code> + async task dispatch for slow AI/TTS.</td>
+              <td data-label="Component"><strong>Telegram Bot</strong></td>
+              <td data-label="Current Homelab"><code>getUpdates</code> long-poller in worker</td>
+              <td data-label="muschiul Stack Fit"><span class="tag lock">Needs Webhook</span></td>
+              <td data-label="Required Adaptation">Switch to <code>setWebhook</code> with <code>X-Telegram-Bot-Api-Secret-Token</code> + async task dispatch for slow AI/TTS.</td>
             </tr>
             <tr>
-              <td><strong>Planned 2-Host Clash</strong></td>
-              <td><code>07-clash-and-telegram-bot.md</code> (Bull vs. Bear)</td>
-              <td><span class="tag home">Supported</span></td>
-              <td><code>kokoro-onnx</code> handles 2 voices at zero extra RAM; Gemini TTS also supports native multi-speaker.</td>
+              <td data-label="Component"><strong>Planned 2-Host Clash</strong></td>
+              <td data-label="Current Homelab"><code>07-clash-and-telegram-bot.md</code> (Bull vs. Bear)</td>
+              <td data-label="muschiul Stack Fit"><span class="tag home">Supported</span></td>
+              <td data-label="Required Adaptation"><code>kokoro-onnx</code> handles 2 voices at zero extra RAM; Gemini TTS also supports native multi-speaker.</td>
             </tr>
           </tbody>
         </table>
@@ -429,7 +556,7 @@
 
     <!-- 4. ARCHITECTURE OPTIONS -->
     <section id="options">
-      <h2><span class="n">04</span> Architecture Options — Pros &amp; Cons</h2>
+      <h2><span class="n">04</span> <span class="h2-text">Architecture Options — Pros &amp; Cons</span></h2>
 
       <div class="table-wrap">
         <table>
@@ -446,40 +573,40 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>A: Pure Cloudflare + Supabase Rewrite</strong></td>
-              <td><strong>$0</strong></td>
-              <td>Only for R2</td>
-              <td>No (full TS rewrite)</td>
-              <td>No (Cloud TTS / Workers AI)</td>
-              <td>~20 ms</td>
-              <td>Maximum edge speed if rewriting from scratch</td>
+              <td data-label="Option"><strong>A: Pure Cloudflare + Supabase Rewrite</strong></td>
+              <td data-label="Cost"><strong>$0</strong></td>
+              <td data-label="Card Needed?">Only for R2</td>
+              <td data-label="Keeps Python?">No (full TS rewrite)</td>
+              <td data-label="Keeps Kokoro?">No (Cloud TTS / Workers AI)</td>
+              <td data-label="Cold Start">~20 ms</td>
+              <td data-label="Best For">Maximum edge speed if rewriting from scratch</td>
             </tr>
             <tr>
-              <td><strong>B: Hybrid Serverless</strong> <em>(Rec. $0)</em></td>
-              <td><strong>$0</strong></td>
-              <td>Yes (Cloud Run / R2 / Modal; Koyeb no card)</td>
-              <td><strong>Yes</strong> (slimmed FastAPI)</td>
-              <td><strong>Yes</strong> (via <code>kokoro-onnx</code>) or Cloud TTS</td>
-              <td>1–5s API; 5–12s TTS</td>
-              <td>$0 cloud without throwing away 10.8k lines of Python</td>
+              <td data-label="Option"><strong>B: Hybrid Serverless</strong> <em>(Rec. $0)</em></td>
+              <td data-label="Cost"><strong>$0</strong></td>
+              <td data-label="Card Needed?">Yes (Cloud Run / R2 / Modal; Koyeb no card)</td>
+              <td data-label="Keeps Python?"><strong>Yes</strong> (slimmed FastAPI)</td>
+              <td data-label="Keeps Kokoro?"><strong>Yes</strong> (via <code>kokoro-onnx</code>) or Cloud TTS</td>
+              <td data-label="Cold Start">1–5s API; 5–12s TTS</td>
+              <td data-label="Best For">$0 cloud without throwing away 10.8k lines of Python</td>
             </tr>
             <tr>
-              <td><strong>C1: Oracle Always Free ARM</strong></td>
-              <td><strong>$0</strong></td>
-              <td>Yes (PAYG strongly advised)</td>
-              <td><strong>Yes</strong> (100% Docker)</td>
-              <td><strong>Yes</strong></td>
-              <td>None (24/7)</td>
-              <td>True $0 lift-and-shift if you tolerate OCI quirks</td>
+              <td data-label="Option"><strong>C1: Oracle Always Free ARM</strong></td>
+              <td data-label="Cost"><strong>$0</strong></td>
+              <td data-label="Card Needed?">Yes (PAYG strongly advised)</td>
+              <td data-label="Keeps Python?"><strong>Yes</strong> (100% Docker)</td>
+              <td data-label="Keeps Kokoro?"><strong>Yes</strong></td>
+              <td data-label="Cold Start">None (24/7)</td>
+              <td data-label="Best For">True $0 lift-and-shift if you tolerate OCI quirks</td>
             </tr>
             <tr>
-              <td><strong>C2: Hetzner CX23 VPS</strong> <em>(Rec. Overall)</em></td>
-              <td><strong>€5.49–5.99/mo</strong></td>
-              <td>Yes</td>
-              <td><strong>Yes</strong> (100% Docker)</td>
-              <td><strong>Yes</strong> (<code>kokoro-onnx</code>)</td>
-              <td>None (24/7)</td>
-              <td>Zero-drama hosting cheaper than desktop power</td>
+              <td data-label="Option"><strong>C2: Hetzner CX23 VPS</strong> <em>(Rec. Overall)</em></td>
+              <td data-label="Cost"><strong>€5.49–5.99/mo</strong></td>
+              <td data-label="Card Needed?">Yes</td>
+              <td data-label="Keeps Python?"><strong>Yes</strong> (100% Docker)</td>
+              <td data-label="Keeps Kokoro?"><strong>Yes</strong> (<code>kokoro-onnx</code>)</td>
+              <td data-label="Cold Start">None (24/7)</td>
+              <td data-label="Best For">Zero-drama hosting cheaper than desktop power</td>
             </tr>
           </tbody>
         </table>
@@ -575,7 +702,7 @@
 
     <!-- 5. SOLVING KOKORO & 3.24 GB -->
     <section id="kokoro">
-      <h2><span class="n">05</span> Solving Kokoro TTS &amp; the 3.24 GB Footprint</h2>
+      <h2><span class="n">05</span> <span class="h2-text">Solving Kokoro TTS &amp; the 3.24 GB Footprint</span></h2>
       <p>
         StockWatch's image is <strong>3.24 GB</strong> mainly because PyTorch + <code>kokoro==0.9.4</code> + <code>spacy</code> pull ~2.5 GB of ML dependencies.
         Notably, your repo <code>tutorials/_engine/</code> already uses <strong><code>kokoro-onnx</code></strong> — cutting PyTorch out completely is the single highest-leverage fix.
@@ -593,34 +720,34 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>1. <code>kokoro-onnx</code> (INT8 / FP32)</strong></td>
-              <td>Image <strong>~650–900 MB</strong><br>RAM <strong>~350–500 MB</strong></td>
-              <td>Free on Cloud Run (2 GiB tier) or Modal ($30/mo credit)</td>
-              <td>Exact Kokoro voices (<code>am_michael</code> + <code>af_heart</code>), 2–3x faster on CPU, zero PyTorch/spaCy bloat.</td>
+              <td data-label="TTS Strategy"><strong>1. <code>kokoro-onnx</code> (INT8 / FP32)</strong></td>
+              <td data-label="Container Size &amp; RAM">Image <strong>~650–900 MB</strong><br>RAM <strong>~350–500 MB</strong></td>
+              <td data-label="2026 Free Quota">Free on Cloud Run (2 GiB tier) or Modal ($30/mo credit)</td>
+              <td data-label="Pros &amp; Tradeoffs">Exact Kokoro voices (<code>am_michael</code> + <code>af_heart</code>), 2–3x faster on CPU, zero PyTorch/spaCy bloat.</td>
             </tr>
             <tr>
-              <td><strong>2. Cloudflare Workers AI</strong><br>(<code>melotts</code> / <code>aura-1</code>)</td>
-              <td><strong>0 MB</strong> in app</td>
-              <td><strong>10,000 Neurons/day</strong><br>(~536m <code>melotts</code> OR ~7.3k chars <code>aura-1</code>)</td>
-              <td>No Kokoro hosted natively. <code>aura-1</code> sounds natural (~3 briefings/day free); <code>melotts</code> is much higher volume but plainer.</td>
+              <td data-label="TTS Strategy"><strong>2. Cloudflare Workers AI</strong><br>(<code>melotts</code> / <code>aura-1</code>)</td>
+              <td data-label="Container Size &amp; RAM"><strong>0 MB</strong> in app</td>
+              <td data-label="2026 Free Quota"><strong>10,000 Neurons/day</strong><br>(~536m <code>melotts</code> OR ~7.3k chars <code>aura-1</code>)</td>
+              <td data-label="Pros &amp; Tradeoffs">No Kokoro hosted natively. <code>aura-1</code> sounds natural (~3 briefings/day free); <code>melotts</code> is much higher volume but plainer.</td>
             </tr>
             <tr>
-              <td><strong>3. Google Cloud TTS</strong><br>(WaveNet / Neural2)</td>
-              <td><strong>0 MB</strong> in app</td>
-              <td><strong>1M WaveNet</strong> + <strong>4M Standard</strong> chars/month free</td>
-              <td>Massive free quota (~400+ briefings/mo), ultra-reliable REST call; requires GCP billing account.</td>
+              <td data-label="TTS Strategy"><strong>3. Google Cloud TTS</strong><br>(WaveNet / Neural2)</td>
+              <td data-label="Container Size &amp; RAM"><strong>0 MB</strong> in app</td>
+              <td data-label="2026 Free Quota"><strong>1M WaveNet</strong> + <strong>4M Standard</strong> chars/month free</td>
+              <td data-label="Pros &amp; Tradeoffs">Massive free quota (~400+ briefings/mo), ultra-reliable REST call; requires GCP billing account.</td>
             </tr>
             <tr>
-              <td><strong>4. Gemini Native TTS</strong><br>(<code>2.5 / 3.8 Flash TTS</code>)</td>
-              <td><strong>0 MB</strong> in app</td>
-              <td>Free AI Studio tier (strict RPM, prompt logging) or ~$9–10/1M audio tokens</td>
-              <td>Native multi-speaker dialogue for Bull vs. Bear Clash without stitching; paid audio tokens add up if unthrottled.</td>
+              <td data-label="TTS Strategy"><strong>4. Gemini Native TTS</strong><br>(<code>2.5 / 3.8 Flash TTS</code>)</td>
+              <td data-label="Container Size &amp; RAM"><strong>0 MB</strong> in app</td>
+              <td data-label="2026 Free Quota">Free AI Studio tier (strict RPM, prompt logging) or ~$9–10/1M audio tokens</td>
+              <td data-label="Pros &amp; Tradeoffs">Native multi-speaker dialogue for Bull vs. Bear Clash without stitching; paid audio tokens add up if unthrottled.</td>
             </tr>
             <tr>
-              <td><strong>5. Browser <code>kokoro-js</code></strong><br>(WebGPU / WASM Q8)</td>
-              <td><strong>~86 MB</strong> in user browser; <strong>0 MB</strong> server</td>
-              <td><strong>$0 forever</strong></td>
-              <td>Zero server CPU for web playback, <em>but cannot synthesize scheduled morning Telegram MP3s</em>.</td>
+              <td data-label="TTS Strategy"><strong>5. Browser <code>kokoro-js</code></strong><br>(WebGPU / WASM Q8)</td>
+              <td data-label="Container Size &amp; RAM"><strong>~86 MB</strong> in user browser; <strong>0 MB</strong> server</td>
+              <td data-label="2026 Free Quota"><strong>$0 forever</strong></td>
+              <td data-label="Pros &amp; Tradeoffs">Zero server CPU for web playback, <em>but cannot synthesize scheduled morning Telegram MP3s</em>.</td>
             </tr>
           </tbody>
         </table>
@@ -629,72 +756,72 @@
 
     <!-- 6. POSSIBLE PROBLEMS & TRAPS -->
     <section id="problems">
-      <h2><span class="n">06</span> Possible Problems, Traps &amp; Mitigations</h2>
+      <h2><span class="n">06</span> <span class="h2-text">Possible Problems, Traps &amp; Mitigations</span></h2>
 
       <details open>
-        <summary><span class="tag crit">CRITICAL</span> 1. PyTorch Kokoro OOMs 512 MB Free Tiers &amp; Breaks Serverless Limits</summary>
+        <summary><span class="sum-body"><span class="tag crit">CRITICAL</span> 1. PyTorch Kokoro OOMs 512 MB Free Tiers &amp; Breaks Serverless Limits</span></summary>
         <p><strong>Trap:</strong> Loading <code>KPipeline</code> adds ~1 GB RAM per process (web + worker = ~2 GB+) and takes ~45–90s CPU. Render Free / Koyeb Free (512 MB) crash with OOM; Cloudflare Workers (128 MB / 10 ms) reject it outright.</p>
         <p><strong>Fix:</strong> Split TTS out of the web API container (~280 MB slim FastAPI) and run <code>kokoro-onnx</code> in a scale-to-zero Cloud Run (2 GiB) / Modal endpoint — or switch to Google Cloud TTS / Workers AI.</p>
       </details>
 
       <details open>
-        <summary><span class="tag crit">CRITICAL</span> 2. <code>yfinance</code> Fails with 429 / 403 on Cloud Datacenter IPs</summary>
+        <summary><span class="sum-body"><span class="tag crit">CRITICAL</span> 2. <code>yfinance</code> Fails with 429 / 403 on Cloud Datacenter IPs</span></summary>
         <p><strong>Trap:</strong> <code>YahooHistoryProvider</code> scrapes Yahoo Finance from the server IP. Cloud ASNs (GCP, AWS, Oracle, Cloudflare) are aggressively rate-limited and CAPTCHA/403 blocked.</p>
         <p><strong>Fix:</strong> Swap <code>backend/providers/yahoo_history.py</code> to an authenticated free REST API: <strong>Massive (formerly Polygon.io) Free</strong> (2y U.S. daily bars, 5 calls/min) or <strong>Tiingo Free</strong> (500 symbols/mo) + <strong>FRED API <code>DGS10</code></strong> for the 10Y yield.</p>
       </details>
 
       <details>
-        <summary><span class="tag high">HIGH</span> 3. Supabase Free: 2-Project Ceiling, 7-Day SQL Pause &amp; Zero Backups</summary>
+        <summary><span class="sum-body"><span class="tag high">HIGH</span> 3. Supabase Free: 2-Project Ceiling, 7-Day SQL Pause &amp; Zero Backups</span></summary>
         <p><strong>Trap:</strong> <code>muschiul.escu.party</code> already occupies Slot 1 of 2 on your free Supabase org. StockWatch takes Slot 2/2. Projects with zero Postgres queries for 7 days auto-pause, and Free plans have no automated snapshots.</p>
         <p><strong>Fix:</strong> Let your Cloudflare 15-minute Cron hit a DB-touching health check (preventing pauses) and run a free nightly GitHub Actions <code>pg_dump</code> uploaded to Cloudflare R2.</p>
       </details>
 
       <details>
-        <summary><span class="tag high">HIGH</span> 4. Advisory Locks (<code>pg_try_advisory_lock</code>) Break on Supabase Pooler + IPv6</summary>
+        <summary><span class="sum-body"><span class="tag high">HIGH</span> 4. Advisory Locks (<code>pg_try_advisory_lock</code>) Break on Supabase Pooler + IPv6</span></summary>
         <p><strong>Trap:</strong> <code>backend/jobs.py</code> uses session-scoped PostgreSQL advisory locks, which fail on Supabase Transaction Pooler (port 6543), while direct port 5432 is IPv6-only (unreachable from many IPv4 PaaS containers).</p>
-        <p><strong>Fix:</strong> Connect via <strong>Supavisor Session Pooler (port 5432)</strong>, or switch `JobLock` to use the row-based lease logic (`job_state` + `heartbeat_at`) already implemented in `jobs.py`.</p>
+        <p><strong>Fix:</strong> Connect via <strong>Supavisor Session Pooler (port 5432)</strong>, or switch <code>JobLock</code> to use the row-based lease logic (<code>job_state</code> + <code>heartbeat_at</code>) already implemented in <code>jobs.py</code>.</p>
       </details>
 
       <details>
-        <summary><span class="tag high">HIGH</span> 5. Cloudflare Workers 50-Subrequest &amp; 10 ms CPU Limits</summary>
+        <summary><span class="sum-body"><span class="tag high">HIGH</span> 5. Cloudflare Workers 50-Subrequest &amp; 10 ms CPU Limits</span></summary>
         <p><strong>Trap:</strong> Harvesting 20+ tickers makes ~140 Finnhub REST calls plus pandas math — hitting both Cloudflare Free limits instantly.</p>
         <p><strong>Fix:</strong> Keep Cloudflare Workers strictly as a thin edge/cron scheduler that calls Cloud Run / VPS over HTTPS.</p>
       </details>
 
       <details>
-        <summary><span class="tag high">HIGH</span> 6. Telegram <code>getUpdates</code> Poller Never Wakes Sleeping Containers</summary>
+        <summary><span class="sum-body"><span class="tag high">HIGH</span> 6. Telegram <code>getUpdates</code> Poller Never Wakes Sleeping Containers</span></summary>
         <p><strong>Trap:</strong> <code>worker.py</code> loops on <code>poll_once()</code>. Scale-to-zero containers sleep between HTTP requests, so Telegram messages sit uncollected.</p>
         <p><strong>Fix:</strong> Switch to Telegram <code>setWebhook</code> at <code>POST /api/telegram/webhook</code> with <code>X-Telegram-Bot-Api-Secret-Token</code>. Reply within &lt;2s for quick commands and dispatch slow AI/TTS asynchronously.</p>
       </details>
 
       <details>
-        <summary><span class="tag med">MEDIUM</span> 7. Ephemeral Container Disks Wipe <code>/data/audio</code> &amp; Models</summary>
+        <summary><span class="sum-body"><span class="tag med">MEDIUM</span> 7. Ephemeral Container Disks Wipe <code>/data/audio</code> &amp; Models</span></summary>
         <p><strong>Trap:</strong> Serverless containers discard local disk writes on every scale-down or deploy.</p>
         <p><strong>Fix:</strong> Upload generated MP3s to <strong>Cloudflare R2</strong> (10 GB free, $0 egress) or Supabase Storage (1 GB free) and return signed URLs; bake ONNX model weights into the TTS worker image.</p>
       </details>
 
       <details>
-        <summary><span class="tag med">MEDIUM</span> 8. Oracle Always Free June 2026 Halving &amp; Idle Reclamation</summary>
+        <summary><span class="sum-body"><span class="tag med">MEDIUM</span> 8. Oracle Always Free June 2026 Halving &amp; Idle Reclamation</span></summary>
         <p><strong>Trap:</strong> Pure Free Tier Ampere A1 was cut from 4 OCPU / 24 GB to <strong>2 OCPU / 12 GB</strong>, suffers "Out of host capacity", and reclaims VMs under 10% p90 CPU over 7 days.</p>
         <p><strong>Fix:</strong> Upgrade to <strong>PAYG</strong> (exempts idle reclamation and unlocks capacity while remaining $0 inside free quotas) and set an OCI €1 budget alert.</p>
       </details>
 
       <details>
-        <summary><span class="tag med">MEDIUM</span> 9. Card-Backed Free Tiers Need Guardrails Against Billing Spikes</summary>
+        <summary><span class="sum-body"><span class="tag med">MEDIUM</span> 9. Card-Backed Free Tiers Need Guardrails Against Billing Spikes</span></summary>
         <p><strong>Trap:</strong> Cloud Run, R2, Modal, and OCI PAYG require cards; loops or DDoS could run up usage.</p>
         <p><strong>Fix:</strong> Cap Cloud Run <code>max-instances=1</code>, add Cloudflare rate limiting, keep <code>usage.py</code> daily user caps &amp; monthly AI budget, and configure budget alarms on Day 1.</p>
       </details>
 
       <details>
-        <summary><span class="tag med">MEDIUM</span> 10. Planned Two-Way Bot &amp; 2-Host Clash Integration</summary>
+        <summary><span class="sum-body"><span class="tag med">MEDIUM</span> 10. Planned Two-Way Bot &amp; 2-Host Clash Integration</span></summary>
         <p><strong>Trap:</strong> Planned <code>/clash</code> and <code>/ask</code> commands take 15–45 seconds — longer than Telegram's webhook ack patience, causing duplicate retries.</p>
-        <p><strong>Fix:</strong> Return HTTP 200 to Telegram after sending `"Generating..."` and execute the Gemini + TTS synthesis in an async worker task / Cloud Task.</p>
+        <p><strong>Fix:</strong> Return HTTP 200 to Telegram after sending <code>"Generating..."</code> and execute the Gemini + TTS synthesis in an async worker task / Cloud Task.</p>
       </details>
     </section>
 
     <!-- 7. PHASED ROADMAP -->
     <section id="roadmap">
-      <h2><span class="n">07</span> Step-by-Step Phased Migration Plan</h2>
+      <h2><span class="n">07</span> <span class="h2-text">Step-by-Step Phased Migration Plan</span></h2>
       <p>Recommended sequence for <strong>Path B ($0 Hybrid Serverless)</strong> — each phase leaves StockWatch runnable locally until cutover:</p>
 
       <div class="card phase-card">
@@ -776,15 +903,28 @@
 </div>
 
 <script>
+  const tocList = document.querySelector('nav.toc ol');
   const links = [...document.querySelectorAll('nav.toc li a')];
   const sections = [...document.querySelectorAll('main section')];
+  const setActive = (id) => {
+    let active = null;
+    for (const a of links) {
+      const match = a.getAttribute('href') === '#' + id;
+      a.classList.toggle('active', match);
+      if (match) active = a;
+    }
+    if (active && tocList && window.innerWidth <= 880) {
+      const left = Math.max(0, active.offsetLeft - (tocList.clientWidth - active.offsetWidth) / 2);
+      tocList.scrollTo({ left, behavior: 'smooth' });
+    }
+  };
+  setActive((location.hash || '#verdict').slice(1));
+  links.forEach(a => a.addEventListener('click', () => setActive(a.getAttribute('href').slice(1))));
   const io = new IntersectionObserver(entries => {
     for (const e of entries) {
-      if (e.isIntersecting) {
-        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
-      }
+      if (e.isIntersecting) setActive(e.target.id);
     }
-  }, { rootMargin: '-25% 0px -65% 0px' });
+  }, { rootMargin: '-18% 0px -70% 0px' });
   sections.forEach(s => io.observe(s));
 </script>
 </body>
